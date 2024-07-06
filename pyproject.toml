@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "hoyodaily"
+version = "0.1.0"
+description = ""
+authors = ["Axyss"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11,<3.13"
+requests = "^2.32.3"
+browser-cookie3 = "^0.19.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pyinstaller = "^6.8.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
