@@ -8,7 +8,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11,<3.13"
 requests = "^2.32.3"
-browser-cookie3 = "^0.19.1"
+rookiepy = "^0.5.1"
+pyside6 = "^6.7.2"
 
 
 [tool.poetry.group.dev.dependencies]
