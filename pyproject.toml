@@ -10,7 +10,7 @@ python = "^3.11,<3.13"
 requests = "^2.32.3"
 rookiepy = "^0.5.1"
 pyside6 = "^6.7.2"
-pywin32 = "^306"
+pywin32 = "^307"
 
 
 [tool.poetry.group.dev.dependencies]
