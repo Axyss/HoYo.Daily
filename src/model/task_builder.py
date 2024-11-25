@@ -42,8 +42,10 @@ class TaskBuilder:
     _win_scheduler.Connect()
 
     def __init__(self, task_folder_name=None):
-        if task_folder_name is not None and not self._task_folder_exists(task_folder_name):
+        if not task_folder_name and not self._task_folder_exists(task_folder_name):  # Name present; not exists
             self._task_folder = self._win_scheduler.GetFolder(f"\\").CreateFolder(task_folder_name)
+        elif not task_folder_name:  # Name present; exists
+            self._task_folder = self._win_scheduler.GetFolder(f"\\{task_folder_name}")
         else:
             self._task_folder = self._win_scheduler.GetFolder("\\")  # Creates tasks on root if task_folder_name
                                                                      # is None
@@ -66,6 +68,9 @@ class TaskBuilder:
     def set_repetition_interval(self, interval: TaskTriggerType , start_date: datetime.datetime):
         self._trigger = self._task.Triggers.Create(interval.value)
         self._trigger.StartBoundary = start_date.isoformat()
+
+    def set_random_delay(self, start_delay: str):
+        self._trigger.RandomDelay = start_delay
 
     def set_restart_policy(self, interval: str, count: int):
         self._task.Settings.RestartInterval = interval
