@@ -76,7 +76,7 @@ class TaskBuilder:
         self._task.Settings.RestartInterval = interval
         self._task.Settings.RestartCount = count
 
-    def add_action(self, program, arguments):
+    def add_action(self, program, arguments=""):
         action = self._task.Actions.Create(0)  # TASK_ACTION_EXEC = 0
         action.Path = program
         action.Arguments = arguments
