@@ -2,6 +2,7 @@ import datetime
 from datetime import timedelta
 from enum import Enum
 
+import pywintypes
 import win32com.client
 
 
@@ -42,9 +43,9 @@ class TaskBuilder:
     _win_scheduler.Connect()
 
     def __init__(self, task_folder_name=None):
-        if not task_folder_name and not self._task_folder_exists(task_folder_name):  # Name present; not exists
+        if task_folder_name and not self._task_folder_exists(task_folder_name):  # Name present; not exists
             self._task_folder = self._win_scheduler.GetFolder(f"\\").CreateFolder(task_folder_name)
-        elif not task_folder_name:  # Name present; exists
+        elif task_folder_name:  # Name present; exists
             self._task_folder = self._win_scheduler.GetFolder(f"\\{task_folder_name}")
         else:
             self._task_folder = self._win_scheduler.GetFolder("\\")  # Creates tasks on root if task_folder_name
@@ -62,7 +63,7 @@ class TaskBuilder:
         try:
             self._win_scheduler.GetFolder(f"\\{task_folder_name}")
             return True
-        except AttributeError:
+        except pywintypes.com_error:
             return False
 
     def set_repetition_interval(self, interval: TaskTriggerType , start_date: datetime.datetime):
