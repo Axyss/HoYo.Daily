@@ -1,1 +1,2 @@
-# HoyoDaily.
+# HoyoDaily
+Work in progress...
