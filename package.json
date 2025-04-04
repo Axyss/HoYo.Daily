@@ -1,0 +1,23 @@
+{
+  "name": "hoyodaily",
+  "version": "1.0.0",
+  "description": "Work in progress...",
+  "main": "index.js",
+  "scripts": {
+    "watch": "npx tailwindcss -i src/popup/input.css -o src/popup/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Axyss/HoyoDaily..git"
+  },
+  "author": "Axyss",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Axyss/HoyoDaily./issues"
+  },
+  "homepage": "https://github.com/Axyss/HoyoDaily.#readme",
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.2",
+    "tailwindcss": "^4.1.2"
+  }
+}
