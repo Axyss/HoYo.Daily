@@ -1,14 +1,18 @@
 {
   "name": "HoyoDaily",
   "description": "Placeholder",
-  "version": "1.0",
+  "version": "0.1",
   "manifest_version": 3,
   "action": {
-    "default_popup": "hello.html"
+    "default_popup": "popup/popup.html",
+    "default_icon": "images/icon.png"
   },
   "background": {
     "service_worker": "service-worker.js"
   },
   "permissions": ["alarms", "cookies", "storage"],
-  "host_permissions": ["https://hoyolab.com/*"]
+  "host_permissions": [
+    "https://hoyolab.com/*",
+    "https://*.hoyolab.com/*"
+  ]
 }
