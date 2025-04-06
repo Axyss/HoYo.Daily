@@ -4,8 +4,8 @@
   "version": "0.1",
   "manifest_version": 3,
   "action": {
-    "default_popup": "popup/popup.html",
-    "default_icon": "images/icon.png"
+    "default_popup": "index.html",
+    "default_icon": "icon.png"
   },
   "background": {
     "service_worker": "service-worker.js"
