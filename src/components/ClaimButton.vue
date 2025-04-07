@@ -14,7 +14,7 @@ function claimRewards() {
 
 <template>
   <div class="p-10">
-    <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" @click="claimRewards">Claim</button>
+    <button type="button" class="bg-violet-600 hover:bg-violet-700 text-white font-bold py-2 px-4 rounded-full" @click="claimRewards">Claim</button>
     <p v-if="rewardsClaimed">Rewards claimed!</p>
   </div>
 </template>
