@@ -2,9 +2,21 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-      vue(), tailwindcss()
-  ],
+    plugins: [vue(), tailwindcss()],
+    build: {
+        rollupOptions: {
+            input: {
+                app: 'index.html',
+                background: 'src/background.ts',
+            },
+            output: {
+                entryFileNames: ({ name }) => {
+                    return name === 'background' ? 'background.js' : 'assets/[name].js'
+                },
+            },
+        },
+        outDir: 'dist',
+        emptyOutDir: true,
+    },
 })
