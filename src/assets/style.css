@@ -1,3 +1,10 @@
 @import "tailwindcss";
-@plugin "flyonui";
+@plugin "flyonui" {
+    themes: black --default;
+}
+@plugin "flyonui/theme" {
+    name: "black";
+    default: true;
+    --color-primary: #7033ff;
+}
 @plugin "@iconify/tailwind4";
