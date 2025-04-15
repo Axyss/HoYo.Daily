@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, watch } from "vue";
-import { getStorage, setStorage } from "../persistence.ts";
+import { getStorage, setStorage } from "../utils.ts";
 
 const props = defineProps<{
   name: string;
@@ -36,7 +36,8 @@ watch(componentState, async (newVal, _) => {
 
       <div>
         <span class="label-text text-base py-0">{{ props.name }}</span>
-        <span class="label-text text-success text-xs py-0">Claimed today</span>
+        <span v-if="componentState.enabled" class="label-text text-success text-xs py-0">Claimed today</span>
+        <span v-else class="label-text text-error text-xs py-0">Not claimed</span>
       </div>
       <input type="checkbox" v-model="componentState.enabled" class="switch switch-primary" />
     </label>
