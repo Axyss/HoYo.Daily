@@ -2,6 +2,7 @@
 import ClaimButton from './components/ClaimButton.vue'
 import GameOption from './components/GameOption.vue'
 import comissionIcon from './assets/comission-icon.svg'
+import AutoClaimToggle from "./components/AutoClaimToggle.vue";
 
 function getImageUrl(name: String, ext: String): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -23,13 +24,7 @@ function getImageUrl(name: String, ext: String): string {
       <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" />
     </ul>
   </main>
-  <div class="flex gap-2">
-    <input type="checkbox" class="checkbox checkbox-primary mt-2" id="checkboxLabel1" />
-    <label class="label-text cursor-pointer flex flex-col" for="checkboxLabel1">
-      <span class="text-base">Automatic claiming</span>
-      <span>Next claim in: 10:23:45</span>
-    </label>
-  </div>
+  <AutoClaimToggle />
   <footer>
     <ClaimButton />
   </footer>
