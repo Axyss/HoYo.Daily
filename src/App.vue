@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import GameOption from "./components/GameOption.vue";
+import ClaimButton from "./components/ClaimButton.vue";
 
-const activeTab = ref('games')
 const autoClaimEnabled = ref(false)
 const showTimerTooltip = ref(false)
 const showAutoClaimTooltip = ref(false)
@@ -26,7 +26,7 @@ function getImageUrl(name: string, ext: string): string {
           </span>
         </div>
       </div>
-      <button class="text-gray-400 hover:text-primary-content p-2 rounded-full">
+      <button class="text-gray-400 hover:text-primary-content p-2 ml-auto rounded-full">
         <span class="size-5 icon-[lucide--settings]" />
       </button>
     </header>
@@ -116,14 +116,7 @@ function getImageUrl(name: string, ext: string): string {
             </label>
           </div>
         </div>
-
-        <!-- Claim Button -->
-        <div class="p-4">
-          <button class="btn btn-primary flex justify-center py-6 text-lg rounded-md w-full font-medium">
-            <span class="size-6 icon-[lucide--gift]" />
-            <span>&nbsp;Claim All Rewards</span>
-          </button>
-        </div>
+        <ClaimButton />
       </div>
     </main>
 

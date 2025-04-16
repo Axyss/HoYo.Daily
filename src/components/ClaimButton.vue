@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { claimGenshinReward } from '../main.ts'
+import { ref, watch } from "vue";
+
 const rewardsClaimed = ref(false)
+watch(rewardsClaimed, () => {
+  setTimeout(() => {
+    rewardsClaimed.value = false;
+  }, 3000)
+})
 </script>
 
 <template>
-  <button type="button" class="btn btn-gradient btn-primary w-30" @click="claimGenshinReward">
-    <span v-if="rewardsClaimed" class="loading loading-spinner"></span>
-    <span v-else class="icon-[tabler--gift] size-5"></span>
-    Claim
-  </button>
+  <div class="p-4">
+    <button class="btn btn-primary flex justify-center py-6 text-lg rounded-md w-full font-medium" @click="rewardsClaimed = true">
+      <span :class="{'size-6': true,
+                     'loading loading-spinner loading-sm': rewardsClaimed,
+                     'icon-[lucide--gift]': !rewardsClaimed}" />
+      <span v-if="!rewardsClaimed">Claim All Rewards</span>
+      <span v-else>Claiming...</span>
+    </button>
+  </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
