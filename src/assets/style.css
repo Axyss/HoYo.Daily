@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "../../node_modules/flyonui/variants.css";
 @plugin "flyonui" {
     themes: black --default;
 }
@@ -8,3 +9,5 @@
     --color-primary: #7033ff;
 }
 @plugin "@iconify/tailwind4";
+/*@source "./node_modules/flyonui/dist/tab.js";*/
+@source "./node_modules/flyonui/dist/index.js";

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, watch } from "vue";
 import { getStorage, setStorage } from "../utils.ts";
+import Switch from "./Switch.vue";
 
 const props = defineProps<{
   name: string;
@@ -17,31 +18,32 @@ watch(componentState, async (newVal, _) => {
   await setStorage(props.name, newVal);
   console.log("Updating config: ", getStorage(props.name));
 });
-
 </script>
 
 <template>
-  <li>
-    <label class="flex items-center justify-between gap-3 p-3">
-      <div class="avatar">
-        <div class="size-10 rounded-md">
-          <img
-            :src="props.icon"
-            :class="{ grayscale: !componentState.enabled }"
-            class="transition-grayscale duration-300"
-            alt="avatar"
-          />
+  <div class="flex items-center justify-between px-4 py-3 hover:bg-base-200/90">
+    <div class="flex items-center gap-3">
+      <img
+        class="size-8 bg-gray-800 rounded-md flex-shrink-0"
+        :src="props.icon"
+      />
+      <div>
+        <p class="text-primary-content font-medium">{{ props.name }}</p>
+        <div v-if="true" class="flex items-center gap-1 text-xs text-green-500">
+          <span class="size-3 icon-[lucide--circle-check-big]" />
+          <span>Claimed today</span>
         </div>
       </div>
-
-      <div>
-        <span class="label-text text-base py-0">{{ props.name }}</span>
-        <span v-if="componentState.enabled" class="label-text text-success text-xs py-0">Claimed today</span>
-        <span v-else class="label-text text-error text-xs py-0">Not claimed</span>
-      </div>
-      <input type="checkbox" v-model="componentState.enabled" class="switch switch-primary" />
+    </div>
+    <label class="relative inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        class="sr-only peer"
+        :checked="componentState.enabled"
+      />
+      <Switch />
     </label>
-  </li>
+  </div>
 </template>
 
 <style scoped></style>
