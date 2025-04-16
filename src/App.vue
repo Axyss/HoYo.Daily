@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
+import Countdown from "./components/Countdown.vue";
 
 const autoClaimEnabled = ref(false)
 const showTimerTooltip = ref(false)
 const showAutoClaimTooltip = ref(false)
-
 
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -64,7 +64,7 @@ function getImageUrl(name: string, ext: string): string {
             <div class="flex items-center gap-2">
               <span class="size-4 text-gray-400 icon-[lucide--clock]" />
               <span class="text-gray-300">Next claim in:</span>
-              <span class="text-primary-content font-mono font-medium">03:00:17</span>
+              <Countdown />
             </div>
 
             <div class="relative">

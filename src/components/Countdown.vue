@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { getSecondsUntilNextMidnightUTC8 } from "../utils.ts";
 
 const secondsLeft = ref(getSecondsUntilNextMidnightUTC8());
@@ -20,17 +20,12 @@ onMounted(() => {
     }
   }, 1000);
 });
-
 </script>
 
 <template>
-  <div class="flex gap-2">
-    <input type="checkbox" class="checkbox checkbox-primary mt-2" id="checkboxLabel1" />
-    <label class="label-text cursor-pointer flex flex-col" for="checkboxLabel1">
-      <span class="text-base">Auto-Claim</span>
-      <span>Next claim in: <b>{{ countdown }}</b></span>
-    </label>
-  </div>
+  <span class="text-primary-content font-mono font-medium">
+    {{ countdown }}
+  </span>
 </template>
 
 <style scoped></style>
