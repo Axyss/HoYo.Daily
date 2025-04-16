@@ -31,44 +31,21 @@ function getImageUrl(name: string, ext: string): string {
       </button>
     </header>
 
-  <nav class="tabs space-x-1 p-1 grow" role="tablist" >
-    <button type="button" @click="activeTab = 'games'" class="btn btn-text active-tab:bg-primary active-tab:text-white hover:text-primary active hover:bg-primary/20" data-tab="#tabs-pill-icon-1" role="tab" >
-      <span class="icon-[lucide--gamepad-2] size-5"></span>
-      <span>Games</span>
-    </button>
-    <button type="button" @click="activeTab = 'history'" class="btn btn-text active-tab:bg-primary active-tab:text-white hover:text-primary hover:bg-primary/20" data-tab="#tabs-pill-icon-2" role="tab" >
-      <span class="icon-[lucide--history] size-5"></span>
-      <span>History</span>
-    </button>
-  </nav>
+    <nav class="tabs space-x-2 px-4 py-2 border-b border-primary/20 bg-base-100/60" role="tablist" >
+      <button type="button" class="btn btn-text flex-1 active-tab:bg-primary active-tab:text-white hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
+        <span class="icon-[lucide--gamepad-2] size-5"></span>
+        <span>Games</span>
+      </button>
+      <button type="button" class="btn btn-text flex-1 active-tab:bg-primary active-tab:text-white hover:text-primary hover:bg-primary/20" data-tab="#history-tab" role="tab" >
+        <span class="icon-[lucide--history] size-5"></span>
+        <span>History</span>
+      </button>
+    </nav>
 
     <!-- Tabs -->
     <main class="w-full">
-      <div class="py-2 px-4 grid grid-cols-2 bg-base-100/60 rounded-none border-b border-primary/20">
-        <button
-          @click="activeTab = 'games'"
-          :class="[
-            'py-2.5 text-sm font-medium rounded-sm flex items-center justify-center',
-            activeTab === 'games' ? 'bg-primary text-primary-content' : 'text-gray-400 hover:text-primary-content'
-          ]"
-        >
-          <span class="size-5 icon-[lucide--gamepad-2]"></span>
-          &nbsp;Games
-        </button>
-        <button
-          @click="activeTab = 'history'"
-          :class="[
-            'py-2.5 text-sm font-medium rounded-sm flex items-center justify-center',
-            activeTab === 'history' ? 'bg-primary text-primary-content' : 'text-gray-400 hover:text-primary-content'
-          ]"
-        >
-          <span class="size-5 icon-[lucide--history]"></span>
-          &nbsp;History
-        </button>
-      </div>
-
       <!-- History Tab Content -->
-      <div id="tabs-pill-icon-2" role="tabpanel" class="p-4 hidden">
+      <div id="history-tab" role="tabpanel" class="p-4 hidden">
         <div class="flex items-center justify-center h-100 text-accent-content/50 text-lg">
           <span class="icon-[lucide--file]" />
           <span>&nbsp;So empty...</span>
@@ -76,7 +53,7 @@ function getImageUrl(name: string, ext: string): string {
       </div>
 
       <!-- Games Tab Content -->
-      <div id="tabs-pill-icon-1" role="tabpanel" class="p-0 mt-0">
+      <div id="main-tab" role="tabpanel" class="p-0 mt-0">
         <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" />
         <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'png')" />
         <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" />
