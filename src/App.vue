@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
+import { claimGenshinReward, claimStarRailReward, claimZenlessReward } from "./claimable.ts";
 
 const autoClaimEnabled = ref(false)
 const showTimerTooltip = ref(false)
@@ -54,9 +55,9 @@ function getImageUrl(name: string, ext: string): string {
 
       <!-- Games Tab Content -->
       <div id="main-tab" role="tabpanel" class="p-0 mt-0">
-        <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" />
-        <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'png')" />
-        <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" />
+        <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinReward" />
+        <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'png')" :task="claimStarRailReward" />
+        <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" :task="claimZenlessReward" />
 
         <!-- Auto Claim Section -->
         <div class="mt-4 px-4 py-3 bg-base-100/60 border-t border-b border-primary/20">
