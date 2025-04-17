@@ -6,7 +6,7 @@ import { getTasks, registerTask, unregisterTask } from "../task-registry.ts";
 
 const props = defineProps<{
   name: string;
-  icon?: string;
+  icon: string;
   task: any;
 }>();
 
@@ -16,14 +16,15 @@ onBeforeMount(async () => {
   Object.assign(componentState, await getStorage(props.name));
 });
 
-watch(componentState, async (newVal, _) => {
-  if (newVal) {
+watch(componentState, async (newState, _) => {
+  console.log(newState.enabled);
+  if (newState.enabled) {
     registerTask(props.task);
   } else {
     unregisterTask(props.task);
   }
   console.log("Task registry", getTasks())
-  await setStorage(props.name, newVal);
+  await setStorage(props.name, newState);
   console.log("Updating config: ", getStorage(props.name));
 });
 </script>
@@ -43,14 +44,7 @@ watch(componentState, async (newVal, _) => {
         </div>
       </div>
     </div>
-    <label class="relative inline-flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        class="sr-only peer"
-        :checked="componentState.enabled"
-      />
-      <Switch v-model="componentState.enabled"/>
-    </label>
+    <Switch v-model="componentState.enabled"/>
   </div>
 </template>
 

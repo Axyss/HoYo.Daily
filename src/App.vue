@@ -4,6 +4,7 @@ import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
 import { claimGenshinReward, claimStarRailReward, claimZenlessReward } from "./claimable.ts";
+import Switch from "./components/Switch.vue";
 
 const autoClaimEnabled = ref(false)
 const showTimerTooltip = ref(false)
@@ -107,14 +108,7 @@ function getImageUrl(name: string, ext: string): string {
               </div>
               <span class="text-xs text-gray-400">Claim rewards automatically when available</span>
             </div>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                class="sr-only peer"
-                v-model="autoClaimEnabled"
-              >
-              <div class="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            </label>
+            <Switch />
           </div>
         </div>
         <ClaimButton />
