@@ -4,8 +4,12 @@ import timezone from "dayjs/plugin/timezone";
 type Config = Record<string, any>
 
 // Persistance functions
-export async function getStorage(namespace: string): Promise<Config> {
-     return (await chrome.storage.local.get(namespace))[namespace] || {}
+export async function getStorage(namespace: string | null): Promise<Config> {
+     if (namespace == null)
+          return (await chrome.storage.local.get(null)) || {}
+     else {
+          return (await chrome.storage.local.get(namespace))[namespace] || {}
+     }
 }
 
 export async function setStorage(namespace: string, config: Config): Promise<void> {
