@@ -5,9 +5,13 @@ export function claimGenshinReward(): Promise<any> {
   })
 }
 
-export function claimStarRailReward(): void {
-
+export function claimStarRailReward(): Promise<any> {
+  return fetch("https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/sign", {
+    method: "POST",
+    body: JSON.stringify({act_id: "e202303301540311"}),
+  })
 }
+
 export function claimZenlessReward(): void {
 
 }
