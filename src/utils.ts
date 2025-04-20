@@ -3,7 +3,7 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 type Config = Record<string, any>
 
-// Persistance functions
+// Persistence functions
 export async function getStorage(namespace: string | null): Promise<Config> {
      if (namespace == null)
           return (await chrome.storage.local.get(null)) || {}
@@ -24,4 +24,8 @@ export function getSecondsUntilNextMidnightUTC8(): number {
      const now = dayjs().tz("Asia/Shanghai");
      const nextMidnight = now.add(1, "day").startOf("day");
      return nextMidnight.diff(now, "second");
+}
+
+export function getMinutesUntilNextMidnightUTC8(): number {
+     return Math.ceil(getSecondsUntilNextMidnightUTC8() / 60);
 }
