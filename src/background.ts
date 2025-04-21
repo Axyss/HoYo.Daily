@@ -19,12 +19,12 @@ async function scheduleAlarm(alarmName: string) {
 
 // Listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
-  console.log("Installed", detail);
+  console.log("Extension installed", detail);
   await scheduleAlarm(ALARM_NAME);
 })
 
 chrome.runtime.onStartup.addListener(async () => {
-  console.log("Started");
+  console.log("Extension started");
   await scheduleAlarm(ALARM_NAME);
 })
 
@@ -33,12 +33,12 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     return
   }
 
-  console.log("Alarm fired: ", alarm);
+  console.log(`Alarm '${alarm.name}' fired`);
   try {
     for (let game in BINDINGS) {
       const gameSettings = await getStorage(game)
       if (gameSettings.enabled) {
-        console.log(`Claiming ${game} rewards`)
+        console.log(`Claiming '${game}' rewards`)
         BINDINGS[game]();
       }
     }

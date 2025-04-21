@@ -2,7 +2,6 @@
 import { onBeforeMount, reactive, watch } from "vue";
 import { getStorage, setStorage } from "../utils.ts";
 import Switch from "./Switch.vue";
-import { getTasks, registerTask, unregisterTask } from "../task-registry.ts";
 
 const props = defineProps<{
   name: string;
@@ -17,15 +16,7 @@ onBeforeMount(async () => {
 });
 
 watch(componentState, async (newState, _) => {
-  console.log(newState.enabled);
-  if (newState.enabled) {
-    registerTask(props.task);
-  } else {
-    unregisterTask(props.task);
-  }
-  console.log("Task registry", getTasks())
   await setStorage(props.name, newState);
-  console.log("Updating config: ", getStorage(props.name));
 });
 </script>
 
