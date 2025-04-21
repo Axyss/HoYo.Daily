@@ -1,4 +1,4 @@
-import { getMinutesUntilNextMidnightUTC8, getSecondsUntilNextMidnightUTC8 } from "./utils.ts";
+import { getMinutesUntilNextMidnightUTC8, getStorage } from "./utils.ts";
 import { claimGenshinReward, claimStarRailReward, claimZenlessReward } from "./claimable.ts";
 
 const ALARM_NAME: string = "auto-claim-alarm";
@@ -36,7 +36,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   console.log("Alarm fired: ", alarm);
   try {
     for (let game in BINDINGS) {
-      const gameSettings = await chrome.storage.local.get(game)
+      const gameSettings = await getStorage(game)
       if (gameSettings.enabled) {
         console.log(`Claiming ${game} rewards`)
         BINDINGS[game]();
