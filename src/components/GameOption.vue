@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive, watch } from "vue";
+import { onBeforeMount, reactive, ref, watch } from "vue";
 import { getStorage, setStorage } from "../utils.ts";
 import Switch from "./Switch.vue";
 
@@ -9,15 +9,30 @@ const props = defineProps<{
   task: any;
 }>();
 
-let componentState: any = reactive({});
+enum ClaimStates {
+  NOT_CLAIMED,
+  CLAIMING,
+  CLAIMED,
+  ERROR
+}
+
+const switchState = reactive({});
+const claimingState = ref<ClaimStates>(ClaimStates.NOT_CLAIMED);
 
 onBeforeMount(async () => {
-  Object.assign(componentState, await getStorage(props.name));
+  Object.assign(switchState, await getStorage(props.name));
 });
 
-watch(componentState, async (newState, _) => {
+watch(switchState, async (newState, _) => {
   await setStorage(props.name, newState);
 });
+
+chrome.runtime.onMessage.addListener(async ( msg ) => {
+  if (msg.target === props.name) {
+    console.log(props.name + ": Message received");
+    Object.assign(switchState, await getStorage(props.name));
+  }
+})
 </script>
 
 <template>
@@ -29,13 +44,25 @@ watch(componentState, async (newState, _) => {
       />
       <div>
         <p class="text-primary-content font-medium">{{ props.name }}</p>
-        <div v-if="true" class="flex items-center gap-1 text-xs text-green-500">
-          <span class="size-3 icon-[lucide--circle-check-big]" />
+        <div v-if="claimingState === ClaimStates.NOT_CLAIMED" class="flex items-center gap-1 text-xs text-red-500">
+          <span class="size-3.5 icon-[lucide--circle-x]" />
+          <span>Not claimed</span>
+        </div>
+        <div v-else-if="claimingState === ClaimStates.CLAIMING" class="flex items-center gap-1 text-xs text-blue-500">
+          <span class="size-3.5 icon-[lucide--iteration-ccw]" />
+          <span>Claiming...</span>
+        </div>
+        <div v-else-if="claimingState === ClaimStates.CLAIMED" class="flex items-center gap-1 text-xs text-green-500">
+          <span class="size-3.5 icon-[lucide--circle-check-big]" />
           <span>Claimed today</span>
+        </div>
+        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-500">
+          <span class="size-3.5 icon-[lucide--circle-check-big]" />
+          <span>Error</span>
         </div>
       </div>
     </div>
-    <Switch v-model="componentState.enabled"/>
+    <Switch v-model="switchState.enabled"/>
   </div>
 </template>
 

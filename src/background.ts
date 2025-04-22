@@ -2,7 +2,7 @@ import { getMinutesUntilNextMidnightUTC8, getStorage } from "./utils.ts";
 import { claimGenshinReward, claimStarRailReward, claimZenlessReward } from "./claimable.ts";
 
 const ALARM_NAME: string = "auto-claim-alarm";
-const BINDINGS: Record<string, () => void> = {
+const CLAIM_FUNCTION_BINDINGS: Record<string, () => void> = {
   "Genshin Impact": claimGenshinReward,
   "Honkai Star Rail": claimStarRailReward,
   "Zenless Zone Zero": claimZenlessReward
@@ -11,7 +11,7 @@ const BINDINGS: Record<string, () => void> = {
 async function scheduleAlarm(alarmName: string) {
   if (await chrome.alarms.get(alarmName) == null) {
     await chrome.alarms.create(alarmName, {
-      delayInMinutes: getMinutesUntilNextMidnightUTC8()
+      delayInMinutes: 0.5
     })
     console.log(`Scheduling an alarm in ${getMinutesUntilNextMidnightUTC8()} minutes`)
   }
@@ -29,18 +29,17 @@ chrome.runtime.onStartup.addListener(async () => {
 })
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name !== ALARM_NAME) {
-    return
-  }
-
+  if (alarm.name !== ALARM_NAME) return;
   console.log(`Alarm '${alarm.name}' fired`);
+
   try {
-    for (let game in BINDINGS) {
-      const gameSettings = await getStorage(game)
-      if (gameSettings.enabled) {
-        console.log(`Claiming '${game}' rewards`)
-        BINDINGS[game]();
-      }
+    for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
+      const gameSettings = await getStorage(gameTitle);
+      if (!gameSettings?.enabled) continue;
+
+      console.log(`Claiming '${gameTitle}' rewards`);
+      CLAIM_FUNCTION_BINDINGS[gameTitle]();
+      await chrome.runtime.sendMessage({ type: "UPDATE", target: gameTitle });
     }
   } catch (error) {
     console.error("Unexpected error", error);
