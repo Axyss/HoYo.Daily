@@ -15,22 +15,29 @@ enum ClaimStates {
   CLAIMED,
   ERROR
 }
-
-const switchState = reactive({});
+const defaultSettings = { enabled: false, lastClaim: 0 }
+const settings = reactive({});
 const claimingState = ref<ClaimStates>(ClaimStates.NOT_CLAIMED);
 
 onBeforeMount(async () => {
-  Object.assign(switchState, await getStorage(props.name));
+  const currentSettings = await getStorage(props.name);
+
+  if (currentSettings === null) {
+    await setStorage(props.name, defaultSettings);
+  } else if (Object.keys(defaultSettings).length > Object.keys(currentSettings).length) {
+    await setStorage(props.name, { ...defaultSettings, ...currentSettings });
+  }
+  Object.assign(settings, await getStorage(props.name));
 });
 
-watch(switchState, async (newState, _) => {
+watch(settings, async (newState, _) => {
   await setStorage(props.name, newState);
 });
 
 chrome.runtime.onMessage.addListener(async ( msg ) => {
   if (msg.target === props.name) {
     console.log(props.name + ": Message received");
-    Object.assign(switchState, await getStorage(props.name));
+    Object.assign(settings, await getStorage(props.name));
   }
 })
 </script>
@@ -62,7 +69,7 @@ chrome.runtime.onMessage.addListener(async ( msg ) => {
         </div>
       </div>
     </div>
-    <Switch v-model="switchState.enabled"/>
+    <Switch v-model="settings.enabled"/>
   </div>
 </template>
 
