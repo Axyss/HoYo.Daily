@@ -2,19 +2,15 @@
 import { onBeforeMount, reactive, ref, watch } from "vue";
 import { getStorage, setStorage } from "../utils.ts";
 import Switch from "./Switch.vue";
+import dayjs from "dayjs";
 
+enum ClaimStates { NOT_CLAIMED, CLAIMING, CLAIMED, ERROR }
 const props = defineProps<{
   name: string;
   icon: string;
   task: any;
 }>();
 
-enum ClaimStates {
-  NOT_CLAIMED,
-  CLAIMING,
-  CLAIMED,
-  ERROR
-}
 const defaultSettings = { enabled: false, lastClaim: 0 }
 const settings = reactive({});
 const claimingState = ref<ClaimStates>(ClaimStates.NOT_CLAIMED);
@@ -30,8 +26,14 @@ onBeforeMount(async () => {
   Object.assign(settings, await getStorage(props.name));
 });
 
-watch(settings, async (newState, _) => {
-  await setStorage(props.name, newState);
+watch(settings, async (newSettings, _) => {
+  await setStorage(props.name, newSettings);
+
+  if ((dayjs().unix() - newSettings.lastClaim) > 86400) {
+    claimingState.value = ClaimStates.NOT_CLAIMED;
+  } else {
+    claimingState.value = ClaimStates.CLAIMED;
+  }
 });
 
 chrome.runtime.onMessage.addListener(async ( msg ) => {

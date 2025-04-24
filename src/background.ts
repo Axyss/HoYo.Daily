@@ -1,5 +1,6 @@
-import { getMinutesUntilNextMidnightUTC8, getStorage } from "./utils.ts";
+import { getMinutesUntilNextMidnightUTC8, getStorage, setStorage } from "./utils.ts";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
+import dayjs from "dayjs";
 
 const ALARM_NAME: string = "auto-claim-alarm";
 const CLAIM_FUNCTION_BINDINGS: Record<string, () => void> = {
@@ -16,6 +17,7 @@ async function claimSelectedRewards() {
 
       console.log(`Claiming '${gameTitle}' rewards`);
       CLAIM_FUNCTION_BINDINGS[gameTitle]();
+      await setStorage(gameTitle, { lastClaim: dayjs().unix() });
       await chrome.runtime.sendMessage({ type: "UPDATE", target: gameTitle });
     }
   } catch (error) {
@@ -28,7 +30,7 @@ async function claimSelectedRewards() {
 async function scheduleAlarm(alarmName: string) {
   if (await chrome.alarms.get(alarmName) == null) {
     await chrome.alarms.create(alarmName, {
-      delayInMinutes: 0.5
+      delayInMinutes: getMinutesUntilNextMidnightUTC8()
     })
     console.log(`Scheduling an alarm in ${getMinutesUntilNextMidnightUTC8()} minutes`)
   }
