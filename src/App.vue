@@ -4,10 +4,9 @@ import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
-import Switch from "./components/Switch.vue";
+import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 
 const showTimerTooltip = ref(false)
-const showAutoClaimTooltip = ref(false)
 
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -84,31 +83,7 @@ function getImageUrl(name: string, ext: string): string {
               </div>
             </div>
           </div>
-
-          <div class="flex items-center justify-between bg-primary/20 p-3 rounded-lg border border-primary/70">
-            <div class="flex flex-col">
-              <div class="flex items-center gap-2">
-                <span class="text-primary-content font-medium">Auto Claim</span>
-                <div class="relative">
-                  <button
-                    @mouseenter="showAutoClaimTooltip = true"
-                    @mouseleave="showAutoClaimTooltip = false"
-                    class="h-5 w-5 text-gray-400 hover:text-gray-300"
-                  >
-                    <span class="h-3.5 w-3.5 icon-[lucide--info]" />
-                  </button>
-                  <div
-                    v-if="showAutoClaimTooltip"
-                    class="absolute left-full ml-2 top-0 bg-gray-800 text-primary-content text-xs p-2 rounded shadow-lg w-64 z-10"
-                  >
-                    When enabled, rewards will be automatically claimed for all active games as soon as they become available
-                  </div>
-                </div>
-              </div>
-              <span class="text-xs text-gray-400">Claim rewards automatically when available</span>
-            </div>
-            <Switch />
-          </div>
+          <AutoClaimSetting />
         </div>
         <ClaimButton />
       </div>
