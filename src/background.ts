@@ -15,9 +15,10 @@ async function claimSelectedRewards() {
       const gameSettings = await getStorage(gameTitle);
       if (!gameSettings?.enabled) continue;
 
-      console.log(`Claiming '${gameTitle}' rewards`);
+      console.log(`Claiming '${gameTitle}' rewards ${gameSettings.enabled}`);
       CLAIM_FUNCTION_BINDINGS[gameTitle]();
-      await setStorage(gameTitle, { lastClaim: dayjs().unix() });
+      gameSettings.lastClaim = dayjs().unix()
+      await setStorage(gameTitle, gameSettings);
       await chrome.runtime.sendMessage({ type: "UPDATE", target: gameTitle });
     }
   } catch (error) {
@@ -50,6 +51,5 @@ chrome.runtime.onStartup.addListener(async () => {
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   if (alarm.name !== ALARM_NAME) return;
   console.log(`Alarm '${alarm.name}' fired`);
-
   await claimSelectedRewards();
 })

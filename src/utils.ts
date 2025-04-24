@@ -29,3 +29,7 @@ export function getSecondsUntilNextMidnightUTC8(): number {
 export function getMinutesUntilNextMidnightUTC8(): number {
      return Math.ceil(getSecondsUntilNextMidnightUTC8() / 60);
 }
+
+export function happenedMoreThanADayAgo(epoch: number): boolean {
+     return (dayjs().unix() - epoch) > 86400
+}

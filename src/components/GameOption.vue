@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref, watch } from "vue";
-import { getStorage, setStorage } from "../utils.ts";
+import { getStorage, happenedMoreThanADayAgo, setStorage } from "../utils.ts";
 import Switch from "./Switch.vue";
-import dayjs from "dayjs";
 
 enum ClaimStates { NOT_CLAIMED, CLAIMING, CLAIMED, ERROR }
 const props = defineProps<{
@@ -27,13 +26,12 @@ onBeforeMount(async () => {
 });
 
 watch(settings, async (newSettings, _) => {
-  await setStorage(props.name, newSettings);
-
-  if ((dayjs().unix() - newSettings.lastClaim) > 86400) {
+  if (happenedMoreThanADayAgo(newSettings.lastClaim)) {
     claimingState.value = ClaimStates.NOT_CLAIMED;
   } else {
     claimingState.value = ClaimStates.CLAIMED;
   }
+  await setStorage(props.name, newSettings);
 });
 
 chrome.runtime.onMessage.addListener(async ( msg ) => {
