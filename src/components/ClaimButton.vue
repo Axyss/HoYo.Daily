@@ -15,7 +15,7 @@ watch(rewardsClaimed, () => {
       <span :class="{'size-6': true,
                      'loading loading-spinner loading-sm': rewardsClaimed,
                      'icon-[lucide--gift]': !rewardsClaimed}" />
-      <span v-if="!rewardsClaimed">Claim All Rewards</span>
+      <span v-if="!rewardsClaimed">Claim Rewards</span>
       <span v-else>Claiming...</span>
     </button>
   </div>

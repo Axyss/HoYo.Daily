@@ -51,19 +51,19 @@ chrome.runtime.onMessage.addListener(async ( msg ) => {
       />
       <div>
         <p class="text-primary-content font-medium text-sm">{{ props.name }}</p>
-        <div v-if="claimingState === ClaimStates.NOT_CLAIMED" class="flex items-center gap-1 text-xs text-red-500">
+        <div v-if="claimingState === ClaimStates.NOT_CLAIMED" class="flex items-center gap-1 text-xs text-red-400">
           <span class="size-3.5 icon-[lucide--circle-x]" />
           <span>Not claimed</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.CLAIMING" class="flex items-center gap-1 text-xs text-blue-500">
+        <div v-else-if="claimingState === ClaimStates.CLAIMING" class="flex items-center gap-1 text-xs text-blue-400 animate-pulse">
           <span class="size-3.5 icon-[lucide--iteration-ccw]" />
           <span>Claiming...</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.CLAIMED" class="flex items-center gap-1 text-xs text-green-500">
+        <div v-else-if="claimingState === ClaimStates.CLAIMED" class="flex items-center gap-1 text-xs text-green-400">
           <span class="size-3.5 icon-[lucide--circle-check-big]" />
           <span>Claimed today</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-500">
+        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-400">
           <span class="size-3.5 icon-[lucide--circle-check-big]" />
           <span>Error</span>
         </div>
