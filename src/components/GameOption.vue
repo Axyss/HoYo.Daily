@@ -50,7 +50,7 @@ chrome.runtime.onMessage.addListener(async ( msg ) => {
         :src="props.icon"
       />
       <div>
-        <p class="text-primary-content font-medium">{{ props.name }}</p>
+        <p class="text-primary-content font-medium text-sm">{{ props.name }}</p>
         <div v-if="claimingState === ClaimStates.NOT_CLAIMED" class="flex items-center gap-1 text-xs text-red-500">
           <span class="size-3.5 icon-[lucide--circle-x]" />
           <span>Not claimed</span>

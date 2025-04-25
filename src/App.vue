@@ -54,17 +54,19 @@ function getImageUrl(name: string, ext: string): string {
 
       <!-- Games Tab Content -->
       <div id="main-tab" role="tabpanel" class="p-0 mt-0">
-        <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinRewards" />
-        <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'png')" :task="claimStarRailRewards" />
-        <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" :task="claimZenlessRewards" />
+        <div class="my-2">
+          <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinRewards" />
+          <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'png')" :task="claimStarRailRewards" />
+          <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" :task="claimZenlessRewards" />
+        </div>
 
         <!-- Auto Claim Section -->
-        <div class="mt-4 px-4 py-3 bg-base-100/60 border-t border-b border-primary/20">
+        <div class="px-4 py-3 bg-base-100/60 border-t border-b border-primary/20">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2">
               <span class="size-4 text-gray-400 icon-[lucide--clock]" />
-              <span class="text-gray-300">Next claim in:</span>
-              <Countdown />
+              <span class="text-gray-300 text-sm">Next claim in:</span>
+              <Countdown class="text-primary-content font-mono font-medium text-sm"/>
             </div>
 
             <div class="relative">

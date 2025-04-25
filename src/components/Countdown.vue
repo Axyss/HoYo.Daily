@@ -23,7 +23,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <span class="text-primary-content font-mono font-medium">
+  <span v-bind="$attrs">
     {{ countdown }}
   </span>
 </template>
