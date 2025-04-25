@@ -26,17 +26,17 @@ function getImageUrl(name: string, ext: string): string {
           </span>
         </div>
       </div>
-      <button class="text-gray-400 hover:text-primary-content p-2 ml-auto rounded-full">
+      <button class="text-base-content/40 hover:text-primary-content p-2 ml-auto rounded-full">
         <span class="size-5 icon-[lucide--settings]" />
       </button>
     </header>
 
     <nav class="tabs space-x-2 px-4 py-2 border-b border-primary/20 bg-base-100/60" role="tablist" >
-      <button type="button" class="btn btn-text flex-1 active-tab:bg-primary active-tab:text-white hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
+      <button type="button" class="btn btn-text flex-1 text-base-content/60 active-tab:bg-primary active-tab:text-base-content hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
         <span class="icon-[lucide--gamepad-2] size-5"></span>
         <span>Games</span>
       </button>
-      <button type="button" class="btn btn-text flex-1 active-tab:bg-primary active-tab:text-white hover:text-primary hover:bg-primary/20" data-tab="#history-tab" role="tab" >
+      <button type="button" class="btn btn-text flex-1 text-base-content/60 active-tab:bg-primary active-tab:text-base-content hover:text-primary hover:bg-primary/20" data-tab="#history-tab" role="tab" >
         <span class="icon-[lucide--history] size-5"></span>
         <span>History</span>
       </button>
@@ -46,7 +46,7 @@ function getImageUrl(name: string, ext: string): string {
     <main class="w-full">
       <!-- History Tab Content -->
       <div id="history-tab" role="tabpanel" class="p-4 hidden">
-        <div class="flex items-center justify-center h-100 text-accent-content/50 text-lg">
+        <div class="flex items-center justify-center h-100 text-base-content/50 text-lg">
           <span class="icon-[lucide--file]" />
           <span>&nbsp;So empty...</span>
         </div>
@@ -64,22 +64,22 @@ function getImageUrl(name: string, ext: string): string {
         <div class="px-4 py-3 bg-base-100/60 border-t border-b border-primary/20">
           <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2">
-              <span class="size-4 text-gray-400 icon-[lucide--clock]" />
-              <span class="text-gray-300 text-sm">Next claim in:</span>
-              <Countdown class="text-primary-content font-mono font-medium text-sm"/>
+              <span class="size-4 text-neutral icon-[lucide--clock]" />
+              <span class="text-neutral text-sm">Next claim in:</span>
+              <Countdown class="text-neutral font-mono font-medium text-sm"/>
             </div>
 
             <div class="relative">
               <button
                 @mouseenter="showTimerTooltip = true"
                 @mouseleave="showTimerTooltip = false"
-                class="h-6 w-6 text-gray-400 hover:text-gray-300"
+                class="h-6 w-6 text-base-content/40 hover:text-base-content/60"
               >
                 <span class="size-4 icon-[lucide--circle-help]" />
               </button>
               <div
                 v-if="showTimerTooltip"
-                class="absolute right-full mr-2 top-0 bg-gray-800 text-primary-content text-xs p-2 rounded shadow-lg w-48"
+                class="absolute right-full mr-2 top-0 bg-base-300 text-primary-content text-xs p-2 rounded shadow-lg w-48"
               >
                 Timer until the next daily rewards are available
               </div>
@@ -92,12 +92,15 @@ function getImageUrl(name: string, ext: string): string {
     </main>
 
     <footer>
-      <div class="flex items-center justify-between px-4 py-2 text-xs text-accent-content/50 border-t border-primary/20">
+      <div class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50 border-t border-primary/20">
         <div class="flex items-center gap-1">
             <span class="size-3 icon-[lucide--bell-ring]" />
             <span>Notifications enabled</span>
         </div>
-        <span>v1.0.0</span>
+        <div class="flex items-center gap-1">
+          <span class="size-3.5 icon-[lucide--github]"></span>
+          <span>Report an issue</span>
+        </div>
       </div>
     </footer>
 </template>

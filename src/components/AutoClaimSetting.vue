@@ -28,7 +28,7 @@ watch(autoClaimEnabled, async (newVal, _) => {
           </div>
         </div>
       </div>
-      <span class="text-xs text-gray-400">Claim rewards automatically when available</span>
+      <span class="text-xs text-base-content/40">Claim rewards automatically when available</span>
     </div>
     <Switch v-model="autoClaimEnabled" />
   </div>

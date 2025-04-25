@@ -46,7 +46,7 @@ chrome.runtime.onMessage.addListener(async ( msg ) => {
   <div class="flex items-center justify-between px-4 py-3 hover:bg-base-200/90">
     <div class="flex items-center gap-3">
       <img
-        class="size-8 bg-gray-800 rounded-md flex-shrink-0"
+        class="size-8 bg-base-300 rounded-md flex-shrink-0"
         :src="props.icon"
       />
       <div>
