@@ -1,5 +1,17 @@
 <script setup lang="ts">
 import Switch from "./Switch.vue";
+import { onBeforeMount, ref, watch } from "vue";
+import { getStorage, setStorage } from "../utils.ts";
+
+const autoClaimEnabled = ref(false)
+
+onBeforeMount( async () => {
+  autoClaimEnabled.value = (await getStorage("Settings"))["autoClaimEnabled"]
+})
+
+watch(autoClaimEnabled, async (newVal, _) => {
+  await setStorage("Settings", { autoClaimEnabled: newVal })
+})
 </script>
 
 <template>
@@ -8,7 +20,7 @@ import Switch from "./Switch.vue";
       <div class="flex items-center gap-2">
         <span class="text-sm font-semibold">Auto Claim</span>
         <div class="tooltip [--placement:top] tooltip-toggle">
-          <span class="icon-[lucide--info] hover:text-primary mt-1.5 size-[16px]"></span>
+          <span class="icon-[lucide--info] hover:text-primary mt-1.5 size-[16px]" />
           <div class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible" role="popover">
             <div class="tooltip-body bg-base-100 text-base-content/80 max-w-xs rounded-lg p-2 text-start text-xs w-40">
               This functionality will not work while the browser is closed.
@@ -18,7 +30,7 @@ import Switch from "./Switch.vue";
       </div>
       <span class="text-xs text-gray-400">Claim rewards automatically when available</span>
     </div>
-    <Switch />
+    <Switch v-model="autoClaimEnabled" />
   </div>
 </template>
 

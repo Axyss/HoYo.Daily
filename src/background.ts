@@ -10,21 +10,15 @@ const CLAIM_FUNCTION_BINDINGS: Record<string, () => void> = {
 };
 
 async function claimSelectedRewards() {
-  try {
-    for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
-      const gameSettings = await getStorage(gameTitle);
-      if (!gameSettings?.enabled) continue;
+  for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
+    const gameSettings = await getStorage(gameTitle);
+    if (!gameSettings?.enabled) continue;
 
-      console.log(`Claiming '${gameTitle}' rewards ${gameSettings.enabled}`);
-      CLAIM_FUNCTION_BINDINGS[gameTitle]();
-      gameSettings.lastClaim = dayjs().unix()
-      await setStorage(gameTitle, gameSettings);
-      await chrome.runtime.sendMessage({ type: "UPDATE", target: gameTitle });
-    }
-  } catch (error) {
-    console.error("Unexpected error", error);
-  } finally {
-    await scheduleAlarm(ALARM_NAME);
+    console.log(`Claiming '${gameTitle}' rewards ${gameSettings.enabled}`);
+    CLAIM_FUNCTION_BINDINGS[gameTitle]();
+    gameSettings.lastClaim = dayjs().unix()
+    await setStorage(gameTitle, gameSettings);
+    await chrome.runtime.sendMessage({ type: "UPDATE", target: gameTitle });
   }
 }
 
@@ -49,7 +43,15 @@ chrome.runtime.onStartup.addListener(async () => {
 })
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
-  if (alarm.name !== ALARM_NAME) return;
-  console.log(`Alarm '${alarm.name}' fired`);
-  await claimSelectedRewards();
+  try {
+    if (alarm.name !== ALARM_NAME) return;
+    if (!(await getStorage("Settings")).autoClaimEnabled) return;
+
+    console.log(`Alarm '${alarm.name}' fired`);
+    await claimSelectedRewards();
+  } catch (error) {
+    console.error("Unexpected error", error);
+  } finally {
+    await scheduleAlarm(ALARM_NAME);
+  }
 })
