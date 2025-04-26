@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, reactive, ref, watch } from "vue";
-import { getStorage, happenedMoreThanADayAgo, setStorage } from "../utils.ts";
+import { getStorage, happenedMoreThanADayAgo, setStorage } from "../scripts/utils.ts";
 import Switch from "./Switch.vue";
 
 enum ClaimStates { NOT_CLAIMED, CLAIMING, CLAIMED, ERROR }

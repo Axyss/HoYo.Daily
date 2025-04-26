@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
-import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
+import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 
 const showTimerTooltip = ref(false)

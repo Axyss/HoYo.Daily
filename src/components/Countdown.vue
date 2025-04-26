@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
-import { getSecondsUntilNextMidnightUTC8 } from "../utils.ts";
+import { getSecondsUntilNextMidnightUTC8 } from "../scripts/utils.ts";
 
 const secondsLeft = ref(getSecondsUntilNextMidnightUTC8());
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Switch from "./Switch.vue";
 import { onBeforeMount, ref, watch } from "vue";
-import { getStorage, setStorage } from "../utils.ts";
+import { getStorage, setStorage } from "../scripts/utils.ts";
 
 const autoClaimEnabled = ref(false)
 
