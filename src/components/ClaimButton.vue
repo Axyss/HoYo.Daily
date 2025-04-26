@@ -1,10 +1,23 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import { Notyf } from "notyf";
 
 const rewardsClaimed = ref(false)
-watch(rewardsClaimed, () => {
+const notyf = new Notyf({
+  duration: 3000,
+  position: {
+    x: 'left',
+    y: 'top',
+  },
+  dismissible: true,
+  ripple: false
+});
+
+watch(rewardsClaimed, (newValue, _) => {
+  if (!newValue) return;
   setTimeout(() => {
     rewardsClaimed.value = false;
+    notyf.success('Rewards claimed!');
   }, 3000)
 })
 </script>
