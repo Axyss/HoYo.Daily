@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { Notyf } from "notyf";
+import { MessageType, sendMessage } from "../scripts/messaging.ts";
 
 const rewardsClaimed = ref(false)
 const notyf = new Notyf({
   duration: 3000,
   position: {
-    x: 'left',
+    x: 'center',
     y: 'top',
   },
   dismissible: true,
@@ -15,10 +16,11 @@ const notyf = new Notyf({
 
 watch(rewardsClaimed, (newValue, _) => {
   if (!newValue) return;
-  setTimeout(() => {
+  setTimeout(async () => {
     rewardsClaimed.value = false;
+    await sendMessage({ type: MessageType.CLAIM, content: undefined })
     notyf.success('Rewards claimed!');
-  }, 3000)
+  }, 2500)
 })
 </script>
 

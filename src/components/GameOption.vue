@@ -2,6 +2,7 @@
 import { onBeforeMount, reactive, ref, watch } from "vue";
 import { getStorage, happenedMoreThanADayAgo, setStorage } from "../scripts/utils.ts";
 import Switch from "./Switch.vue";
+import { listenMessage, MessageType } from "../scripts/messaging.ts";
 
 enum ClaimStates { NOT_CLAIMED, CLAIMING, CLAIMED, ERROR }
 const props = defineProps<{
@@ -34,12 +35,11 @@ watch(settings, async (newSettings, _) => {
   await setStorage(props.name, newSettings);
 });
 
-chrome.runtime.onMessage.addListener(async ( msg ) => {
-  if (msg.target === props.name) {
-    console.log(props.name + ": Message received");
-    Object.assign(settings, await getStorage(props.name));
-  }
+listenMessage(MessageType.UPDATE, async () => {
+  console.log(props.name + ": Message received");
+  Object.assign(settings, await getStorage(props.name));
 })
+
 </script>
 
 <template>

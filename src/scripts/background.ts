@@ -1,6 +1,7 @@
 import { getMinutesUntilNextMidnightUTC8, getStorage, setStorage } from "./utils.ts";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
+import { listenMessage, MessageType } from "./messaging.ts";
 
 const ALARM_NAME: string = "auto-claim-alarm";
 const CLAIM_FUNCTION_BINDINGS: Record<string, () => void> = {
@@ -18,6 +19,7 @@ async function claimSelectedRewards() {
     CLAIM_FUNCTION_BINDINGS[gameTitle]();
     gameSettings.lastClaim = dayjs().unix()
     await setStorage(gameTitle, gameSettings);
+    // todo use the sendMessage wrapper
     await chrome.runtime.sendMessage({ type: "UPDATE", target: gameTitle });
   }
 }
@@ -31,7 +33,7 @@ async function scheduleAlarm(alarmName: string) {
   }
 }
 
-// Listeners
+// Browser listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
   console.log("Extension installed", detail);
   await scheduleAlarm(ALARM_NAME);
@@ -42,6 +44,7 @@ chrome.runtime.onStartup.addListener(async () => {
   await scheduleAlarm(ALARM_NAME);
 })
 
+// Alarm handler
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   try {
     if (alarm.name !== ALARM_NAME) return;
@@ -54,4 +57,10 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   } finally {
     await scheduleAlarm(ALARM_NAME);
   }
+})
+
+// Message listeners
+listenMessage(MessageType.CLAIM, async () => {
+  console.log("Claiming rewards manually");
+  await claimSelectedRewards();
 })
