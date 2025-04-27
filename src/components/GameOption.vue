@@ -37,7 +37,7 @@ watch(settings, async (newSettings, _) => {
 
 listenMessage(MessageType.UPDATE,  async (response) => {
   if (response.target === props.name) {
-    console.log(props.name + ": Message received");
+    console.log(`[${props.name}]: Message received`);
     Object.assign(settings, await getStorage(props.name));
   }
 })

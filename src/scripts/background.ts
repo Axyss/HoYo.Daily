@@ -15,7 +15,7 @@ async function claimSelectedRewards() {
     const gameSettings = await getStorage(gameTitle);
     if (!gameSettings?.enabled) continue;
 
-    console.log(`Claiming '${gameTitle}' rewards`);
+    console.log(`[${gameTitle}]: Claiming rewards`);
     CLAIM_FUNCTION_BINDINGS[gameTitle]();
     gameSettings.lastClaim = dayjs().unix()
     await setStorage(gameTitle, gameSettings);
@@ -28,18 +28,18 @@ async function scheduleAlarm(alarmName: string) {
     await chrome.alarms.create(alarmName, {
       delayInMinutes: getMinutesUntilNextMidnightUTC8()
     })
-    console.log(`Scheduling an alarm in ${getMinutesUntilNextMidnightUTC8()} minutes`)
+    console.log(`[HoyoDaily]: Scheduling an alarm in ${getMinutesUntilNextMidnightUTC8()} minutes`)
   }
 }
 
 // Browser listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
-  console.log("Extension installed", detail);
+  console.log("[HoyoDaily]: Extension installed", detail);
   await scheduleAlarm(ALARM_NAME);
 })
 
 chrome.runtime.onStartup.addListener(async () => {
-  console.log("Extension started");
+  console.log("[HoyoDaily]: Extension started");
   await scheduleAlarm(ALARM_NAME);
 })
 
@@ -49,10 +49,10 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     if (alarm.name !== ALARM_NAME) return;
     if (!(await getStorage("Settings")).autoClaimEnabled) return;
 
-    console.log(`Alarm '${alarm.name}' fired`);
+    console.log(`[HoyoDaily]: Alarm '${alarm.name}' fired`);
     await claimSelectedRewards();
   } catch (error) {
-    console.error("Unexpected error", error);
+    console.error("[HoyoDaily]: Unexpected error", error);
   } finally {
     await scheduleAlarm(ALARM_NAME);
   }
@@ -60,6 +60,6 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
 // Message listeners
 listenMessage(MessageType.CLAIM, async () => {
-  console.log("Claiming rewards manually");
+  console.log("[HoyoDaily]: Claiming rewards manually");
   await claimSelectedRewards();
 })
