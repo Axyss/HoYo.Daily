@@ -35,9 +35,11 @@ watch(settings, async (newSettings, _) => {
   await setStorage(props.name, newSettings);
 });
 
-listenMessage(MessageType.UPDATE, async () => {
-  console.log(props.name + ": Message received");
-  Object.assign(settings, await getStorage(props.name));
+listenMessage(MessageType.UPDATE,  async (response) => {
+  if (response.target === props.name) {
+    console.log(props.name + ": Message received");
+    Object.assign(settings, await getStorage(props.name));
+  }
 })
 
 </script>

@@ -6,7 +6,8 @@ export enum MessageType {
 
 interface Message {
   type: MessageType;
-  content: any | undefined;
+  target?: any;
+  content?: any;
 }
 
 // Messaging wrappers
@@ -22,10 +23,10 @@ export async function sendMessage(message: Message): Promise<void> {
   });
 }
 
-export async function listenMessage(message: MessageType, callback: () => void): Promise<void> {
+export function listenMessage(message: MessageType, callback: (response: any) => void) {
   chrome.runtime.onMessage.addListener((response) => {
     if (response.type === message) {
-      callback();
+      callback(response);
     }
     return true;
   });
