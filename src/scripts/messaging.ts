@@ -23,10 +23,10 @@ export async function sendMessage(message: Message): Promise<void> {
   });
 }
 
-export function listenMessage(message: MessageType, callback: (response: any) => void) {
-  chrome.runtime.onMessage.addListener((response) => {
+export function listenMessage(message: MessageType, callback: (response: any) => Promise<any>) {
+  chrome.runtime.onMessage.addListener((response, sender, sendResponse) => {
     if (response.type === message) {
-      callback(response);
+      callback(response).then(() => sendResponse(sender));
     }
     return true;
   });
