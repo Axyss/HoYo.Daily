@@ -18,7 +18,7 @@ watch(rewardsClaimed, (newValue, _) => {
   if (!newValue) return;
   setTimeout(async () => {
     rewardsClaimed.value = false;
-    await sendMessage({ type: MessageType.CLAIM, content: undefined })
+    await sendMessage({ type: MessageType.MANUAL_CLAIM })
     notyf.success('Rewards claimed!');
   }, 2500)
 })

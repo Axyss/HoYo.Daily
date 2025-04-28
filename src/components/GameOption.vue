@@ -2,7 +2,7 @@
 import { onBeforeMount, reactive, ref, watch } from "vue";
 import { getStorage, happenedMoreThanADayAgo, setStorage } from "../scripts/utils.ts";
 import Switch from "./Switch.vue";
-import { listenMessage, MessageType } from "../scripts/messaging.ts";
+import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
 
 enum ClaimStates { NOT_CLAIMED, CLAIMING, CLAIMED, ERROR }
 const props = defineProps<{
@@ -27,6 +27,9 @@ onBeforeMount(async () => {
 });
 
 watch(settings, async (newSettings, _) => {
+  // Triggers a claim when enabling auto claim
+  if (settings.enabled) await sendMessage({ type: MessageType.CLAIM })
+
   if (happenedMoreThanADayAgo(newSettings.lastClaim)) {
     claimingState.value = ClaimStates.NOT_CLAIMED;
   } else {
@@ -37,7 +40,7 @@ watch(settings, async (newSettings, _) => {
 
 listenMessage(MessageType.UPDATE,  async (response) => {
   if (response.target === props.name) {
-    console.log(`[${props.name}]: Message received`);
+    console.log(`[${props.name}]: Type '${response.type}' message received`);
     Object.assign(settings, await getStorage(props.name));
   }
 })

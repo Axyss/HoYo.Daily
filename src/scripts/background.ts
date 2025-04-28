@@ -60,6 +60,13 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
 // Message listeners
 listenMessage(MessageType.CLAIM, async () => {
-  console.log("[HoyoDaily]: Claiming rewards manually");
+  if ((await getStorage("Settings")).autoClaimEnabled) {
+    console.log("[HoyoDaily]: Claiming due UI interaction");
+    await claimSelectedRewards();
+  }
+})
+
+listenMessage(MessageType.MANUAL_CLAIM, async () => {
+  console.log("[HoyoDaily]: Claiming manually");
   await claimSelectedRewards();
 })

@@ -2,6 +2,7 @@
 import Switch from "./Switch.vue";
 import { onBeforeMount, ref, watch } from "vue";
 import { getStorage, setStorage } from "../scripts/utils.ts";
+import { MessageType, sendMessage } from "../scripts/messaging.ts";
 
 const autoClaimEnabled = ref(false)
 
@@ -11,6 +12,7 @@ onBeforeMount( async () => {
 
 watch(autoClaimEnabled, async (newVal, _) => {
   await setStorage("Settings", { autoClaimEnabled: newVal })
+  await sendMessage({ type: MessageType.CLAIM })  // Triggers a claim when enabling auto claim
 })
 </script>
 
