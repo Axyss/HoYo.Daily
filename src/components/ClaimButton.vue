@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import { Notyf } from "notyf";
 import { MessageType, sendMessage } from "../scripts/messaging.ts";
+import confetti from "canvas-confetti";
 
 const rewardsClaimed = ref(false)
 const notyf = new Notyf({
@@ -20,6 +21,12 @@ watch(rewardsClaimed, (newValue, _) => {
     rewardsClaimed.value = false;
     await sendMessage({ type: MessageType.MANUAL_CLAIM })
     notyf.success('Rewards claimed!');
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      startVelocity: 40,
+      origin: { y: 0.9 },
+    });
   }, 2500)
 })
 </script>
