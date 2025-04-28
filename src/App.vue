@@ -62,10 +62,10 @@ function getImageUrl(name: string, ext: string): string {
         <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinRewards" />
         <div class="divider px-4" />
 
-        <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'png')" :task="claimStarRailRewards" />
+        <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'webp')" :task="claimStarRailRewards" />
         <div class="divider px-4" />
 
-        <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'png')" :task="claimZenlessRewards" />
+        <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" :task="claimZenlessRewards" />
       </div>
 
       <div class="divider" />
