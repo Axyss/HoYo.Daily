@@ -11,6 +11,10 @@ const showTimerTooltip = ref(false)
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
 }
+
+function openGithubIssuesTab(): void {
+  chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" })
+}
 </script>
 
 <template>
@@ -22,7 +26,7 @@ function getImageUrl(name: string, ext: string): string {
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-bold text-primary-content">HoyoDaily</h1>
         <span class="px-2 py-0.5 bg-primary/20 text-primary border border-primary/70 text-xs rounded-full">
-          Beta
+          Beta-0.1.0
         </span>
       </div>
     </div>
@@ -105,16 +109,14 @@ function getImageUrl(name: string, ext: string): string {
 
   <div class="divider" />
 
-  <footer>
-    <div class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
-      <div class="flex items-center gap-1">
-          <span class="size-3 icon-[lucide--bell-ring]" />
-          <span>Notifications enabled</span>
-      </div>
-      <div class="flex items-center gap-1">
-        <span class="size-3.5 icon-[lucide--github]"></span>
-        <span>Report an issue</span>
-      </div>
+  <footer class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
+    <div class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200">
+        <span class="size-3 icon-[lucide--bell-ring]" />
+        <span>Notifications enabled</span>
+    </div>
+    <div @click="openGithubIssuesTab()" class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200">
+      <span class="size-3.5 icon-[lucide--github]"></span>
+      <span>Report an issue</span>
     </div>
   </footer>
 </template>
