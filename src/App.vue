@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
-
-const showTimerTooltip = ref(false)
+import { Notyf } from "notyf";
 
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -15,6 +13,16 @@ function getImageUrl(name: string, ext: string): string {
 function openGithubIssuesTab(): void {
   chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" })
 }
+
+const notyf = new Notyf({
+  duration: 3000,
+  position: {
+    x: 'center',
+    y: 'top',
+  },
+  dismissible: true,
+  ripple: false
+});
 </script>
 
 <template>
@@ -30,7 +38,7 @@ function openGithubIssuesTab(): void {
         </span>
       </div>
     </div>
-    <button class="text-base-content/40 hover:text-primary-content p-2 ml-auto rounded-full">
+    <button class="text-base-content/40 hover:text-primary-content p-2 ml-auto rounded-full duration-200 cursor-pointer">
       <span class="size-5 icon-[lucide--settings]" />
     </button>
   </header>
@@ -83,19 +91,12 @@ function openGithubIssuesTab(): void {
             <Countdown class="text-neutral font-mono font-medium text-sm"/>
           </div>
 
-          <div class="relative">
-            <button
-              @mouseenter="showTimerTooltip = true"
-              @mouseleave="showTimerTooltip = false"
-              class="h-6 w-6 text-base-content/40 hover:text-base-content/60"
-            >
-              <span class="size-4 icon-[lucide--circle-help]" />
-            </button>
-            <div
-              v-if="showTimerTooltip"
-              class="absolute right-full mr-2 top-0 bg-base-300 text-primary-content text-xs p-2 rounded shadow-lg w-48"
-            >
-              Timer until the next daily rewards are available
+          <div class="tooltip [--placement:left] tooltip-toggle">
+            <span class="text-base-content/40 duration-200 hover:text-base-content/60 size-4 icon-[lucide--circle-help] mt-1.5" />
+            <div class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible" role="popover">
+              <div class="tooltip-body bg-base-100 text-base-content/80 rounded-lg p-2 text-start text-xs">
+                Placeholder
+              </div>
             </div>
           </div>
         </div>
