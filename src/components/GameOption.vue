@@ -39,7 +39,7 @@ watch(settings, async (newSettings, _) => {
 });
 
 listenMessage(MessageType.UPDATE,  async (response) => {
-  if (response.target === props.name) {
+  if (response.target === props.name || response.target === "all") {
     console.log(`[${props.name}]: Type '${response.type}' message received`);
     Object.assign(settings, await getStorage(props.name));
   }

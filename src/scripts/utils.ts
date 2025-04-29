@@ -26,6 +26,12 @@ export function getSecondsUntilNextMidnightUTC8(): number {
      return nextMidnight.diff(now, "second");
 }
 
+export function getSecondsSinceLastMidnightUTC8(): number {
+     const now = dayjs().tz("Asia/Shanghai");
+     const lastMidnight = now.startOf("day");
+     return now.diff(lastMidnight, "second");
+}
+
 export function getMinutesUntilNextMidnightUTC8(): number {
      return Math.ceil(getSecondsUntilNextMidnightUTC8() / 60);
 }

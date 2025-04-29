@@ -1,4 +1,4 @@
-import { getMinutesUntilNextMidnightUTC8, getStorage, setStorage } from "./utils.ts";
+import { getMinutesUntilNextMidnightUTC8, getSecondsSinceLastMidnightUTC8, getStorage, setStorage } from "./utils.ts";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
@@ -17,7 +17,7 @@ async function claimSelectedRewards() {
 
     console.log(`[${gameTitle}]: Claiming rewards`);
     CLAIM_FUNCTION_BINDINGS[gameTitle]();
-    gameSettings.lastClaim = dayjs().unix()
+    gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
     await setStorage(gameTitle, gameSettings);
     await sendMessage({ type: MessageType.UPDATE, target: gameTitle })
   }

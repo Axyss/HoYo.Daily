@@ -2,12 +2,12 @@
 export enum MessageType {
   CLAIM,
   MANUAL_CLAIM,
-  UPDATE
+  UPDATE,
 }
 
 interface Message {
   type: MessageType;
-  target?: any;
+  target?: string | "all";
   content?: any;
 }
 
