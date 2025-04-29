@@ -27,6 +27,7 @@ onBeforeMount(async () => {
 });
 
 watch(settings, async (newSettings, _) => {
+  await setStorage(props.name, newSettings);
   // Triggers a claim when enabling auto claim
   if (settings.enabled) await sendMessage({ type: MessageType.CLAIM })
 
@@ -35,7 +36,6 @@ watch(settings, async (newSettings, _) => {
   } else {
     claimingState.value = ClaimStates.CLAIMED;
   }
-  await setStorage(props.name, newSettings);
 });
 
 listenMessage(MessageType.UPDATE,  async (response) => {
