@@ -37,5 +37,5 @@ export function getMinutesUntilNextMidnightUTC8(): number {
 }
 
 export function happenedMoreThanADayAgo(epoch: number): boolean {
-     return (dayjs().unix() - epoch) > 86400
+     return (dayjs().unix() - epoch) >= 86400
 }
