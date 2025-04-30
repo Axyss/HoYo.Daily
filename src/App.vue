@@ -5,6 +5,8 @@ import Countdown from "./components/Countdown.vue";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import { Notyf } from "notyf";
+import { onBeforeMount } from "vue";
+import { MessageType, sendMessage } from "./scripts/messaging.ts";
 
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -13,6 +15,10 @@ function getImageUrl(name: string, ext: string): string {
 function openGithubIssuesTab(): void {
   chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" })
 }
+
+onBeforeMount(async () => {
+  await sendMessage({ type: MessageType.UPDATE, target: "all" })
+})
 
 const notyf = new Notyf({
   duration: 3000,
@@ -34,7 +40,7 @@ const notyf = new Notyf({
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-bold text-primary-content">HoyoDaily</h1>
         <span class="px-2 py-0.5 bg-primary/20 text-primary border border-primary/70 text-xs rounded-full">
-          Beta-0.1.0
+          Beta-0.2.0
         </span>
       </div>
     </div>
@@ -45,7 +51,7 @@ const notyf = new Notyf({
 
   <div class="divider" />
 
-  <nav class="tabs space-x-2 px-4 py-2 bg-base-100/60" role="tablist" >
+  <nav class="tabs space-x-2 px-2 py-2 bg-base-100/60" role="tablist" >
     <button type="button" class="btn btn-text flex-1 text-base-content/60 active-tab:bg-primary active-tab:text-base-content hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
       <span class="icon-[lucide--gamepad-2] size-5"></span>
       <span>Games</span>
@@ -62,9 +68,17 @@ const notyf = new Notyf({
   <main class="w-full">
     <!-- History Tab Content -->
     <div id="history-tab" role="tabpanel" class="p-4 hidden">
-      <div class="flex items-center justify-center h-100 text-base-content/50 text-lg">
-        <span class="icon-[lucide--file]" />
-        <span>&nbsp;So empty...</span>
+      <div
+        class="flex flex-col items-center justify-center h-full py-8 px-4">
+        <div class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex flex-col items-center max-w-xs text-center">
+          <span class="icon-[lucide--history] size-16 text-primary/60 mb-4" />
+          <h3 class="text-xl font-semibold text-primary-content mb-2">No History Yet</h3>
+          <p class="text-base-content/60 text-sm mb-4">Your claimed rewards will appear here once you start collecting them.</p>
+          <div class="flex items-center gap-2 text-base-content/60 text-sm">
+            <span class="icon-[lucide--arrow-left]" />
+            <span>Switch to Games tab to get started</span>
+          </div>
+        </div>
       </div>
     </div>
 
