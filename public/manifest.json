@@ -11,7 +11,7 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["alarms", "cookies", "storage"],
+  "permissions": ["alarms", "cookies", "storage", "notifications"],
   "host_permissions": [
     "https://hoyolab.com/*",
     "https://*.hoyolab.com/*"

@@ -23,16 +23,25 @@ async function claimSelectedRewards() {
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
     console.log(`[${gameTitle}]: Claiming rewards`);
-    try {
-      const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
-      console.log(await response.json());
-    } catch (error) {
-      console.error("Error claiming rewards:", error);
-    }
+    await sendMessage({ type: MessageType.CLAIMING, target: gameTitle })
 
-    gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
-    await setStorage(gameTitle, gameSettings);
-    await sendMessage({ type: MessageType.UPDATE, target: gameTitle })
+    const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
+    const content = await response.json();
+
+    if (content.retcode > 0) {
+      gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
+      await setStorage(gameTitle, gameSettings);
+      await sendMessage({ type: MessageType.UPDATE, target: gameTitle })
+    } else {
+      chrome.notifications.create({
+        type: "basic",
+        iconUrl: "icon.png",
+        title: "HoyoDaily - Daily Rewards",
+        message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${content.message}.`,
+        requireInteraction: true
+      });
+      await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle })
+    }
   }
 }
 

@@ -1,6 +1,8 @@
 // Type definitions
 export enum MessageType {
   CLAIM,
+  CLAIMING,
+  CLAIM_ERROR,
   MANUAL_CLAIM,
   UPDATE,
 }
