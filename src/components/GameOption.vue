@@ -29,7 +29,7 @@ onBeforeMount(async () => {
 watch(settings, async (newSettings, _) => {
   await setStorage(props.name, newSettings);
   // Triggers a claim when enabling auto claim
-  if (settings.enabled) await sendMessage({ type: MessageType.CLAIM })
+  if (settings.enabled) await sendMessage({ type: MessageType.UI_CLAIM })
 
   if (happenedMoreThanADayAgo(newSettings.lastClaim)) {
     claimingState.value = ClaimStates.NOT_CLAIMED;
@@ -38,17 +38,17 @@ watch(settings, async (newSettings, _) => {
   }
 });
 
-listenMessage(MessageType.UPDATE,  async (response) => {
-  if (response.target === props.name || response.target === "all") {
-    console.log(`[${props.name}]: Type '${response.type}' message received`);
-    Object.assign(settings, await getStorage(props.name));
-  }
-})
-
 listenMessage(MessageType.CLAIMING,  async (response) => {
   if ((response.target === props.name || response.target === "all") && settings.enabled && claimingState.value !== ClaimStates.CLAIMED) {
     console.log(`[${props.name}]: Type '${response.type}' message received`);
     claimingState.value = ClaimStates.CLAIMING;
+  }
+})
+
+listenMessage(MessageType.CLAIM_SUCCESS,  async (response) => {
+  if (response.target === props.name || response.target === "all") {
+    console.log(`[${props.name}]: Type '${response.type}' message received`);
+    claimingState.value = ClaimStates.CLAIMED;
   }
 })
 

@@ -33,7 +33,7 @@ async function claimSelectedRewards() {
     if (content.retcode >= 0 || content.retcode === -5003) {
       gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
       await setStorage(gameTitle, gameSettings);
-      await sendMessage({ type: MessageType.UPDATE, target: gameTitle })
+      await sendMessage({ type: MessageType.CLAIM_SUCCESS, target: gameTitle })
     } else {
       noErrors = false;
       showErrorNotification(gameTitle, content.message)
@@ -79,7 +79,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 })
 
 // Message listeners
-listenMessage(MessageType.CLAIM, async () => {
+listenMessage(MessageType.UI_CLAIM, async () => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
     console.log("[HoyoDaily]: Claiming due UI interaction");
   }

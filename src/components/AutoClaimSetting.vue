@@ -12,7 +12,8 @@ onBeforeMount( async () => {
 
 watch(autoClaimEnabled, async (newVal, _) => {
   await setStorage("Settings", { autoClaimEnabled: newVal })
-  await sendMessage({ type: MessageType.CLAIM })  // Triggers a claim when enabling auto claim
+  // Triggers a claim when enabling auto claim
+  await sendMessage({ type: MessageType.UI_CLAIM })
 })
 </script>
 

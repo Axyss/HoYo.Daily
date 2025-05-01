@@ -16,10 +16,6 @@ function openGithubIssuesTab(): void {
   chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" })
 }
 
-onBeforeMount(async () => {
-  await sendMessage({ type: MessageType.UPDATE, target: "all" })
-})
-
 const notyf = new Notyf({
   duration: 3000,
   position: {
