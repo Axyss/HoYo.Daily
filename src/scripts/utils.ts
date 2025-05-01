@@ -23,7 +23,7 @@ dayjs.extend(timezone);
 export function getSecondsUntilNextMidnightUTC8(): number {
      const now = dayjs().tz("Asia/Shanghai");
      const nextMidnight = now.add(1, "day").startOf("day");
-     return nextMidnight.diff(now, "second");
+     return nextMidnight.add(1, "second").diff(now, "second");
 }
 
 export function getSecondsSinceLastMidnightUTC8(): number {
@@ -33,7 +33,7 @@ export function getSecondsSinceLastMidnightUTC8(): number {
 }
 
 export function getMinutesUntilNextMidnightUTC8(): number {
-     return Math.ceil(getSecondsUntilNextMidnightUTC8() / 60);
+     return getSecondsUntilNextMidnightUTC8() / 60;
 }
 
 export function happenedMoreThanADayAgo(epoch: number): boolean {
