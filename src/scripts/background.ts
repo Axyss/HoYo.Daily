@@ -3,7 +3,7 @@ import {
   getSecondsSinceLastMidnightUTC8,
   getStorage,
   happenedMoreThanADayAgo,
-  setStorage
+  setStorage, showErrorNotification
 } from "./utils.ts";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
@@ -17,14 +17,15 @@ const CLAIM_FUNCTION_BINDINGS: Record<string, () => void> = {
 };
 
 async function claimSelectedRewards() {
+  let noErrors: boolean = true;
+  await sendMessage({ type: MessageType.CLAIMING, target: "all" })
+
   for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
     const gameSettings = await getStorage(gameTitle);
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
     console.log(`[${gameTitle}]: Claiming rewards`);
-    await sendMessage({ type: MessageType.CLAIMING, target: gameTitle })
-
     const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
     const content = await response.json();
 
@@ -33,16 +34,12 @@ async function claimSelectedRewards() {
       await setStorage(gameTitle, gameSettings);
       await sendMessage({ type: MessageType.UPDATE, target: gameTitle })
     } else {
-      chrome.notifications.create({
-        type: "basic",
-        iconUrl: "icon.png",
-        title: "HoyoDaily - Daily Rewards",
-        message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${content.message}.`,
-        requireInteraction: true
-      });
+      noErrors = false;
+      showErrorNotification(gameTitle, content.message)
       await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle })
     }
   }
+  return noErrors;
 }
 
 async function scheduleAlarm(alarmName: string) {
@@ -84,7 +81,9 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 listenMessage(MessageType.CLAIM, async () => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
     console.log("[HoyoDaily]: Claiming due UI interaction");
-    await claimSelectedRewards();
+    if (await claimSelectedRewards()) {
+      await sendMessage({ type: MessageType.CLAIM_SUCCESS })
+    }
   }
 })
 

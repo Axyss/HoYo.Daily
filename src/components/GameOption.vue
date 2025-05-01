@@ -46,7 +46,7 @@ listenMessage(MessageType.UPDATE,  async (response) => {
 })
 
 listenMessage(MessageType.CLAIMING,  async (response) => {
-  if (response.target === props.name || response.target === "all") {
+  if ((response.target === props.name || response.target === "all") && settings.enabled) {
     console.log(`[${props.name}]: Type '${response.type}' message received`);
     claimingState.value = ClaimStates.CLAIMING;
   }
@@ -81,7 +81,7 @@ listenMessage(MessageType.CLAIM_ERROR,  async (response) => {
           <span class="size-3.5 icon-[lucide--circle-check-big]" />
           <span>Claimed today</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-400">
+        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-700">
           <span class="size-3.5 icon-[lucide--circle-x]" />
           <span>An <strong>error</strong> occurred</span>
         </div>

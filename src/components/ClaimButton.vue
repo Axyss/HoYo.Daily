@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { MessageType, sendMessage } from "../scripts/messaging.ts";
+import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
 import confetti from "canvas-confetti";
 
 const rewardsClaimed = ref(false)
@@ -10,13 +10,16 @@ watch(rewardsClaimed, (newValue, _) => {
   setTimeout(async () => {
     rewardsClaimed.value = false;
     await sendMessage({ type: MessageType.MANUAL_CLAIM })
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      startVelocity: 40,
-      origin: { y: 0.9 },
-    });
   }, 2500)
+})
+
+listenMessage(MessageType.CLAIM_SUCCESS, async () => {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    startVelocity: 40,
+    origin: { y: 0.9 },
+  });
 })
 </script>
 

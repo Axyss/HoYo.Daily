@@ -3,6 +3,7 @@ export enum MessageType {
   CLAIM,
   CLAIMING,
   CLAIM_ERROR,
+  CLAIM_SUCCESS,
   MANUAL_CLAIM,
   UPDATE,
 }
