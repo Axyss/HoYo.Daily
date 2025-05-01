@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
 
 const ALARM_NAME: string = "auto-claim-alarm";
-const CLAIM_FUNCTION_BINDINGS: Record<string, () => void> = {
+const CLAIM_FUNCTION_BINDINGS: Record<string, () => Promise<any>> = {
   "Genshin Impact": claimGenshinRewards,
   "Honkai Star Rail": claimStarRailRewards,
   "Zenless Zone Zero": claimZenlessRewards
