@@ -87,7 +87,7 @@ listenMessage(MessageType.CLAIM, async () => {
 
 listenMessage(MessageType.MANUAL_CLAIM, async () => {
   console.log("[HoyoDaily]: Claiming manually");
-  if (await claimSelectedRewards()) {
+  if ((await claimSelectedRewards())) {
     await sendMessage({ type: MessageType.CLAIM_SUCCESS })
   }
 })
