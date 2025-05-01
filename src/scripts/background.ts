@@ -25,11 +25,12 @@ async function claimSelectedRewards() {
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
-    console.log(`[${gameTitle}]: Claiming rewards`);
     const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
     const content = await response.json();
+    console.log(`[${gameTitle}]: Claiming rewards`);
+    console.log(content);
 
-    if (content.retcode > 0) {
+    if (content.retcode >= 0 || content.retcode === -5003) {
       gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
       await setStorage(gameTitle, gameSettings);
       await sendMessage({ type: MessageType.UPDATE, target: gameTitle })
@@ -81,13 +82,12 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 listenMessage(MessageType.CLAIM, async () => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
     console.log("[HoyoDaily]: Claiming due UI interaction");
-    if (await claimSelectedRewards()) {
-      await sendMessage({ type: MessageType.CLAIM_SUCCESS })
-    }
   }
 })
 
 listenMessage(MessageType.MANUAL_CLAIM, async () => {
   console.log("[HoyoDaily]: Claiming manually");
-  await claimSelectedRewards();
+  if (await claimSelectedRewards()) {
+    await sendMessage({ type: MessageType.CLAIM_SUCCESS })
+  }
 })

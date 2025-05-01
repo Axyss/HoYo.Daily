@@ -46,7 +46,7 @@ listenMessage(MessageType.UPDATE,  async (response) => {
 })
 
 listenMessage(MessageType.CLAIMING,  async (response) => {
-  if ((response.target === props.name || response.target === "all") && settings.enabled) {
+  if ((response.target === props.name || response.target === "all") && settings.enabled && claimingState.value !== ClaimStates.CLAIMED) {
     console.log(`[${props.name}]: Type '${response.type}' message received`);
     claimingState.value = ClaimStates.CLAIMING;
   }
