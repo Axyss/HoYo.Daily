@@ -82,6 +82,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 listenMessage(MessageType.UI_CLAIM, async () => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
     console.log("[HoyoDaily]: Claiming due UI interaction");
+    await claimSelectedRewards()  // confetti inconsistency
   }
 })
 
