@@ -4,9 +4,6 @@ import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
-import { Notyf } from "notyf";
-import { onBeforeMount } from "vue";
-import { MessageType, sendMessage } from "./scripts/messaging.ts";
 
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -15,16 +12,6 @@ function getImageUrl(name: string, ext: string): string {
 function openGithubIssuesTab(): void {
   chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" })
 }
-
-const notyf = new Notyf({
-  duration: 3000,
-  position: {
-    x: 'center',
-    y: 'top',
-  },
-  dismissible: true,
-  ripple: false
-});
 </script>
 
 <template>
