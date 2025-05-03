@@ -86,7 +86,7 @@ listenMessage(MessageType.CLAIM_ERROR,  async (response) => {
         </div>
         <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-700">
           <span class="size-3.5 icon-[lucide--circle-x]" />
-          <span v-if="settings.lastError">{{ settings.lastError }}</span>
+          <span v-if="settings.lastError" class="truncate max-w-[30ch]" :title="settings.lastError">{{ settings.lastError }}</span>
           <span v-else>An <strong>error</strong> occurred</span>
         </div>
       </div>
