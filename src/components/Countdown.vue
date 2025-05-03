@@ -13,7 +13,7 @@ const countdown = computed(() => {
 
 onMounted(() => {
   setInterval(() => {
-    secondsLeft.value = getSecondsUntilNextMidnightUTC8()
+    secondsLeft.value = getSecondsUntilNextMidnightUTC8() - 1
   }, 1000);
 });
 </script>
