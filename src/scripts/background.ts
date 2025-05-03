@@ -32,12 +32,15 @@ async function claimSelectedRewards() {
 
     if (content.retcode >= 0 || content.retcode === -5003) {
       gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
+      gameSettings.lastError = null;
       await setStorage(gameTitle, gameSettings);
       await sendMessage({ type: MessageType.CLAIM_SUCCESS, target: gameTitle })
     } else {
       noErrors = false;
+      gameSettings.lastError = content.message;
       showErrorNotification(gameTitle, content.message)
-      await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle })
+      await setStorage(gameTitle, gameSettings);
+      await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle, content: content.message })
     }
   }
   return noErrors;

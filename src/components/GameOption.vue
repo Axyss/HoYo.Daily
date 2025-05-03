@@ -11,7 +11,7 @@ const props = defineProps<{
   task: any;
 }>();
 
-const defaultSettings = { enabled: false, lastClaim: 0 }
+const defaultSettings = { enabled: false, lastClaim: 0 , lastError: null}
 const settings = reactive({});
 const claimingState = ref<ClaimStates>(ClaimStates.NOT_CLAIMED);
 
@@ -31,7 +31,9 @@ watch(settings, async (newSettings, _) => {
   // Triggers a claim when enabling auto claim
   if (settings.enabled) await sendMessage({ type: MessageType.UI_CLAIM })
 
-  if (happenedMoreThanADayAgo(newSettings.lastClaim)) {
+  if (settings.lastError) {
+    claimingState.value = ClaimStates.ERROR;
+  } else if (happenedMoreThanADayAgo(newSettings.lastClaim)) {
     claimingState.value = ClaimStates.NOT_CLAIMED;
   } else {
     claimingState.value = ClaimStates.CLAIMED;
@@ -55,6 +57,7 @@ listenMessage(MessageType.CLAIM_SUCCESS,  async (response) => {
 listenMessage(MessageType.CLAIM_ERROR,  async (response) => {
   if (response.target === props.name || response.target === "all") {
     console.log(`[${props.name}]: Type '${response.type}' message received`);
+    settings.lastError = response.content;
     claimingState.value = ClaimStates.ERROR;
   }
 })
@@ -83,7 +86,8 @@ listenMessage(MessageType.CLAIM_ERROR,  async (response) => {
         </div>
         <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-700">
           <span class="size-3.5 icon-[lucide--circle-x]" />
-          <span>An <strong>error</strong> occurred</span>
+          <span v-if="settings.lastError">{{ settings.lastError }}</span>
+          <span v-else>An <strong>error</strong> occurred</span>
         </div>
       </div>
     </div>

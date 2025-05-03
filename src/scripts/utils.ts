@@ -47,6 +47,6 @@ export function showErrorNotification(gameTitle: string, reason: string): void {
           iconUrl: "icon.png",
           title: "HoyoDaily - Daily Rewards",
           message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${reason}.`,
-          requireInteraction: true
+          requireInteraction: false
      });
 }
