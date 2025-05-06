@@ -9,13 +9,50 @@ import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
 
-const ALARM_NAME: string = "auto-claim-alarm";
+const DAILY_ALARM_NAME: string = "daily-claim-alarm";
+const INSTANT_ALARM_NAME: string = "instant-claim-alarm";
+
 const CLAIM_FUNCTION_BINDINGS: Record<string, () => Promise<any>> = {
   "Genshin Impact": claimGenshinRewards,
   "Honkai Star Rail": claimStarRailRewards,
   "Zenless Zone Zero": claimZenlessRewards
 };
 
+// Browser listeners
+chrome.runtime.onInstalled.addListener(async (detail) => {
+  console.log("[HoyoDaily]: Extension installed", detail);
+  await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+})
+
+chrome.runtime.onStartup.addListener(async () => {
+  console.log("[HoyoDaily]: Extension started");
+  await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+})
+
+// Alarm handling
+async function scheduleAlarm(alarmName: string, alarmInfo: Object) {
+  if (await chrome.alarms.get(alarmName) == null) {
+    await chrome.alarms.create(alarmName, alarmInfo)
+    console.log(`[HoyoDaily]: Scheduling ${alarmName}`)
+  }
+}
+
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  try {
+    if (!(await getStorage("Settings")).autoClaimEnabled) return;
+
+    console.log(`[HoyoDaily]: Alarm '${alarm.name}' fired`);
+    await claimSelectedRewards();
+  } catch (error) {
+    console.error("[HoyoDaily]: Unexpected error", error);
+  } finally {
+    await scheduleAlarm(DAILY_ALARM_NAME, {
+      delayInMinutes: getMinutesUntilNextMidnightUTC8()
+    });
+  }
+})
+
+// Claiming logic
 async function claimSelectedRewards() {
   let noErrors: boolean = true;
   await sendMessage({ type: MessageType.CLAIMING, target: "all" })
@@ -45,41 +82,6 @@ async function claimSelectedRewards() {
   }
   return noErrors;
 }
-
-async function scheduleAlarm(alarmName: string) {
-  if (await chrome.alarms.get(alarmName) == null) {
-    await chrome.alarms.create(alarmName, {
-      delayInMinutes: getMinutesUntilNextMidnightUTC8()
-    })
-    console.log(`[HoyoDaily]: Scheduling an alarm in ${getMinutesUntilNextMidnightUTC8()} minutes`)
-  }
-}
-
-// Browser listeners
-chrome.runtime.onInstalled.addListener(async (detail) => {
-  console.log("[HoyoDaily]: Extension installed", detail);
-  await scheduleAlarm(ALARM_NAME);
-})
-
-chrome.runtime.onStartup.addListener(async () => {
-  console.log("[HoyoDaily]: Extension started");
-  await scheduleAlarm(ALARM_NAME);
-})
-
-// Alarm handlers
-chrome.alarms.onAlarm.addListener(async (alarm) => {
-  try {
-    if (alarm.name !== ALARM_NAME) return;
-    if (!(await getStorage("Settings")).autoClaimEnabled) return;
-
-    console.log(`[HoyoDaily]: Alarm '${alarm.name}' fired`);
-    await claimSelectedRewards();
-  } catch (error) {
-    console.error("[HoyoDaily]: Unexpected error", error);
-  } finally {
-    await scheduleAlarm(ALARM_NAME);
-  }
-})
 
 // Message listeners
 listenMessage(MessageType.UI_CLAIM, async () => {
