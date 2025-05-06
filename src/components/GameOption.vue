@@ -25,12 +25,8 @@ if (settings.lastError) {
 
 async function loadSettings(namespace: string) {
   const currentSettings = await getStorage(namespace);
-
-  if (currentSettings === null) {
-    await setStorage(namespace, defaultSettings);
-  } else if (Object.keys(defaultSettings).length > Object.keys(currentSettings).length) {
-    await setStorage(namespace, { ...defaultSettings, ...currentSettings });
-  }
+  // Upgrades internal settings if necessary
+  await setStorage(namespace, { ...defaultSettings, ...currentSettings });
   return (await getStorage(namespace));
 }
 

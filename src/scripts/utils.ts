@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-type Config = Record<string, any>
+type StoredData = Record<string, any>
 
 // Persistence functions
-export async function getStorage(namespace: string | null): Promise<Config> {
+export async function getStorage(namespace: string | null): Promise<StoredData> {
      if (namespace == null)
           return (await chrome.storage.local.get(null)) || {}
      else {
@@ -12,8 +12,9 @@ export async function getStorage(namespace: string | null): Promise<Config> {
      }
 }
 
-export async function setStorage(namespace: string, config: Config): Promise<void> {
-     await chrome.storage.local.set({ [namespace]: config })
+export async function setStorage(namespace: string, newData: StoredData): Promise<void> {
+     const previousData = await getStorage(namespace);
+     await chrome.storage.local.set({ [namespace]: { ...previousData, ...newData }})
 }
 
 // Timing functions
