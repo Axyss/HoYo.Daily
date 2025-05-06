@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, reactive, ref, watch } from "vue";
+import { reactive, ref, watch } from "vue";
 import { getStorage, happenedMoreThanADayAgo, setStorage } from "../scripts/utils.ts";
 import Switch from "./Switch.vue";
 import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
@@ -12,31 +12,33 @@ const props = defineProps<{
 }>();
 
 const defaultSettings = { enabled: false, lastClaim: 0 , lastError: null}
-const settings = reactive({});
-const claimingState = ref<ClaimStates>(ClaimStates.NOT_CLAIMED);
+const settings = reactive((await loadSettings(props.name)));
+const claimingState = ref<ClaimStates>();
 
-onBeforeMount(async () => {
-  const currentSettings = await getStorage(props.name);
+if (settings.lastError) {
+  claimingState.value = ClaimStates.ERROR;
+} else if (happenedMoreThanADayAgo(settings.lastClaim)) {
+  claimingState.value = ClaimStates.NOT_CLAIMED;
+} else {
+  claimingState.value = ClaimStates.CLAIMED;
+}
+
+async function loadSettings(namespace: string) {
+  const currentSettings = await getStorage(namespace);
 
   if (currentSettings === null) {
-    await setStorage(props.name, defaultSettings);
+    await setStorage(namespace, defaultSettings);
   } else if (Object.keys(defaultSettings).length > Object.keys(currentSettings).length) {
-    await setStorage(props.name, { ...defaultSettings, ...currentSettings });
+    await setStorage(namespace, { ...defaultSettings, ...currentSettings });
   }
-  Object.assign(settings, await getStorage(props.name));
-});
+  return (await getStorage(namespace));
+}
 
 watch(settings, async (newSettings, _) => {
   await setStorage(props.name, newSettings);
   // Triggers a claim when enabling auto claim
-  if (settings.enabled) await sendMessage({ type: MessageType.UI_CLAIM })
-
-  if (settings.lastError) {
-    claimingState.value = ClaimStates.ERROR;
-  } else if (happenedMoreThanADayAgo(newSettings.lastClaim)) {
-    claimingState.value = ClaimStates.NOT_CLAIMED;
-  } else {
-    claimingState.value = ClaimStates.CLAIMED;
+  if (settings.enabled) {
+    await sendMessage({ type: MessageType.UI_CLAIM })
   }
 });
 

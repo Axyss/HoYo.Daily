@@ -67,15 +67,22 @@ function openGithubIssuesTab(): void {
 
     <!-- Games Tab Content -->
     <div id="main-tab" role="tabpanel" class="p-0 mt-0">
-      <div class="my-2">
-        <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinRewards" />
-        <div class="divider px-4" />
+      <Suspense>
+        <template #default>
+          <div class="my-2">
+            <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinRewards" />
+            <div class="divider px-4" />
 
-        <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'webp')" :task="claimStarRailRewards" />
-        <div class="divider px-4" />
+            <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'webp')" :task="claimStarRailRewards" />
+            <div class="divider px-4" />
 
-        <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" :task="claimZenlessRewards" />
-      </div>
+            <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" :task="claimZenlessRewards" />
+          </div>
+        </template>
+        <template #fallback>
+          <div class="loading loading-spinner loading-sm" />
+        </template>
+      </Suspense>
 
       <div class="divider" />
 
@@ -97,7 +104,14 @@ function openGithubIssuesTab(): void {
             </div>
           </div>
         </div>
-        <AutoClaimSetting />
+        <Suspense>
+          <template #default>
+            <AutoClaimSetting />
+          </template>
+          <template #fallback>
+            <div class="loading loading-spinner loading-sm" />
+          </template>
+        </Suspense>
       </div>
 
       <div class="divider" />

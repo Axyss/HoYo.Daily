@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import Switch from "./Switch.vue";
-import { onBeforeMount, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import { getStorage, setStorage } from "../scripts/utils.ts";
 import { MessageType, sendMessage } from "../scripts/messaging.ts";
 
-const autoClaimEnabled = ref(false)
-
-onBeforeMount( async () => {
-  autoClaimEnabled.value = (await getStorage("Settings"))["autoClaimEnabled"]
-})
+const settings = await getStorage("Settings");
+const autoClaimEnabled = ref(settings["autoClaimEnabled"]);
 
 watch(autoClaimEnabled, async (newVal, _) => {
   await setStorage("Settings", { autoClaimEnabled: newVal })

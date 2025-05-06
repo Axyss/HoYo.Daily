@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "../../node_modules/flyonui/variants.css";
-@import "flyonui/src/vendor/notyf.css";
 
 @plugin "flyonui" {
     themes: black --default;
@@ -13,8 +12,3 @@
 @plugin "@iconify/tailwind4";
 /*@source "./node_modules/flyonui/dist/tab.js";*/
 @source "./node_modules/flyonui/dist/index.js";
-
-/* Custom CSS */
-.notyf {
-    margin-top: 0.40rem !important;
-}
