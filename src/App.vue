@@ -123,7 +123,14 @@ function openGithubIssuesTab(): void {
   <div class="divider" />
 
   <footer class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
-    <NotificationDropdown />
+    <Suspense>
+      <template #default>
+        <NotificationDropdown />
+      </template>
+      <template #fallback>
+        <div class="loading loading-spinner loading-sm" />
+      </template>
+    </Suspense>
     <div @click="openGithubIssuesTab()" class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200">
       <span class="size-3.5 icon-[lucide--github]"></span>
       <span>Report an issue</span>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
+import { onBeforeMount, ref, watch } from "vue";
 import { getStorage, setStorage } from "../scripts/utils.ts";
 
 enum NotificationState {
@@ -8,19 +8,17 @@ enum NotificationState {
   ENABLED = "enabled"
 }
 
-const notificationState = ref<NotificationState>(NotificationState.ENABLED);
+const notificationState = ref<NotificationState>();
 
 onBeforeMount(async () => {
   const settings = await getStorage("Settings");
-  if (settings && settings.notificationState !== undefined) {
-    notificationState.value = settings.notificationState as NotificationState;
-  }
-});
+  notificationState.value = settings?.notificationState ?? NotificationState.MINIMAL;
+})
 
-async function setNotificationState(state: NotificationState) {
-  notificationState.value = state;
-  await setStorage("Settings", { notificationState: notificationState.value });
-}
+watch(notificationState, async (newVal, _) => {
+  console.log(`[HoyoDaily]: Notification state changed to ${newVal}`)
+  await setStorage("Settings", { notificationState: newVal })
+})
 
 const notificationOptions = [
   {
@@ -55,13 +53,13 @@ const notificationOptions = [
       <template v-for="(option, index) in notificationOptions" :key="option.state">
         <div class="divider" v-if="index > 0" />
         <li>
-          <div @click="setNotificationState(option.state)"
-            class="dropdown-item dropdown-active:text-blue-200 flex items-center gap-3 p-2 hover:bg-base-200 transition-bg duration-200 rounded-lg cursor-pointer"
+          <div @click="notificationState = option.state"
+            class="dropdown-item active:text-base-content flex items-center gap-3 p-2 hover:bg-base-200 transition-bg duration-200 rounded-lg cursor-pointer"
             :class="{ 
               'bg-base-200/50 border-1 border-primary transition-all duration-200': notificationState === option.state
             }"
           >
-            <span class="size-5" :class="option.icon" />
+            <span class="size-3.5" :class="option.icon" />
             <div class="flex flex-col">
               <span class="text-sm dropdown-active:bg-primary">{{ option.title }}</span>
               <span class="text-xs text-base-content/70">{{ option.description }}</span>

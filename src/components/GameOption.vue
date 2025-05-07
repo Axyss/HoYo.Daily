@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const defaultSettings = { enabled: false, lastClaim: 0 , lastError: null}
-const settings = reactive((await loadSettings(props.name)));
+const settings = reactive(await loadSettings(props.name));
 const claimingState = ref<ClaimStates>();
 
 if (settings.lastError) {
