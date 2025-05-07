@@ -16,10 +16,10 @@ interface Message {
 
 // Messaging wrappers
 export async function sendMessage(message: Message): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     chrome.runtime.sendMessage(message, (response) => {
       if (chrome.runtime.lastError) {
-        reject(chrome.runtime.lastError);
+        console.warn("sendMessage error:", chrome.runtime.lastError.message, "Message:", message);
       } else {
         resolve(response);
       }
