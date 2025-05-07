@@ -5,10 +5,10 @@ import { getStorage, setStorage } from "../scripts/utils.ts";
 enum NotificationState {
   DISABLED = "disabled",
   MINIMAL = "minimal",
-  FULL = "full"
+  ENABLED = "enabled"
 }
 
-const notificationState = ref<NotificationState>(NotificationState.FULL);
+const notificationState = ref<NotificationState>(NotificationState.ENABLED);
 
 onBeforeMount(async () => {
   const settings = await getStorage("Settings");
@@ -21,57 +21,54 @@ async function setNotificationState(state: NotificationState) {
   notificationState.value = state;
   await setStorage("Settings", { notificationState: notificationState.value });
 }
+
+const notificationOptions = [
+  {
+    state: NotificationState.ENABLED,
+    icon: 'icon-[lucide--bell-ring]',
+    title: 'Enable notifications',
+    description: 'Successful claims and errors'
+  },
+  {
+    state: NotificationState.MINIMAL,
+    icon: 'icon-[lucide--bell]',
+    title: 'Minimal notifications',
+    description: 'Only errors will be displayed'
+  },
+  {
+    state: NotificationState.DISABLED,
+    icon: 'icon-[lucide--bell-off]',
+    title: 'Disable notifications',
+    description: 'You won\'t be disturbed'
+  }
+];
 </script>
 
 <template>
-  <div class="dropdown relative inline-flex">
-    <button id="notification-dropdown" type="button" class="dropdown-toggle flex items-center gap-1.5 cursor-pointer hover:text-primary duration-200 px-2 py-1 rounded-lg hover:bg-primary/10 transition-all" aria-haspopup="menu" aria-expanded="false" aria-label="Notification Settings">
-      <span class="size-3.5 icon-[lucide--bell-ring]" :class="{ 
-        'text-primary animate-ring': notificationState === NotificationState.FULL,
-        'text-warning': notificationState === NotificationState.MINIMAL,
-        'text-base-content/50': notificationState === NotificationState.DISABLED
-      }" />
-      <span class="text-xs">Notifications {{
-        notificationState === NotificationState.FULL ? 'enabled' : 
-        notificationState === NotificationState.MINIMAL ? 'minimal' : 
-        'disabled' 
-      }}</span>
-      <span class="size-3 icon-[lucide--chevron-up] dropdown-open:rotate-180 transition-transform duration-300"></span>
+  <div class="dropdown flex items-center gap-1 cursor-pointer">
+    <button id="notification-dropdown" type="button" class="dropdown-toggle flex items-center gap-1.5 cursor-pointer hover:text-primary duration-200 rounded-lg">
+      <span class="size-3.5" :class="notificationOptions.find(opt => opt.state === notificationState)?.icon" />
+      <span class="text-xs">Notifications: {{notificationState}}</span>
+      <span class="size-3 icon-[lucide--chevron-down] dropdown-open:rotate-180 transition-transform duration-200"></span>
     </button>
-    <ul class="dropdown-menu dropdown-open:opacity-100 hidden absolute bottom-full mb-3 left-0 w-60 rounded-lg p-2 z-10 bg-base-100/90 shadow-lg border border-primary/10 backdrop-blur-md" role="menu" aria-orientation="vertical" aria-labelledby="notification-dropdown">
-      <li>
-        <div @click="setNotificationState(NotificationState.FULL)" 
-          class="dropdown-item flex items-center gap-3 p-2.5 hover:bg-primary/20 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md group"
-        >
-          <span class="size-5 icon-[lucide--bell-ring] transition-transform" :class="{ 'text-primary': notificationState === NotificationState.FULL }" />
-          <div class="flex flex-col">
-            <span class="font-normal">Full notifications</span>
-            <span class="text-xs text-base-content/60">Successful claims and errors</span>
+    <ul class="dropdown-menu dropdown-open:opacity-100 hidden absolute bottom-full mb-3 left-0 w-60 rounded-lg p-1.5 z-10 bg-base-100/80 backdrop-blur-lg border border-base-content/10" role="menu">
+      <template v-for="(option, index) in notificationOptions" :key="option.state">
+        <div class="divider" v-if="index > 0" />
+        <li>
+          <div @click="setNotificationState(option.state)"
+            class="dropdown-item dropdown-active:text-blue-200 flex items-center gap-3 p-2 hover:bg-base-200 transition-bg duration-200 rounded-lg cursor-pointer"
+            :class="{ 
+              'bg-base-200/50 border-1 border-primary transition-all duration-200': notificationState === option.state
+            }"
+          >
+            <span class="size-5" :class="option.icon" />
+            <div class="flex flex-col">
+              <span class="text-sm dropdown-active:bg-primary">{{ option.title }}</span>
+              <span class="text-xs text-base-content/70">{{ option.description }}</span>
+            </div>
           </div>
-        </div>
-      </li>
-      <li>
-        <div @click="setNotificationState(NotificationState.MINIMAL)"
-          class="dropdown-item flex items-center gap-3 p-2.5 hover:bg-primary/20 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md group"
-        >
-          <span class="size-5 icon-[lucide--bell] transition-transform" :class="{ 'text-warning': notificationState === NotificationState.MINIMAL }" />
-          <div class="flex flex-col">
-            <span class="font-normal">Minimal notifications</span>
-            <span class="text-xs text-base-content/60">Only errors will be displayed</span>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div @click="setNotificationState(NotificationState.DISABLED)"
-          class="dropdown-item flex items-center gap-3 p-2.5 hover:bg-primary/20 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-md group"
-        >
-          <span class="size-5 icon-[lucide--bell-off] transition-transform" :class="{ 'text-error': notificationState === NotificationState.DISABLED }" />
-          <div class="flex flex-col">
-            <span class="font-normal">Disable notifications</span>
-            <span class="text-xs text-base-content/60">You won't be disturbed</span>
-          </div>
-        </div>
-      </li>
+        </li>
+      </template>
     </ul>
   </div>
 </template>

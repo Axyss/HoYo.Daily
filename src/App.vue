@@ -4,6 +4,7 @@ import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
+import NotificationDropdown from "./components/NotificationDropdown.vue";
 
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
@@ -122,10 +123,7 @@ function openGithubIssuesTab(): void {
   <div class="divider" />
 
   <footer class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
-    <div class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200">
-        <span class="size-3 icon-[lucide--bell-ring]" />
-        <span>Notifications enabled</span>
-    </div>
+    <NotificationDropdown />
     <div @click="openGithubIssuesTab()" class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200">
       <span class="size-3.5 icon-[lucide--github]"></span>
       <span>Report an issue</span>

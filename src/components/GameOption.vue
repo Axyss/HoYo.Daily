@@ -62,7 +62,7 @@ listenMessage(MessageType.CLAIM_ERROR,  async (response) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-4 py-3 hover:bg-base-200/90">
+  <div class="flex items-center justify-between px-4 py-3">
     <div class="flex items-center gap-3">
       <img
         class="size-8 bg-base-300 rounded-md flex-shrink-0"
