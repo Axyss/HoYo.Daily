@@ -20,9 +20,8 @@ export async function sendMessage(message: Message): Promise<void> {
     chrome.runtime.sendMessage(message, (response) => {
       if (chrome.runtime.lastError) {
         console.warn("sendMessage error:", chrome.runtime.lastError.message, "Message:", message);
-      } else {
-        resolve(response);
       }
+      resolve(response);
     });
   });
 }
