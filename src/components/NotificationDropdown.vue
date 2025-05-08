@@ -1,12 +1,7 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
 import { getStorage, setStorage } from "../scripts/storage.ts";
-
-enum NotificationState {
-  DISABLED = "disabled",
-  MINIMAL = "minimal",
-  ENABLED = "enabled"
-}
+import { NotificationState } from "../scripts/utils.ts";
 
 const notificationState = ref<NotificationState>();
 

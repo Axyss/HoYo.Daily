@@ -1,8 +1,7 @@
 import {
   getMinutesUntilNextMidnightUTC8,
   getSecondsSinceLastMidnightUTC8,
-  happenedMoreThanADayAgo,
-  showErrorNotification
+  happenedMoreThanADayAgo, NotificationState
 } from "./utils.ts";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
@@ -68,19 +67,47 @@ async function claimSelectedRewards() {
     console.log(content);
 
     if (content.retcode >= 0 || content.retcode === -5003) {
-      gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
-      gameSettings.lastError = null;
-      await setStorage(gameTitle, gameSettings);
-      await sendMessage({ type: MessageType.CLAIM_SUCCESS, target: gameTitle })
+      await claimSuccess(gameTitle, gameSettings);
     } else {
-      noErrors = false;
-      gameSettings.lastError = content.message;
-      showErrorNotification(gameTitle, content.message)
-      await setStorage(gameTitle, gameSettings);
-      await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle, content: content.message })
+      await claimError(gameTitle, gameSettings, content.message);
     }
   }
   return noErrors;
+}
+
+async function claimSuccess(gameTitle: string, gameSettings: any) {
+  gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
+  gameSettings.lastError = null;
+  await setStorage(gameTitle, gameSettings);
+  await sendMessage({ type: MessageType.CLAIM_SUCCESS, target: gameTitle })
+
+  const notificationSetting = (await getStorage("Settings")).notificationState;
+  if (NotificationState.ENABLED === notificationSetting) {
+    chrome.notifications.create({
+      type: "basic",
+      iconUrl: "icon.png",
+      title: "HoyoDaily - Daily Rewards",
+      message: `✅ Successfully claimed rewards for ${gameTitle}!`,
+      requireInteraction: false
+    });
+  }
+}
+
+async function claimError(gameTitle: string, gameSettings: any, errorMessage: string) {
+  gameSettings.lastError = errorMessage;
+  await setStorage(gameTitle, gameSettings);
+  await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle, content: errorMessage })
+
+  const notificationSetting = (await getStorage("Settings")).notificationState;
+  if ([NotificationState.ENABLED, NotificationState.MINIMAL].includes(notificationSetting)) {
+    chrome.notifications.create({
+      type: "basic",
+      iconUrl: "icon.png",
+      title: "HoyoDaily - Daily Rewards",
+      message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${errorMessage}.`,
+      requireInteraction: false
+    });
+  }
 }
 
 // Message listeners

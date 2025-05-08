@@ -26,13 +26,8 @@ export function happenedMoreThanADayAgo(epoch: number): boolean {
   return (dayjs().unix() - epoch) >= 86400
 }
 
-// Notification functions
-export function showErrorNotification(gameTitle: string, reason: string): void {
-  chrome.notifications.create({
-    type: "basic",
-    iconUrl: "icon.png",
-    title: "HoyoDaily - Daily Rewards",
-    message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${reason}.`,
-    requireInteraction: false
-  });
+export enum NotificationState {
+  DISABLED = "disabled",
+  MINIMAL = "minimal",
+  ENABLED = "enabled"
 }
