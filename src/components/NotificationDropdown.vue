@@ -10,14 +10,18 @@ enum NotificationState {
 
 const notificationState = ref<NotificationState>();
 
-onBeforeMount(async () => {
-  const settings = await getStorage("Settings");
-  notificationState.value = settings?.notificationState ?? NotificationState.MINIMAL;
-})
-
 watch(notificationState, async (newVal, _) => {
   console.log(`[HoyoDaily]: Notification state changed to ${newVal}`)
   await setStorage("Settings", { notificationState: newVal })
+})
+
+onBeforeMount(async () => {
+  const settings = await getStorage("Settings");
+  if (!settings?.notificationState) {
+    notificationState.value = NotificationState.MINIMAL;
+  } else {
+    notificationState.value = settings.notificationState;
+  }
 })
 
 const notificationOptions = [

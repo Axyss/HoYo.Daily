@@ -12,6 +12,12 @@ watch(autoClaimEnabled, async (newVal, _) => {
   // Triggers a claim when enabling auto claim
   await sendMessage({ type: MessageType.UI_CLAIM })
 })
+
+if (!settings?.autoClaimEnabled) {
+  autoClaimEnabled.value = false;
+} else {
+  autoClaimEnabled.value = settings.autoClaimEnabled;
+}
 </script>
 
 <template>
