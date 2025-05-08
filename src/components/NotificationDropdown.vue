@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
-import { getStorage, setStorage } from "../scripts/utils.ts";
+import { getStorage, setStorage } from "../scripts/storage.ts";
 
 enum NotificationState {
   DISABLED = "disabled",

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from "vue";
-import { getStorage, happenedMoreThanADayAgo, setStorage } from "../scripts/utils.ts";
+import { happenedMoreThanADayAgo } from "../scripts/utils.ts";
 import Switch from "./Switch.vue";
 import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
+import { getStorage, setStorage } from "../scripts/storage.ts";
 
 enum ClaimStates { NOT_CLAIMED, CLAIMING, CLAIMED, ERROR }
 const props = defineProps<{

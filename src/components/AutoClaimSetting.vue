@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import Switch from "./Switch.vue";
 import { ref, watch } from "vue";
-import { getStorage, setStorage } from "../scripts/utils.ts";
 import { MessageType, sendMessage } from "../scripts/messaging.ts";
+import { getStorage, setStorage } from "../scripts/storage.ts";
 
 const settings = await getStorage("Settings");
 const autoClaimEnabled = ref(settings["autoClaimEnabled"]);

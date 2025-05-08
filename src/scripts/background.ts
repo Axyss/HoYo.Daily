@@ -1,13 +1,13 @@
 import {
   getMinutesUntilNextMidnightUTC8,
   getSecondsSinceLastMidnightUTC8,
-  getStorage,
   happenedMoreThanADayAgo,
-  setStorage, showErrorNotification
+  showErrorNotification
 } from "./utils.ts";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
+import { getStorage, setStorage } from "./storage.ts";
 
 const DAILY_ALARM_NAME: string = "daily-claim-alarm";
 const INSTANT_ALARM_NAME: string = "instant-claim-alarm";
