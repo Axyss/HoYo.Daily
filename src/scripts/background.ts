@@ -56,7 +56,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
 // Claiming logic
 async function claimSelectedRewards() {
-  let noErrors: boolean = true;
+  let success = 0, failed = 0;
   await sendMessage({ type: MessageType.CLAIMING, target: "all" })
 
   for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
@@ -70,12 +70,14 @@ async function claimSelectedRewards() {
     console.log(content);
 
     if (content.retcode >= 0 || content.retcode === -5003) {
+      success++;
       await claimSuccess(gameTitle, gameSettings);
     } else {
+      failed++;
       await claimError(gameTitle, gameSettings, content.message);
     }
   }
-  return noErrors;
+  return success > 0 && failed === 0;
 }
 
 async function claimSuccess(gameTitle: string, gameSettings: any) {
@@ -118,14 +120,16 @@ async function claimError(gameTitle: string, gameSettings: any, errorMessage: st
 // Message listeners
 listenMessage(MessageType.UI_CLAIM, async () => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
-    console.log("[HoyoDaily]: Claiming due UI interaction");
-    await claimSelectedRewards()  // confetti inconsistency
+    console.log("[background.ts]: Claiming due UI interaction");
+    await claimSelectedRewards()  // confetti inconsistency (?)
   }
 })
 
 listenMessage(MessageType.MANUAL_CLAIM, async () => {
-  console.log("[HoyoDaily]: Claiming manually");
-  if ((await claimSelectedRewards())) {
-    await sendMessage({ type: MessageType.CLAIM_SUCCESS })
+  console.log("[background.ts]: Claiming manually");
+  if (await claimSelectedRewards()) {  // No errors occurred
+    await sendMessage({ type: MessageType.MANUAL_CLAIM_SUCCESS })
+  } else {
+    await sendMessage({ type: MessageType.MANUAL_CLAIM_ERROR })
   }
 })

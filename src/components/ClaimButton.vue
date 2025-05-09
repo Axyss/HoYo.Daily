@@ -5,15 +5,19 @@ import confetti from "canvas-confetti";
 
 const rewardsClaimed = ref(false)
 
-watch(rewardsClaimed, (newValue, _) => {
-  if (!newValue) return;
-  setTimeout(async () => {
-    rewardsClaimed.value = false;
-    await sendMessage({ type: MessageType.MANUAL_CLAIM })
-  }, 2500)
+watch(rewardsClaimed, () => {
+  if (rewardsClaimed.value) {
+    setTimeout(async () => {
+      await sendMessage({ type: MessageType.MANUAL_CLAIM })},Math.random() * 500 + 1000)
+  }
 })
 
-listenMessage(MessageType.CLAIM_SUCCESS, async () => {
+listenMessage(MessageType.MANUAL_CLAIM_ERROR,  async () => {
+  rewardsClaimed.value = false;
+})
+
+listenMessage(MessageType.MANUAL_CLAIM_SUCCESS, async () => {
+  rewardsClaimed.value = false;
   confetti({
     particleCount: 100,
     spread: 70,

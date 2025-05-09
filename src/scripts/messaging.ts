@@ -1,7 +1,9 @@
 // Type definitions
 export enum MessageType {
-  UI_CLAIM= "ui_claim",
   MANUAL_CLAIM = "manual_claim",
+  MANUAL_CLAIM_ERROR = "manual_claim_error",
+  MANUAL_CLAIM_SUCCESS = "manual_claim_success",
+  UI_CLAIM= "ui_claim",
   CLAIMING = "claiming",
   CLAIM_ERROR= "claim_error",
   CLAIM_SUCCESS = "claim_success",
