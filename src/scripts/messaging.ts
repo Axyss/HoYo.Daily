@@ -1,11 +1,11 @@
 // Type definitions
 export enum MessageType {
-  UI_CLAIM,
-  MANUAL_CLAIM,
-  CLAIMING,
-  CLAIM_ERROR,
-  CLAIM_SUCCESS,
-  UPDATE,
+  UI_CLAIM= "ui_claim",
+  MANUAL_CLAIM = "manual_claim",
+  CLAIMING = "claiming",
+  CLAIM_ERROR= "claim_error",
+  CLAIM_SUCCESS = "claim_success",
+  UPDATE = "update",
 }
 
 interface Message {
@@ -19,7 +19,7 @@ export async function sendMessage(message: Message): Promise<void> {
   return new Promise((resolve) => {
     chrome.runtime.sendMessage(message, (response) => {
       if (chrome.runtime.lastError) {
-        console.warn("sendMessage error:", chrome.runtime.lastError.message, "Message:", message);
+        console.error(`[messaging.ts]: Error sending message: ${chrome.runtime.lastError.message}`, message);
       }
       resolve(response);
     });

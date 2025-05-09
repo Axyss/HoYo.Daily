@@ -6,7 +6,7 @@ import { NotificationState } from "../scripts/utils.ts";
 const notificationState = ref<NotificationState>();
 
 watch(notificationState, async (newVal, _) => {
-  console.log(`[HoyoDaily]: Notification state changed to ${newVal}`)
+  console.log(`[NotificationDropdown.vue]: Notification state changed to ${newVal}`)
   await setStorage("Settings", { notificationState: newVal })
 })
 

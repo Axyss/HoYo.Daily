@@ -24,7 +24,7 @@ function openGithubIssuesTab(): void {
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-bold text-primary-content">HoyoDaily</h1>
         <span class="px-2 py-0.5 bg-primary/20 text-primary border border-primary/70 text-xs rounded-full">
-          Beta-0.4.0
+          Beta-0.6.0
         </span>
       </div>
     </div>

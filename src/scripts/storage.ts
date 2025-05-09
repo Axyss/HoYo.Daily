@@ -1,6 +1,5 @@
 type StoredData = Record<string, any>
 
-// Persistence functions
 export async function getStorage(namespace: string | null): Promise<StoredData> {
   if (namespace == null)
     return (await chrome.storage.local.get(null)) || {};
@@ -20,12 +19,12 @@ export async function setStorage(namespace: string, newData: StoredData): Promis
           [namespace]: { ...currentData, ...newData }
         });
       } catch (error) {
-        console.error(`Error in setStorage for namespace ${namespace}:`, error);
+        console.error(`[storage.ts]: Error in setStorage for namespace ${namespace}:`, error);
         throw error;
       }
     })
     .catch(error => {  // Prevents potential deadlocks
-      console.error(`Lock error for namespace ${namespace}:`, error);
+      console.error(`[storage.ts]: Lock error for namespace ${namespace}:`, error);
       delete locks[namespace];
       throw error;
     });

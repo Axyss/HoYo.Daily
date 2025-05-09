@@ -19,31 +19,34 @@ const CLAIM_FUNCTION_BINDINGS: Record<string, () => Promise<any>> = {
 
 // Browser listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
-  console.log("[HoyoDaily]: Extension installed", detail);
+  console.log("[background.ts]: Extension installed", detail);
   await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
 })
 
 chrome.runtime.onStartup.addListener(async () => {
-  console.log("[HoyoDaily]: Extension started");
+  console.log("[background.ts]: Extension started");
   await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
 })
 
 // Alarm handling
 async function scheduleAlarm(alarmName: string, alarmInfo: Object) {
-  if (await chrome.alarms.get(alarmName) == null) {
+  const existingAlarm = await chrome.alarms.get(alarmName);
+  if (existingAlarm == null) {
     await chrome.alarms.create(alarmName, alarmInfo)
-    console.log(`[HoyoDaily]: Scheduling ${alarmName}`)
+    console.log(`[background.ts]: Scheduling ${alarmName}`)
   }
 }
 
 chrome.alarms.onAlarm.addListener(async (alarm) => {
   try {
-    if (!(await getStorage("Settings")).autoClaimEnabled) return;
-
-    console.log(`[HoyoDaily]: Alarm '${alarm.name}' fired`);
+    console.log(`[background.ts]: Alarm triggered: ${alarm.name}`);
+    if (!(await getStorage("Settings")).autoClaimEnabled) {
+      console.log(`[background.ts]: Auto-claim is disabled, skipping automatic claim process`);
+      return;
+    }
     await claimSelectedRewards();
   } catch (error) {
-    console.error("[HoyoDaily]: Unexpected error", error);
+    console.error("[background.ts]: Unexpected error", error);
   } finally {
     await scheduleAlarm(DAILY_ALARM_NAME, {
       delayInMinutes: getMinutesUntilNextMidnightUTC8()
@@ -61,9 +64,9 @@ async function claimSelectedRewards() {
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
+    console.log(`[background.ts]: Attempting to claim rewards for ${gameTitle}`);
     const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
     const content = await response.json();
-    console.log(`[${gameTitle}]: Claiming rewards`);
     console.log(content);
 
     if (content.retcode >= 0 || content.retcode === -5003) {
@@ -76,6 +79,7 @@ async function claimSelectedRewards() {
 }
 
 async function claimSuccess(gameTitle: string, gameSettings: any) {
+  console.log(`[background.ts]: Successfully claimed rewards for ${gameTitle}`);
   gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
   gameSettings.lastError = null;
   await setStorage(gameTitle, gameSettings);
@@ -94,6 +98,7 @@ async function claimSuccess(gameTitle: string, gameSettings: any) {
 }
 
 async function claimError(gameTitle: string, gameSettings: any, errorMessage: string) {
+  console.error(`[background.ts]: Failed to claim rewards for ${gameTitle}. Error: ${errorMessage}`);
   gameSettings.lastError = errorMessage;
   await setStorage(gameTitle, gameSettings);
   await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle, content: errorMessage })
