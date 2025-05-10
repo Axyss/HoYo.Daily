@@ -5,7 +5,13 @@ import Countdown from "./components/Countdown.vue";
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
+import { onMounted } from "vue";
 
+onMounted(() => {
+  setTimeout(() => window.HSStaticMethods.autoInit(), 100)
+});
+
+const extensionVersion = chrome.runtime.getManifest().version;
 function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href
 }
@@ -19,28 +25,29 @@ function openGithubIssuesTab(): void {
   <header class="flex p-4">
     <div class="flex items-center gap-3 w-fit">
       <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-        <div class="w-4 h-4 bg-white/90 rotate-45"></div>
+        <div class="w-4 h-4 bg-primary-content rotate-45"></div>
       </div>
       <div class="flex items-center gap-2">
-        <h1 class="text-xl font-bold text-primary-content">HoyoDaily</h1>
-        <span class="px-2 py-0.5 bg-primary/20 text-primary border border-primary/70 text-xs rounded-full">
-          Beta-0.6.0
-        </span>
+        <h1 class="text-xl font-bold text-base-content">HoyoDaily</h1>
       </div>
+      <span class="px-2 py-0.5 bg-primary/20 ml-auto font-medium text-primary border border-primary/70 text-xs rounded-full">
+        <span class="size-3.5 icon-[lucide--box] align-bottom" />
+        {{ extensionVersion }}
+      </span>
     </div>
-    <button class="text-base-content/40 hover:text-primary-content p-2 ml-auto rounded-full duration-200 cursor-pointer">
+    <button class="text-base-content/40 hover:text-primary p-2 ml-auto rounded-full duration-200 cursor-pointer">
       <span class="size-5 icon-[lucide--settings]" />
     </button>
   </header>
 
   <div class="divider" />
 
-  <nav class="tabs space-x-2 px-2 py-2 bg-base-100/60" role="tablist" >
-    <button type="button" class="btn btn-text flex-1 text-base-content/60 active-tab:bg-primary active-tab:text-base-content hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
+  <nav class="tabs space-x-2 px-2 py-2 bg-base-200/60" role="tablist" >
+    <button type="button" class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
       <span class="icon-[lucide--gamepad-2] size-5"></span>
       <span>Games</span>
     </button>
-    <button type="button" class="btn btn-text flex-1 text-base-content/60 active-tab:bg-primary active-tab:text-base-content hover:text-primary hover:bg-primary/20" data-tab="#history-tab" role="tab" >
+    <button type="button" class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20" data-tab="#history-tab" role="tab" >
       <span class="icon-[lucide--history] size-5"></span>
       <span>History</span>
     </button>
@@ -56,7 +63,7 @@ function openGithubIssuesTab(): void {
         class="flex flex-col items-center justify-center h-full py-8 px-4">
         <div class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex flex-col items-center max-w-xs text-center">
           <span class="icon-[lucide--history] size-16 text-primary/60 mb-4" />
-          <h3 class="text-xl font-semibold text-primary-content mb-2">No History Yet</h3>
+          <h3 class="text-xl font-semibold text-base-content mb-2">No History Yet</h3>
           <p class="text-base-content/60 text-sm mb-4">Your claimed rewards will appear here once you start collecting them.</p>
           <div class="flex items-center gap-2 text-base-content/60 text-sm">
             <span class="icon-[lucide--arrow-left]" />
@@ -88,18 +95,18 @@ function openGithubIssuesTab(): void {
       <div class="divider" />
 
       <!-- Auto Claim Section -->
-      <div class="px-4 py-3 bg-base-100/60">
+      <div class="px-4 py-3 bg-base-200/60">
         <div class="flex items-center justify-between mb-4">
           <div class="flex items-center gap-2">
-            <span class="size-4 text-neutral icon-[lucide--clock]" />
-            <span class="text-neutral text-sm">Next claim in:</span>
-            <Countdown class="text-neutral font-mono font-medium text-sm"/>
+            <span class="size-4 icon-[lucide--clock]" />
+            <span class="text-sm">Next claim in:</span>
+            <Countdown class="font-mono font-medium text-sm"/>
           </div>
 
           <div class="tooltip [--placement:left] tooltip-toggle">
             <span class="text-base-content/40 duration-200 hover:text-base-content/60 size-4 icon-[lucide--circle-help] mt-1.5" />
             <div class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible" role="popover">
-              <div class="tooltip-body bg-base-100 text-base-content/80 rounded-lg p-2 text-start text-xs">
+              <div class="tooltip-body mb-3 w-fit rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10 text-base-content/70">
                 Placeholder
               </div>
             </div>

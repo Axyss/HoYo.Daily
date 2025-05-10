@@ -28,7 +28,7 @@ if (!settings?.autoClaimEnabled) {
         <div class="tooltip [--placement:top] tooltip-toggle">
           <span class="icon-[lucide--info] hover:text-primary mt-1.5 size-4 duration-200" />
           <div class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible" role="popover">
-            <div class="tooltip-body bg-base-100 text-base-content/80 max-w-xs rounded-lg p-2 text-start text-xs w-40">
+            <div class="tooltip-body bg-base-200 text-base-content/80 max-w-xs rounded-lg p-2 text-start text-xs w-40">
               This functionality will not work while the browser is closed.
             </div>
           </div>

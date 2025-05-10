@@ -29,7 +29,7 @@ listenMessage(MessageType.MANUAL_CLAIM_SUCCESS, async () => {
 
 <template>
   <div class="p-4">
-    <button class="btn btn-primary flex justify-center py-6 text-lg rounded-md w-full font-medium" @click="rewardsClaimed = true">
+    <button class="btn btn-primary flex justify-center py-6 text-lg rounded-lg w-full font-medium" @click="rewardsClaimed = true">
       <span :class="{'size-6': true,
                      'loading loading-spinner loading-sm': rewardsClaimed,
                      'icon-[lucide--gift]': !rewardsClaimed}" />

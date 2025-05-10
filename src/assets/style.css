@@ -8,6 +8,11 @@
     name: "black";
     default: true;
     --color-primary: #7033ff;
+    --color-base-100: #090909;
+    --color-base-200: #151517;
+    --color-success: #05df72;
+    --color-info: #51a2ff;
+    --color-error: #ff6467;
 }
 @plugin "@iconify/tailwind4";
 @source "./node_modules/flyonui/dist/index.js";

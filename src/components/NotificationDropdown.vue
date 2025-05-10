@@ -24,13 +24,13 @@ const notificationOptions = [
     state: NotificationState.ENABLED,
     icon: 'icon-[lucide--bell-ring]',
     title: 'Enable notifications',
-    description: 'Successful claims and errors'
+    description: 'Displays claims and errors'
   },
   {
     state: NotificationState.MINIMAL,
     icon: 'icon-[lucide--bell]',
     title: 'Minimal notifications',
-    description: 'Only errors will be displayed'
+    description: 'Displays just the errors'
   },
   {
     state: NotificationState.DISABLED,
@@ -48,7 +48,7 @@ const notificationOptions = [
       <span class="text-xs">Notifications: {{notificationState}}</span>
       <span class="size-3 icon-[lucide--chevron-down] dropdown-open:rotate-180 transition-transform duration-200"></span>
     </button>
-    <ul class="dropdown-menu dropdown-open:opacity-100 hidden absolute bottom-full mb-3 left-0 w-58 rounded-lg p-1.5 z-10 bg-base-100/80 backdrop-blur-lg border border-base-content/10" role="menu">
+    <ul class="dropdown-menu dropdown-open:opacity-100 hidden absolute bottom-full mb-3 left-0 w-58 rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10" role="menu">
       <template v-for="(option, index) in notificationOptions" :key="option.state">
         <div class="divider" v-if="index > 0" />
         <li>

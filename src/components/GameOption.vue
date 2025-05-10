@@ -63,27 +63,27 @@ listenMessage(MessageType.CLAIM_ERROR,  async (response) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between px-4 py-3">
+  <div class="flex items-center justify-between px-4 py-3" :class="{'grayscale-100': !settings.enabled}">
     <div class="flex items-center gap-3">
       <img
-        class="size-8 bg-base-300 rounded-md flex-shrink-0"
+        class="size-8 bg-base-100 rounded-md flex-shrink-0 shadow-primary shadow-sm"
         :src="props.icon"
       />
       <div>
-        <p class="text-primary-content font-medium text-sm">{{ props.name }}</p>
-        <div v-if="claimingState === ClaimStates.NOT_CLAIMED" class="flex items-center gap-1 text-xs text-red-400">
+        <p class="text-base-content font-medium text-sm">{{ props.name }}</p>
+        <div v-if="claimingState === ClaimStates.NOT_CLAIMED" class="flex items-center gap-1 text-xs text-error">
           <span class="size-3.5 icon-[lucide--circle-x]" />
           <span>Not claimed</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.CLAIMING" class="flex items-center gap-1 text-xs text-blue-400 animate-pulse">
+        <div v-else-if="claimingState === ClaimStates.CLAIMING" class="flex items-center gap-1 text-xs text-info animate-pulse">
           <span class="size-3.5 icon-[lucide--iteration-ccw]" />
           <span>Claiming...</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.CLAIMED" class="flex items-center gap-1 text-xs text-green-400">
+        <div v-else-if="claimingState === ClaimStates.CLAIMED" class="flex items-center gap-1 text-xs text-success">
           <span class="size-3.5 icon-[lucide--circle-check-big]" />
           <span>Claimed today</span>
         </div>
-        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-red-700">
+        <div v-else-if="claimingState === ClaimStates.ERROR" class="flex items-center gap-1 text-xs text-error">
           <span class="size-3.5 icon-[lucide--circle-x]" />
           <span v-if="settings.lastError" class="truncate max-w-[30ch]" :title="settings.lastError">{{ settings.lastError }}</span>
           <span v-else>An <strong>error</strong> occurred</span>
