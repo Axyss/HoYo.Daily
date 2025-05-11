@@ -35,9 +35,7 @@ function openGithubIssuesTab(): void {
         {{ extensionVersion }}
       </span>
     </div>
-    <button class="text-base-content/40 hover:text-primary p-2 ml-auto rounded-full duration-200 cursor-pointer">
-      <span class="size-5 icon-[lucide--settings]" />
-    </button>
+    <ThemeSelector />
   </header>
 
   <div class="divider" />

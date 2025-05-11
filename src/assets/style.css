@@ -1,9 +1,8 @@
 @import "tailwindcss";
 @import "../../node_modules/flyonui/variants.css";
 
-@plugin "flyonui" {
-    themes: black --default;
-}
+@plugin "@iconify/tailwind4";
+
 @plugin "flyonui/theme" {
     name: "black";
     default: true;
@@ -14,5 +13,9 @@
     --color-info: #51a2ff;
     --color-error: #ff6467;
 }
-@plugin "@iconify/tailwind4";
+
+@plugin "flyonui" {
+    themes: soft --default black --prefersdark;
+}
+
 @source "./node_modules/flyonui/dist/index.js";
