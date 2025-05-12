@@ -6,6 +6,7 @@ import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
 import { onMounted } from "vue";
+import ThemeSelector from "./components/ThemeSelector.vue";
 
 onMounted(() => {
   setTimeout(() => window.HSStaticMethods.autoInit(), 100)
