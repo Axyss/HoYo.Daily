@@ -20,12 +20,16 @@ const CLAIM_FUNCTION_BINDINGS: Record<string, () => Promise<any>> = {
 // Browser listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
   console.log("[background.ts]: Extension installed", detail);
-  await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+  setTimeout(async () => {
+    await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+  }, 3000);
 })
 
 chrome.runtime.onStartup.addListener(async () => {
   console.log("[background.ts]: Extension started");
-  await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+  setTimeout(async () => {
+    await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+  }, 3000);
 })
 
 // Alarm handling
