@@ -5,7 +5,7 @@
 
 @plugin "flyonui/theme" {
     name: "black";
-    default: true;
+    prefersdark: true;
     --color-primary: #7033ff;
     --color-base-100: #090909;
     --color-base-200: #151517;
@@ -15,7 +15,7 @@
 }
 
 @plugin "flyonui" {
-    themes: soft --default black --prefersdark;
+    themes: light --default;
 }
 
 @source "./node_modules/flyonui/dist/index.js";
