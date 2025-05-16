@@ -5,15 +5,19 @@ import { getSecondsUntilNextMidnightUTC8 } from "../scripts/utils.ts";
 const secondsLeft = ref(getSecondsUntilNextMidnightUTC8());
 
 const countdown = computed(() => {
-  const h = Math.floor(secondsLeft.value / 3600).toString().padStart(2, "0");
-  const m = Math.floor((secondsLeft.value % 3600) / 60).toString().padStart(2, "0");
+  const h = Math.floor(secondsLeft.value / 3600)
+    .toString()
+    .padStart(2, "0");
+  const m = Math.floor((secondsLeft.value % 3600) / 60)
+    .toString()
+    .padStart(2, "0");
   const s = (secondsLeft.value % 60).toString().padStart(2, "0");
   return `${h}:${m}:${s}`;
-})
+});
 
 onMounted(() => {
   setInterval(() => {
-    secondsLeft.value = getSecondsUntilNextMidnightUTC8() - 1
+    secondsLeft.value = getSecondsUntilNextMidnightUTC8() - 1;
   }, 1000);
 });
 </script>

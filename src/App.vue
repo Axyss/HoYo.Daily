@@ -2,36 +2,44 @@
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
-import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./scripts/claimable.ts";
+import {
+  claimGenshinRewards,
+  claimStarRailRewards,
+  claimZenlessRewards,
+} from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
 import { onMounted } from "vue";
 import ThemeSelector from "./components/ThemeSelector.vue";
 
 onMounted(() => {
-  setTimeout(() => window.HSStaticMethods.autoInit(), 100)
+  setTimeout(() => window.HSStaticMethods.autoInit(), 100);
 });
 
 const extensionVersion = chrome.runtime.getManifest().version;
 function getImageUrl(name: string, ext: string): string {
-  return new URL(`./assets/${name}.${ext}`, import.meta.url).href
+  return new URL(`./assets/${name}.${ext}`, import.meta.url).href;
 }
 
 function openGithubIssuesTab(): void {
-  chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" })
+  chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" });
 }
 </script>
 
 <template>
   <header class="flex p-4">
     <div class="flex items-center gap-3 w-fit">
-      <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
+      <div
+        class="w-8 h-8 bg-primary rounded-md flex items-center justify-center"
+      >
         <div class="w-4 h-4 bg-primary-content rotate-45"></div>
       </div>
       <div class="flex items-center gap-2">
         <h1 class="text-xl font-bold text-base-content">HoyoDaily</h1>
       </div>
-      <span class="px-2 py-0.5 bg-primary/20 ml-auto font-medium text-primary border border-primary/70 text-xs rounded-full">
+      <span
+        class="px-2 py-0.5 bg-primary/20 ml-auto font-medium text-primary border border-primary/70 text-xs rounded-full"
+      >
         <span class="size-3.5 icon-[lucide--box] align-bottom" />
         {{ extensionVersion }}
       </span>
@@ -41,12 +49,22 @@ function openGithubIssuesTab(): void {
 
   <div class="divider" />
 
-  <nav class="tabs space-x-2 px-2 py-2 bg-base-200/60" role="tablist" >
-    <button type="button" class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20" data-tab="#main-tab" role="tab" >
+  <nav class="tabs space-x-2 px-2 py-2 bg-base-200/60" role="tablist">
+    <button
+      type="button"
+      class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20"
+      data-tab="#main-tab"
+      role="tab"
+    >
       <span class="icon-[lucide--gamepad-2] size-5"></span>
       <span>Games</span>
     </button>
-    <button type="button" class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20" data-tab="#history-tab" role="tab" >
+    <button
+      type="button"
+      class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20"
+      data-tab="#history-tab"
+      role="tab"
+    >
       <span class="icon-[lucide--history] size-5"></span>
       <span>History</span>
     </button>
@@ -58,12 +76,18 @@ function openGithubIssuesTab(): void {
   <main class="w-full">
     <!-- History Tab Content -->
     <div id="history-tab" role="tabpanel" class="p-4 hidden">
-      <div
-        class="flex flex-col items-center justify-center h-full py-8 px-4">
-        <div class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex flex-col items-center max-w-xs text-center">
+      <div class="flex flex-col items-center justify-center h-full py-8 px-4">
+        <div
+          class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex flex-col items-center max-w-xs text-center"
+        >
           <span class="icon-[lucide--history] size-16 text-primary/60 mb-4" />
-          <h3 class="text-xl font-semibold text-base-content mb-2">No History Yet</h3>
-          <p class="text-base-content/60 text-sm mb-4">Your claimed rewards will appear here once you start collecting them.</p>
+          <h3 class="text-xl font-semibold text-base-content mb-2">
+            No History Yet
+          </h3>
+          <p class="text-base-content/60 text-sm mb-4">
+            Your claimed rewards will appear here once you start collecting
+            them.
+          </p>
           <div class="flex items-center gap-2 text-base-content/60 text-sm">
             <span class="icon-[lucide--arrow-left]" />
             <span>Switch to Games tab to get started</span>
@@ -77,13 +101,25 @@ function openGithubIssuesTab(): void {
       <Suspense>
         <template #default>
           <div class="my-2">
-            <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" :task="claimGenshinRewards" />
+            <GameOption
+              name="Genshin Impact"
+              :icon="getImageUrl('genshin-icon', 'webp')"
+              :task="claimGenshinRewards"
+            />
             <div class="divider px-4" />
 
-            <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'webp')" :task="claimStarRailRewards" />
+            <GameOption
+              name="Honkai Star Rail"
+              :icon="getImageUrl('hsr-icon', 'webp')"
+              :task="claimStarRailRewards"
+            />
             <div class="divider px-4" />
 
-            <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" :task="claimZenlessRewards" />
+            <GameOption
+              name="Zenless Zone Zero"
+              :icon="getImageUrl('zzz-icon', 'webp')"
+              :task="claimZenlessRewards"
+            />
           </div>
         </template>
         <template #fallback>
@@ -99,13 +135,20 @@ function openGithubIssuesTab(): void {
           <div class="flex items-center gap-2">
             <span class="size-4 icon-[lucide--clock]" />
             <span class="text-sm">Next claim in:</span>
-            <Countdown class="font-mono font-medium text-sm"/>
+            <Countdown class="font-mono font-medium text-sm" />
           </div>
 
           <div class="tooltip [--placement:left] tooltip-toggle">
-            <span class="text-base-content/40 duration-200 hover:text-base-content/60 size-4 icon-[lucide--circle-help] mt-1.5" />
-            <div class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible" role="popover">
-              <div class="tooltip-body mb-3 w-fit rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10 text-base-content/70">
+            <span
+              class="text-base-content/40 duration-200 hover:text-base-content/60 size-4 icon-[lucide--circle-help] mt-1.5"
+            />
+            <div
+              class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible"
+              role="popover"
+            >
+              <div
+                class="tooltip-body mb-3 w-fit rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10 text-base-content/70"
+              >
                 Placeholder
               </div>
             </div>
@@ -128,7 +171,9 @@ function openGithubIssuesTab(): void {
 
   <div class="divider" />
 
-  <footer class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
+  <footer
+    class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50"
+  >
     <Suspense>
       <template #default>
         <NotificationDropdown />
@@ -137,7 +182,10 @@ function openGithubIssuesTab(): void {
         <div class="loading loading-spinner loading-sm" />
       </template>
     </Suspense>
-    <div @click="openGithubIssuesTab()" class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200">
+    <div
+      @click="openGithubIssuesTab()"
+      class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200"
+    >
       <span class="size-3.5 icon-[lucide--github]"></span>
       <span>Report an issue</span>
     </div>

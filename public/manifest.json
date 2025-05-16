@@ -12,8 +12,5 @@
     "type": "module"
   },
   "permissions": ["alarms", "cookies", "storage", "notifications"],
-  "host_permissions": [
-    "https://hoyolab.com/*",
-    "https://*.hoyolab.com/*"
-  ]
+  "host_permissions": ["https://hoyolab.com/*", "https://*.hoyolab.com/*"]
 }

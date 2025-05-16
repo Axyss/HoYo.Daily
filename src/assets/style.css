@@ -4,18 +4,18 @@
 @plugin "@iconify/tailwind4";
 
 @plugin "flyonui/theme" {
-    name: "black";
-    prefersdark: true;
-    --color-primary: #7033ff;
-    --color-base-100: #090909;
-    --color-base-200: #151517;
-    --color-success: #05df72;
-    --color-info: #51a2ff;
-    --color-error: #ff6467;
+  name: "black";
+  prefersdark: true;
+  --color-primary: #7033ff;
+  --color-base-100: #090909;
+  --color-base-200: #151517;
+  --color-success: #05df72;
+  --color-info: #51a2ff;
+  --color-error: #ff6467;
 }
 
 @plugin "flyonui" {
-    themes: light --default;
+  themes: light --default;
 }
 
 @source "./node_modules/flyonui/dist/index.js";

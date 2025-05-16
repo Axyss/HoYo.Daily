@@ -1,9 +1,14 @@
 import {
   getMinutesUntilNextMidnightUTC8,
   getSecondsSinceLastMidnightUTC8,
-  happenedMoreThanADayAgo, NotificationState
+  happenedMoreThanADayAgo,
+  NotificationState,
 } from "./utils.ts";
-import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
+import {
+  claimGenshinRewards,
+  claimStarRailRewards,
+  claimZenlessRewards,
+} from "./claimable.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
 import { getStorage, setStorage } from "./storage.ts";
@@ -14,30 +19,30 @@ const INSTANT_ALARM_NAME: string = "instant-claim-alarm";
 const CLAIM_FUNCTION_BINDINGS: Record<string, () => Promise<any>> = {
   "Genshin Impact": claimGenshinRewards,
   "Honkai Star Rail": claimStarRailRewards,
-  "Zenless Zone Zero": claimZenlessRewards
+  "Zenless Zone Zero": claimZenlessRewards,
 };
 
 // Browser listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
   console.log("[background.ts]: Extension installed", detail);
   setTimeout(async () => {
-    await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+    await scheduleAlarm(INSTANT_ALARM_NAME, { when: dayjs().unix() });
   }, 3000);
-})
+});
 
 chrome.runtime.onStartup.addListener(async () => {
   console.log("[background.ts]: Extension started");
   setTimeout(async () => {
-    await scheduleAlarm(INSTANT_ALARM_NAME, {when: dayjs().unix()});
+    await scheduleAlarm(INSTANT_ALARM_NAME, { when: dayjs().unix() });
   }, 3000);
-})
+});
 
 // Alarm handling
 async function scheduleAlarm(alarmName: string, alarmInfo: Object) {
   const existingAlarm = await chrome.alarms.get(alarmName);
   if (existingAlarm == null) {
-    await chrome.alarms.create(alarmName, alarmInfo)
-    console.log(`[background.ts]: Scheduling ${alarmName}`)
+    await chrome.alarms.create(alarmName, alarmInfo);
+    console.log(`[background.ts]: Scheduling ${alarmName}`);
   }
 }
 
@@ -45,7 +50,9 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   try {
     console.log(`[background.ts]: Alarm triggered: ${alarm.name}`);
     if (!(await getStorage("Settings")).autoClaimEnabled) {
-      console.log(`[background.ts]: Auto-claim is disabled, skipping automatic claim process`);
+      console.log(
+        `[background.ts]: Auto-claim is disabled, skipping automatic claim process`,
+      );
       return;
     }
     await claimSelectedRewards();
@@ -53,22 +60,25 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
     console.error("[background.ts]: Unexpected error", error);
   } finally {
     await scheduleAlarm(DAILY_ALARM_NAME, {
-      delayInMinutes: getMinutesUntilNextMidnightUTC8()
+      delayInMinutes: getMinutesUntilNextMidnightUTC8(),
     });
   }
-})
+});
 
 // Claiming logic
 async function claimSelectedRewards() {
-  let success = 0, failed = 0;
-  await sendMessage({ type: MessageType.CLAIMING, target: "all" })
+  let success = 0,
+    failed = 0;
+  await sendMessage({ type: MessageType.CLAIMING, target: "all" });
 
   for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
     const gameSettings = await getStorage(gameTitle);
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
-    console.log(`[background.ts]: Attempting to claim rewards for ${gameTitle}`);
+    console.log(
+      `[background.ts]: Attempting to claim rewards for ${gameTitle}`,
+    );
     const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
     const content = await response.json();
     console.log(content);
@@ -89,7 +99,7 @@ async function claimSuccess(gameTitle: string, gameSettings: any) {
   gameSettings.lastClaim = dayjs().unix() - getSecondsSinceLastMidnightUTC8();
   gameSettings.lastError = null;
   await setStorage(gameTitle, gameSettings);
-  await sendMessage({ type: MessageType.CLAIM_SUCCESS, target: gameTitle })
+  await sendMessage({ type: MessageType.CLAIM_SUCCESS, target: gameTitle });
 
   const notificationSetting = (await getStorage("Settings")).notificationState;
   if (NotificationState.ENABLED === notificationSetting) {
@@ -98,25 +108,39 @@ async function claimSuccess(gameTitle: string, gameSettings: any) {
       iconUrl: "icon.png",
       title: "HoyoDaily - Daily Rewards",
       message: `✅ Successfully claimed rewards for ${gameTitle}!`,
-      requireInteraction: false
+      requireInteraction: false,
     });
   }
 }
 
-async function claimError(gameTitle: string, gameSettings: any, errorMessage: string) {
-  console.error(`[background.ts]: Failed to claim rewards for ${gameTitle}. Error: ${errorMessage}`);
+async function claimError(
+  gameTitle: string,
+  gameSettings: any,
+  errorMessage: string,
+) {
+  console.error(
+    `[background.ts]: Failed to claim rewards for ${gameTitle}. Error: ${errorMessage}`,
+  );
   gameSettings.lastError = errorMessage;
   await setStorage(gameTitle, gameSettings);
-  await sendMessage({ type: MessageType.CLAIM_ERROR, target: gameTitle, content: errorMessage })
+  await sendMessage({
+    type: MessageType.CLAIM_ERROR,
+    target: gameTitle,
+    content: errorMessage,
+  });
 
   const notificationSetting = (await getStorage("Settings")).notificationState;
-  if ([NotificationState.ENABLED, NotificationState.MINIMAL].includes(notificationSetting)) {
+  if (
+    [NotificationState.ENABLED, NotificationState.MINIMAL].includes(
+      notificationSetting,
+    )
+  ) {
     chrome.notifications.create({
       type: "basic",
       iconUrl: "icon.png",
       title: "HoyoDaily - Daily Rewards",
       message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${errorMessage}.`,
-      requireInteraction: false
+      requireInteraction: false,
     });
   }
 }
@@ -125,15 +149,16 @@ async function claimError(gameTitle: string, gameSettings: any, errorMessage: st
 listenMessage(MessageType.UI_CLAIM, async () => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
     console.log("[background.ts]: Claiming due UI interaction");
-    await claimSelectedRewards()  // confetti inconsistency (?)
+    await claimSelectedRewards(); // confetti inconsistency (?)
   }
-})
+});
 
 listenMessage(MessageType.MANUAL_CLAIM, async () => {
   console.log("[background.ts]: Claiming manually");
-  if (await claimSelectedRewards()) {  // No errors occurred
-    await sendMessage({ type: MessageType.MANUAL_CLAIM_SUCCESS })
+  if (await claimSelectedRewards()) {
+    // No errors occurred
+    await sendMessage({ type: MessageType.MANUAL_CLAIM_SUCCESS });
   } else {
-    await sendMessage({ type: MessageType.MANUAL_CLAIM_ERROR })
+    await sendMessage({ type: MessageType.MANUAL_CLAIM_ERROR });
   }
-})
+});
