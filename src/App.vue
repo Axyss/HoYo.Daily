@@ -29,9 +29,7 @@ function openGithubIssuesTab(): void {
 <template>
   <header class="flex p-4">
     <div class="flex items-center gap-3 w-fit">
-      <div
-        class="w-8 h-8 bg-primary rounded-md flex items-center justify-center"
-      >
+      <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
         <div class="w-4 h-4 bg-primary-content rotate-45"></div>
       </div>
       <div class="flex items-center gap-2">
@@ -81,12 +79,9 @@ function openGithubIssuesTab(): void {
           class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex flex-col items-center max-w-xs text-center"
         >
           <span class="icon-[lucide--history] size-16 text-primary/60 mb-4" />
-          <h3 class="text-xl font-semibold text-base-content mb-2">
-            No History Yet
-          </h3>
+          <h3 class="text-xl font-semibold text-base-content mb-2">No History Yet</h3>
           <p class="text-base-content/60 text-sm mb-4">
-            Your claimed rewards will appear here once you start collecting
-            them.
+            Your claimed rewards will appear here once you start collecting them.
           </p>
           <div class="flex items-center gap-2 text-base-content/60 text-sm">
             <span class="icon-[lucide--arrow-left]" />
@@ -171,9 +166,7 @@ function openGithubIssuesTab(): void {
 
   <div class="divider" />
 
-  <footer
-    class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50"
-  >
+  <footer class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
     <Suspense>
       <template #default>
         <NotificationDropdown />

@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import {
-  listenMessage,
-  MessageType,
-  sendMessage,
-} from "../scripts/messaging.ts";
+import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
 import confetti from "canvas-confetti";
 
 const rewardsClaimed = ref(false);

@@ -4,11 +4,7 @@ import {
   happenedMoreThanADayAgo,
   NotificationState,
 } from "./utils.ts";
-import {
-  claimGenshinRewards,
-  claimStarRailRewards,
-  claimZenlessRewards,
-} from "./claimable.ts";
+import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
 import { getStorage, setStorage } from "./storage.ts";
@@ -50,9 +46,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
   try {
     console.log(`[background.ts]: Alarm triggered: ${alarm.name}`);
     if (!(await getStorage("Settings")).autoClaimEnabled) {
-      console.log(
-        `[background.ts]: Auto-claim is disabled, skipping automatic claim process`,
-      );
+      console.log(`[background.ts]: Auto-claim is disabled, skipping automatic claim process`);
       return;
     }
     await claimSelectedRewards();
@@ -76,9 +70,7 @@ async function claimSelectedRewards() {
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
-    console.log(
-      `[background.ts]: Attempting to claim rewards for ${gameTitle}`,
-    );
+    console.log(`[background.ts]: Attempting to claim rewards for ${gameTitle}`);
     const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
     const content = await response.json();
     console.log(content);
@@ -113,11 +105,7 @@ async function claimSuccess(gameTitle: string, gameSettings: any) {
   }
 }
 
-async function claimError(
-  gameTitle: string,
-  gameSettings: any,
-  errorMessage: string,
-) {
+async function claimError(gameTitle: string, gameSettings: any, errorMessage: string) {
   console.error(
     `[background.ts]: Failed to claim rewards for ${gameTitle}. Error: ${errorMessage}`,
   );
@@ -130,11 +118,7 @@ async function claimError(
   });
 
   const notificationSetting = (await getStorage("Settings")).notificationState;
-  if (
-    [NotificationState.ENABLED, NotificationState.MINIMAL].includes(
-      notificationSetting,
-    )
-  ) {
+  if ([NotificationState.ENABLED, NotificationState.MINIMAL].includes(notificationSetting)) {
     chrome.notifications.create({
       type: "basic",
       iconUrl: "icon.png",

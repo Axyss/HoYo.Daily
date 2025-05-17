@@ -6,9 +6,7 @@ import { NotificationState } from "../scripts/utils.ts";
 const notificationState = ref<NotificationState>();
 
 watch(notificationState, async (newVal, _) => {
-  console.log(
-    `[NotificationDropdown.vue]: Notification state changed to ${newVal}`,
-  );
+  console.log(`[NotificationDropdown.vue]: Notification state changed to ${newVal}`);
   await setStorage("Settings", { notificationState: newVal });
 });
 
@@ -52,10 +50,7 @@ const notificationOptions = [
     >
       <span
         class="size-3.5"
-        :class="
-          notificationOptions.find((opt) => opt.state === notificationState)
-            ?.icon
-        "
+        :class="notificationOptions.find((opt) => opt.state === notificationState)?.icon"
       />
       <span class="text-xs">Notifications: {{ notificationState }}</span>
       <span
@@ -66,10 +61,7 @@ const notificationOptions = [
       class="dropdown-menu dropdown-open:opacity-100 hidden absolute bottom-full mb-3 left-0 w-58 rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10"
       role="menu"
     >
-      <template
-        v-for="(option, index) in notificationOptions"
-        :key="option.state"
-      >
+      <template v-for="(option, index) in notificationOptions" :key="option.state">
         <div class="divider" v-if="index > 0" />
         <li>
           <div
@@ -82,12 +74,8 @@ const notificationOptions = [
           >
             <span class="size-5" :class="option.icon" />
             <div class="flex flex-col">
-              <span class="text-sm dropdown-active:bg-primary">{{
-                option.title
-              }}</span>
-              <span class="text-xs text-base-content/70">{{
-                option.description
-              }}</span>
+              <span class="text-sm dropdown-active:bg-primary">{{ option.title }}</span>
+              <span class="text-xs text-base-content/70">{{ option.description }}</span>
             </div>
           </div>
         </li>

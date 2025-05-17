@@ -31,10 +31,7 @@ export async function sendMessage(message: Message): Promise<void> {
   });
 }
 
-export function listenMessage(
-  message: MessageType,
-  callback: (response: any) => Promise<any>,
-) {
+export function listenMessage(message: MessageType, callback: (response: any) => Promise<any>) {
   chrome.runtime.onMessage.addListener((response, sender, sendResponse) => {
     if (response.type === message) {
       callback(response).then(() => sendResponse(sender));

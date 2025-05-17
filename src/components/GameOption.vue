@@ -2,11 +2,7 @@
 import { reactive, ref, watch } from "vue";
 import { happenedMoreThanADayAgo } from "../scripts/utils.ts";
 import Switch from "./Switch.vue";
-import {
-  listenMessage,
-  MessageType,
-  sendMessage,
-} from "../scripts/messaging.ts";
+import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
 import { getStorage, setStorage } from "../scripts/storage.ts";
 
 enum ClaimStates {

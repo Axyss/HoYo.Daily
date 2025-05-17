@@ -28,9 +28,7 @@ if (!settings?.autoClaimEnabled) {
       <div class="flex items-center gap-2">
         <span class="text-sm font-semibold">Auto Claim</span>
         <div class="tooltip [--placement:top] tooltip-toggle">
-          <span
-            class="icon-[lucide--info] hover:text-primary mt-1.5 size-4 duration-200"
-          />
+          <span class="icon-[lucide--info] hover:text-primary mt-1.5 size-4 duration-200" />
           <div
             class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible"
             role="popover"
@@ -43,9 +41,7 @@ if (!settings?.autoClaimEnabled) {
           </div>
         </div>
       </div>
-      <span class="text-xs text-base-content/40">
-        Claim rewards automatically when available
-      </span>
+      <span class="text-xs text-base-content/40"> Claim rewards automatically when available </span>
     </div>
     <Switch v-model="autoClaimEnabled" />
   </div>
