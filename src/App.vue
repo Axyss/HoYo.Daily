@@ -11,6 +11,7 @@ import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
 import { onMounted } from "vue";
 import ThemeSelector from "./components/ThemeSelector.vue";
+import TooltipPopover from "./components/TooltipPopover.vue";
 
 onMounted(() => {
   setTimeout(() => window.HSStaticMethods.autoInit(), 100);
@@ -28,17 +29,17 @@ function openGithubIssuesTab(): void {
 
 <template>
   <header class="flex p-4">
-    <div class="flex items-center gap-3 w-fit">
-      <div class="w-8 h-8 bg-primary rounded-md flex items-center justify-center">
-        <div class="w-4 h-4 bg-primary-content rotate-45"></div>
+    <div class="flex w-fit items-center gap-3">
+      <div class="bg-primary flex h-8 w-8 items-center justify-center rounded-md">
+        <div class="bg-primary-content h-4 w-4 rotate-45"></div>
       </div>
       <div class="flex items-center gap-2">
-        <h1 class="text-xl font-bold text-base-content">HoyoDaily</h1>
+        <h1 class="text-base-content text-xl font-bold">HoyoDaily</h1>
       </div>
       <span
-        class="px-2 py-0.5 bg-primary/20 ml-auto font-medium text-primary border border-primary/70 text-xs rounded-full"
+        class="bg-primary/20 text-primary border-primary/70 ml-auto rounded-full border px-2 py-0.5 text-xs font-medium"
       >
-        <span class="size-3.5 icon-[lucide--box] align-bottom" />
+        <span class="icon-[lucide--box] size-3.5 align-bottom" />
         {{ extensionVersion }}
       </span>
     </div>
@@ -47,10 +48,10 @@ function openGithubIssuesTab(): void {
 
   <div class="divider" />
 
-  <nav class="tabs space-x-2 px-2 py-2 bg-base-200/60" role="tablist">
+  <nav class="tabs bg-base-200/60 space-x-2 px-2 py-2" role="tablist">
     <button
       type="button"
-      class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20"
+      class="btn btn-text text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20 flex-1 rounded-md"
       data-tab="#main-tab"
       role="tab"
     >
@@ -59,7 +60,7 @@ function openGithubIssuesTab(): void {
     </button>
     <button
       type="button"
-      class="btn btn-text rounded-md flex-1 text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20"
+      class="btn btn-text text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20 flex-1 rounded-md"
       data-tab="#history-tab"
       role="tab"
     >
@@ -73,17 +74,17 @@ function openGithubIssuesTab(): void {
   <!-- Tabs -->
   <main class="w-full">
     <!-- History Tab Content -->
-    <div id="history-tab" role="tabpanel" class="p-4 hidden">
-      <div class="flex flex-col items-center justify-center h-full py-8 px-4">
+    <div id="history-tab" role="tabpanel" class="hidden p-4">
+      <div class="flex h-full flex-col items-center justify-center px-4 py-8">
         <div
-          class="bg-primary/10 border border-primary/30 rounded-xl p-6 flex flex-col items-center max-w-xs text-center"
+          class="bg-primary/10 border-primary/30 flex max-w-xs flex-col items-center rounded-xl border p-6 text-center"
         >
-          <span class="icon-[lucide--history] size-16 text-primary/60 mb-4" />
-          <h3 class="text-xl font-semibold text-base-content mb-2">No History Yet</h3>
-          <p class="text-base-content/60 text-sm mb-4">
+          <span class="icon-[lucide--history] text-primary/60 mb-4 size-16" />
+          <h3 class="text-base-content mb-2 text-xl font-semibold">No History Yet</h3>
+          <p class="text-base-content/60 mb-4 text-sm">
             Your claimed rewards will appear here once you start collecting them.
           </p>
-          <div class="flex items-center gap-2 text-base-content/60 text-sm">
+          <div class="text-base-content/60 flex items-center gap-2 text-sm">
             <span class="icon-[lucide--arrow-left]" />
             <span>Switch to Games tab to get started</span>
           </div>
@@ -92,7 +93,7 @@ function openGithubIssuesTab(): void {
     </div>
 
     <!-- Games Tab Content -->
-    <div id="main-tab" role="tabpanel" class="p-0 mt-0">
+    <div id="main-tab" role="tabpanel" class="mt-0 p-0">
       <Suspense>
         <template #default>
           <div class="my-2">
@@ -125,29 +126,22 @@ function openGithubIssuesTab(): void {
       <div class="divider" />
 
       <!-- Auto Claim Section -->
-      <div class="px-4 py-3 bg-base-200/60">
-        <div class="flex items-center justify-between mb-4">
+      <div class="bg-base-200/60 px-4 py-3">
+        <div class="mb-4 flex items-center justify-between">
           <div class="flex items-center gap-2">
-            <span class="size-4 icon-[lucide--clock]" />
+            <span class="icon-[lucide--clock] size-4" />
             <span class="text-sm">Next claim in:</span>
-            <Countdown class="font-mono font-medium text-sm" />
+            <Countdown class="font-mono text-sm font-medium" />
           </div>
 
-          <div class="tooltip [--placement:left] tooltip-toggle">
+          <!-- <div class="tooltip tooltip-toggle [--placement:left]">
             <span
-              class="text-base-content/40 duration-200 hover:text-base-content/60 size-4 icon-[lucide--circle-help] mt-1.5"
+              class="text-base-content/40 hover:text-base-content/60 icon-[lucide--circle-help] mt-1.5 size-4 duration-200"
             />
-            <div
-              class="tooltip-content tooltip-shown:opacity-100 tooltip-shown:visible"
-              role="popover"
-            >
-              <div
-                class="tooltip-body mb-3 w-fit rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10 text-base-content/70"
-              >
-                Placeholder
-              </div>
-            </div>
-          </div>
+            <TooltipPopover class="mr-4">
+              Rewards reset at <strong>12 a.m UTC +8</strong>
+            </TooltipPopover>
+          </div> -->
         </div>
         <Suspense>
           <template #default>
@@ -166,7 +160,7 @@ function openGithubIssuesTab(): void {
 
   <div class="divider" />
 
-  <footer class="flex items-center justify-between px-4 py-2 text-xs text-base-content/50">
+  <footer class="text-base-content/50 flex items-center justify-between px-4 py-2 text-xs">
     <Suspense>
       <template #default>
         <NotificationDropdown />
@@ -177,9 +171,9 @@ function openGithubIssuesTab(): void {
     </Suspense>
     <div
       @click="openGithubIssuesTab()"
-      class="flex items-center gap-1 cursor-pointer hover:text-primary duration-200"
+      class="hover:text-primary flex cursor-pointer items-center gap-1 duration-200"
     >
-      <span class="size-3.5 icon-[lucide--github]"></span>
+      <span class="icon-[lucide--github] size-3.5"></span>
       <span>Report an issue</span>
     </div>
   </footer>
