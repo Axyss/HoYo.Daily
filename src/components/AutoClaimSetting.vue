@@ -35,7 +35,7 @@ if (!settings?.autoClaimEnabled) {
           </TooltipPopover>
         </div>
       </div>
-      <span class="text-base-content/40 text-xs"> Claim rewards automatically when available </span>
+      <span class="text-base-content/50 text-xs"> Claim rewards automatically when available </span>
     </div>
     <Switch v-model="autoClaimEnabled" />
   </div>

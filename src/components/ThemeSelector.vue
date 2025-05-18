@@ -32,7 +32,7 @@ async function alternateTheme() {
 
 <template>
   <label
-    class="swap swap-rotate text-base-content/40 hover:text-primary ml-auto cursor-pointer rounded-full p-2 duration-200"
+    class="swap swap-rotate text-base-content/50 hover:text-primary ml-auto cursor-pointer rounded-full p-2 duration-200"
   >
     <input
       type="checkbox"
