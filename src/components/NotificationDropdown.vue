@@ -42,11 +42,11 @@ const notificationOptions = [
 </script>
 
 <template>
-  <div class="dropdown flex items-center gap-1 cursor-pointer">
+  <div class="dropdown flex cursor-pointer items-center gap-1">
     <button
       id="notification-dropdown"
       type="button"
-      class="dropdown-toggle flex items-center gap-1.5 cursor-pointer hover:text-primary duration-200 rounded-lg"
+      class="dropdown-toggle hover:text-primary flex cursor-pointer items-center gap-1.5 rounded-lg duration-200"
     >
       <span
         class="size-3.5"
@@ -54,11 +54,11 @@ const notificationOptions = [
       />
       <span class="text-xs">Notifications: {{ notificationState }}</span>
       <span
-        class="size-3 icon-[lucide--chevron-down] dropdown-open:rotate-180 transition-transform duration-200"
+        class="icon-[lucide--chevron-down] dropdown-open:rotate-180 size-3 transition-transform duration-200"
       ></span>
     </button>
     <ul
-      class="dropdown-menu dropdown-open:opacity-100 hidden absolute bottom-full mb-3 left-0 w-58 rounded-lg p-1.5 z-10 bg-base-200/80 backdrop-blur-sm border border-base-content/10"
+      class="dropdown-menu dropdown-open:opacity-100 bg-base-200/80 border-base-content/10 absolute bottom-full left-0 z-10 mb-3 hidden w-58 rounded-lg border p-1.5 backdrop-blur-sm"
       role="menu"
     >
       <template v-for="(option, index) in notificationOptions" :key="option.state">
@@ -66,16 +66,16 @@ const notificationOptions = [
         <li>
           <div
             @click="notificationState = option.state"
-            class="dropdown-item active:text-base-content active:border-primary transition-all flex items-center gap-3 p-2 hover:bg-base-200 transition-bg duration-200 rounded-lg cursor-pointer"
+            class="dropdown-item active:text-base-content active:border-primary flex cursor-pointer items-center gap-3 rounded-lg p-2 transition-all duration-200"
             :class="{
-              'bg-base-200/50 border-1 border-primary transition-all duration-200':
+              'bg-base-200/50 border-primary border-1 transition-all duration-200':
                 notificationState === option.state,
             }"
           >
             <span class="size-5" :class="option.icon" />
             <div class="flex flex-col">
-              <span class="text-sm dropdown-active:bg-primary">{{ option.title }}</span>
-              <span class="text-xs text-base-content/70">{{ option.description }}</span>
+              <span class="text-sm">{{ option.title }}</span>
+              <span class="text-base-content/70 text-xs">{{ option.description }}</span>
             </div>
           </div>
         </li>
