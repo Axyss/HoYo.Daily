@@ -34,7 +34,7 @@ chrome.runtime.onStartup.addListener(async () => {
 });
 
 // Alarm handling
-async function scheduleAlarm(alarmName: string, alarmInfo: Object) {
+async function scheduleAlarm(alarmName: string, alarmInfo: object) {
   const existingAlarm = await chrome.alarms.get(alarmName);
   if (existingAlarm == null) {
     await chrome.alarms.create(alarmName, alarmInfo);
