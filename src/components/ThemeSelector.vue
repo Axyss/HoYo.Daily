@@ -1,28 +1,44 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref } from "vue";
+import { getStorage, setStorage } from "../scripts/storage";
 
-const isDarkMode = ref(false);
+enum Theme {
+  LIGHT = "light",
+  DARK = "black",
+}
+const currentTheme = ref((await getStorage("Settings"))?.theme);
 
-onMounted(() => {
+if (currentTheme.value === undefined) {
+  applyTheme(getPreferredTheme());
+} else {
+  applyTheme(currentTheme.value);
+}
+
+function getPreferredTheme() {
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-  isDarkMode.value = prefersDark.matches;
-});
+  return prefersDark.matches ? Theme.DARK : Theme.LIGHT;
+}
 
-watch(isDarkMode, (newValue) => {
-  const theme = newValue ? "black" : "light";
+function applyTheme(theme: Theme) {
   document.documentElement.setAttribute("data-theme", theme);
-});
+}
+
+async function alternateTheme() {
+  currentTheme.value = currentTheme.value === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+  await setStorage("Settings", { theme: currentTheme.value });
+  applyTheme(currentTheme.value);
+}
 </script>
 
 <template>
   <label
-    class="swap swap-rotate text-base-content/40 hover:text-primary p-2 ml-auto rounded-full duration-200 cursor-pointer"
+    class="swap swap-rotate text-base-content/40 hover:text-primary ml-auto cursor-pointer rounded-full p-2 duration-200"
   >
     <input
       type="checkbox"
       class="theme-controller"
-      :checked="isDarkMode"
-      @change="isDarkMode = !isDarkMode"
+      :checked="(currentTheme ?? getPreferredTheme()) === Theme.DARK"
+      @change="alternateTheme()"
     />
     <span class="swap-on icon-[lucide--sun] size-5"></span>
     <span class="swap-off icon-[lucide--moon] size-5"></span>
