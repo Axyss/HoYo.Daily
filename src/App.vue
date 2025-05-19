@@ -11,7 +11,6 @@ import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
 import { onMounted } from "vue";
 import ThemeSelector from "./components/ThemeSelector.vue";
-import TooltipPopover from "./components/TooltipPopover.vue";
 
 onMounted(() => {
   setTimeout(() => window.HSStaticMethods.autoInit(), 100);
