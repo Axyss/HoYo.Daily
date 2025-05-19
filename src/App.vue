@@ -43,7 +43,14 @@ function openGithubIssuesTab(): void {
         {{ extensionVersion }}
       </span>
     </div>
-    <ThemeSelector />
+    <Suspense>
+      <template #default>
+        <ThemeSelector />
+      </template>
+      <template #fallback>
+        <div class="loading loading-spinner loading-sm" />
+      </template>
+    </Suspense>
   </header>
 
   <div class="divider" />
@@ -51,7 +58,7 @@ function openGithubIssuesTab(): void {
   <nav class="tabs bg-base-200/60 space-x-2 px-2 py-2" role="tablist">
     <button
       type="button"
-      class="btn btn-text text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20 flex-1 rounded-md"
+      class="btn btn-text text-base-content/50 active-tab:bg-primary active-tab:text-primary-content hover:text-primary active hover:bg-primary/20 flex-1 rounded-md"
       data-tab="#main-tab"
       role="tab"
     >
@@ -60,7 +67,7 @@ function openGithubIssuesTab(): void {
     </button>
     <button
       type="button"
-      class="btn btn-text text-base-content/40 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20 flex-1 rounded-md"
+      class="btn btn-text text-base-content/50 active-tab:bg-primary active-tab:text-primary-content hover:text-primary hover:bg-primary/20 flex-1 rounded-md"
       data-tab="#history-tab"
       role="tab"
     >
@@ -133,15 +140,6 @@ function openGithubIssuesTab(): void {
             <span class="text-sm">Next claim in:</span>
             <Countdown class="font-mono text-sm font-medium" />
           </div>
-
-          <!-- <div class="tooltip tooltip-toggle [--placement:left]">
-            <span
-              class="text-base-content/40 hover:text-base-content/60 icon-[lucide--circle-help] mt-1.5 size-4 duration-200"
-            />
-            <TooltipPopover class="mr-4">
-              Rewards reset at <strong>12 a.m UTC +8</strong>
-            </TooltipPopover>
-          </div> -->
         </div>
         <Suspense>
           <template #default>
