@@ -1,4 +1,14 @@
+import dayjs from "dayjs";
+
 type StoredData = Record<string, any>;
+type HistoryEntry = {
+  game: string;
+  itemName: string;
+  itemAmount: number;
+  itemImage: string;
+  timestamp: number;
+};
+const locks: Record<string, Promise<void>> = {};
 
 export async function getStorage(namespace: string | null): Promise<StoredData> {
   if (namespace == null) return (await chrome.storage.local.get(null)) || {};
@@ -6,8 +16,6 @@ export async function getStorage(namespace: string | null): Promise<StoredData> 
     return (await chrome.storage.local.get(namespace))[namespace] || {};
   }
 }
-
-const locks: Record<string, Promise<void>> = {};
 
 export async function setStorage(namespace: string, newData: StoredData): Promise<void> {
   locks[namespace] = (locks[namespace] || Promise.resolve())
@@ -29,4 +37,11 @@ export async function setStorage(namespace: string, newData: StoredData): Promis
       throw error;
     });
   await locks[namespace]; // Wait for the operation to complete
+}
+
+export async function addHistoryEntry(entry: HistoryEntry): Promise<void> {
+  const midnight = dayjs().startOf("day").valueOf();
+  const todayHistory = (await getStorage("History"))[midnight];
+  todayHistory[midnight] = entry;
+  await setStorage("History", { midnight: todayHistory });
 }

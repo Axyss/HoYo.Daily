@@ -7,7 +7,7 @@ import {
 import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
-import { getStorage, setStorage } from "./storage.ts";
+import { addHistoryEntry, getStorage, setStorage } from "./storage.ts";
 
 const DAILY_ALARM_NAME: string = "daily-claim-alarm";
 const INSTANT_ALARM_NAME: string = "instant-claim-alarm";
@@ -78,6 +78,13 @@ async function claimSelectedRewards() {
     if (content.retcode >= 0 || content.retcode === -5003) {
       success++;
       await claimSuccess(gameTitle, gameSettings);
+      await addHistoryEntry({
+        game: gameTitle,
+        itemName: content.data?.itemName || "Unknown Item",
+        itemAmount: content.data?.itemCount || 0,
+        itemImage: content.data?.itemImage,
+        timestamp: dayjs().unix(),
+      });
     } else {
       failed++;
       await claimError(gameTitle, gameSettings, content.message);
