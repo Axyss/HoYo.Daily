@@ -85,6 +85,9 @@ async function claimSelectedRewards() {
         itemImage: content.data?.itemImage,
         timestamp: dayjs().unix(),
       });
+    } else if (content.retcode === -100) {
+      failed++;
+      await claimError(gameTitle, gameSettings, "Log in to Hoyolab first");
     } else {
       failed++;
       await claimError(gameTitle, gameSettings, content.message);
