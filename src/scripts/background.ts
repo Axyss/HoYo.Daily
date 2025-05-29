@@ -4,19 +4,13 @@ import {
   happenedMoreThanADayAgo,
   NotificationState,
 } from "./utils.ts";
-import { claimGenshinRewards, claimStarRailRewards, claimZenlessRewards } from "./claimable.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
-import { addHistoryEntry, getStorage, setStorage } from "./storage.ts";
+import { getStorage, setStorage } from "./storage.ts";
+import { gameInstances } from "./claimable.ts";
 
 const DAILY_ALARM_NAME: string = "daily-claim-alarm";
 const INSTANT_ALARM_NAME: string = "instant-claim-alarm";
-
-const CLAIM_FUNCTION_BINDINGS: Record<string, () => Promise<any>> = {
-  "Genshin Impact": claimGenshinRewards,
-  "Honkai Star Rail": claimStarRailRewards,
-  "Zenless Zone Zero": claimZenlessRewards,
-};
 
 // Browser listeners
 chrome.runtime.onInstalled.addListener(async (detail) => {
@@ -65,32 +59,24 @@ async function claimSelectedRewards() {
     failed = 0;
   await sendMessage({ type: MessageType.CLAIMING, target: "all" });
 
-  for (const gameTitle in CLAIM_FUNCTION_BINDINGS) {
-    const gameSettings = await getStorage(gameTitle);
+  for (const game of gameInstances) {
+    const gameSettings = await getStorage(game.name);
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
 
-    console.log(`[background.ts]: Attempting to claim rewards for ${gameTitle}`);
-    const response = await CLAIM_FUNCTION_BINDINGS[gameTitle]();
-    const content = await response.json();
-    console.log(content);
+    console.log(`[background.ts]: Attempting to claim rewards for ${game.name}`);
+    const response = await game.claimRewards();
+    console.log(response);
 
-    if (content.retcode >= 0 || content.retcode === -5003) {
+    if (response.retcode >= 0 || response.retcode === -5003) {
       success++;
-      await claimSuccess(gameTitle, gameSettings);
-      await addHistoryEntry({
-        game: gameTitle,
-        itemName: content.data?.itemName || "Unknown Item",
-        itemAmount: content.data?.itemCount || 0,
-        itemImage: content.data?.itemImage,
-        timestamp: dayjs().unix(),
-      });
-    } else if (content.retcode === -100) {
+      await claimSuccess(game.name, gameSettings);
+    } else if (response.retcode === -100) {
       failed++;
-      await claimError(gameTitle, gameSettings, "Log in to Hoyolab first");
+      await claimError(game.name, gameSettings, "Log in to Hoyolab first");
     } else {
       failed++;
-      await claimError(gameTitle, gameSettings, content.message);
+      await claimError(game.name, gameSettings, response.message);
     }
   }
   return success > 0 && failed === 0;
