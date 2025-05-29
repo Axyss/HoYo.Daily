@@ -21,7 +21,7 @@ const gameClasses = [
       const response = await fetch(
         "https://sg-hk4e-api.hoyolab.com/event/sol/resign_info?act_id=e202102251931481&lang=en-us",
       );
-      return (await response.json()).data.sign_cnt;
+      return (await response.json()).data?.sign_cnt || 0;
     }
   },
 
@@ -40,7 +40,7 @@ const gameClasses = [
       const response = await fetch(
         "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info?lang=en-us&act_id=e202303301540311",
       );
-      return (await response.json()).data.total_sign_day;
+      return (await response.json()).data?.total_sign_day || 0;
     }
   },
 
@@ -59,7 +59,7 @@ const gameClasses = [
       const response = await fetch(
         "https://sg-public-api.hoyolab.com/event/luna/zzz/os/info?lang=en-us&act_id=e202406031448091",
       );
-      return (await response.json()).data.total_sign_day;
+      return (await response.json()).data?.total_sign_day || 0;
     }
   },
 ];
