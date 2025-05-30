@@ -31,12 +31,22 @@ const typedClaimableItems = claimableItems as GameClaimableItems;
 
   <!-- HistoryTab List -->
   <ol v-else class="list-none p-0">
-    <li v-for="(entries, dayTimestamp) in claimHistory" :key="dayTimestamp" class="mb-6">
+    <li
+      v-for="dayTimestamp in Object.keys(claimHistory).sort((a, b) => Number(b) - Number(a))"
+      :key="dayTimestamp"
+      class="mb-6"
+    >
       <h2 class="text-base-content/50 mb-2 text-base font-medium">
         {{ dayjs(Number(dayTimestamp)).format("MMMM D") }}
       </h2>
       <div class="divider mt-1 mb-2" />
-      <div v-for="(entry, entryTimestamp) in entries" :key="entryTimestamp" class="mb-4">
+      <div
+        v-for="(entry, index) in claimHistory[dayTimestamp].sort(
+          (a, b) => b.timestamp - a.timestamp,
+        )"
+        :key="index"
+        class="mb-4"
+      >
         <HistoryEntry
           :game="entry.game"
           :itemAmount="typedClaimableItems[entry.game][entry.itemIndex].cnt"
