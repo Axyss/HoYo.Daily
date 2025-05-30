@@ -8,12 +8,16 @@ import claimableItems from "../assets/claimable-items.json" with { type: "json" 
 type GameClaimableItems = Record<string, { icon: string; name: string; cnt: number }[]>;
 
 const claimHistory = ref<any>(await getStorage("History"));
+console.log(claimHistory.value == true);
 const typedClaimableItems = claimableItems as GameClaimableItems;
 </script>
 
 <template>
   <!-- Empty State -->
-  <div v-if="!claimHistory" class="flex h-full flex-col items-center justify-center px-4 py-8">
+  <div
+    v-if="Object.keys(claimHistory).length === 0"
+    class="flex h-full flex-col items-center justify-center px-4 py-8"
+  >
     <div
       class="bg-primary/10 border-primary/30 flex max-w-xs flex-col items-center rounded-xl border p-6 text-center"
     >
@@ -22,10 +26,6 @@ const typedClaimableItems = claimableItems as GameClaimableItems;
       <p class="text-base-content/60 mb-4 text-sm">
         Your claimed rewards will appear here once you start collecting them.
       </p>
-      <div class="text-base-content/60 flex items-center gap-2 text-sm">
-        <span class="icon-[lucide--arrow-left]" />
-        <span>Switch to Games tab to get started</span>
-      </div>
     </div>
   </div>
 
