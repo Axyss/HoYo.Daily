@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 type StoredData = Record<string, any>;
-type HistoryEntry = {
+export type HistoryDataEntry = {
   game: string;
   itemIndex: number;
   timestamp: number;
@@ -37,10 +37,10 @@ export async function setStorage(namespace: string, newData: StoredData): Promis
   await locks[namespace]; // Wait for the operation to complete
 }
 
-export async function addHistoryEntry(entry: HistoryEntry): Promise<void> {
+export async function addHistoryEntry(entry: HistoryDataEntry): Promise<void> {
   const midnight = dayjs().startOf("day").valueOf();
   const historyData = await getStorage("History");
-  const todayHistory: HistoryEntry[] = historyData[midnight] || [];
+  const todayHistory: HistoryDataEntry[] = historyData[midnight] || [];
   todayHistory.push(entry);
   await setStorage("History", { [midnight]: todayHistory });
   console.log(`[storage.ts]: Adding new entry to the history: ${historyData[midnight]}`);

@@ -7,6 +7,7 @@ export enum MessageType {
   CLAIMING = "claiming",
   CLAIM_ERROR = "claim_error",
   CLAIM_SUCCESS = "claim_success",
+  HISTORY_UPDATE = "history_update",
   UPDATE = "update",
 }
 

@@ -1,15 +1,20 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import dayjs from "dayjs";
-import { getStorage } from "../scripts/storage.ts";
+import { getStorage, type HistoryDataEntry } from "../scripts/storage.ts";
 import HistoryEntry from "./HistoryEntry.vue";
 import claimableItems from "../assets/claimable-items.json" with { type: "json" };
+import { listenMessage, MessageType } from "../scripts/messaging.ts";
 
 type GameClaimableItems = Record<string, { icon: string; name: string; cnt: number }[]>;
 
 const claimHistory = ref<any>(await getStorage("History"));
-console.log(claimHistory.value == true);
 const typedClaimableItems = claimableItems as GameClaimableItems;
+
+listenMessage(MessageType.HISTORY_UPDATE, async () => {
+  console.log("[HistoryTab.vue]: Updating claim history");
+  claimHistory.value = await getStorage("History");
+});
 </script>
 
 <template>
@@ -42,7 +47,7 @@ const typedClaimableItems = claimableItems as GameClaimableItems;
       <div class="divider mt-1 mb-2" />
       <div
         v-for="(entry, index) in claimHistory[dayTimestamp].sort(
-          (a, b) => b.timestamp - a.timestamp,
+          (a: HistoryDataEntry, b: HistoryDataEntry) => b.timestamp - a.timestamp,
         )"
         :key="index"
         class="mb-4"

@@ -84,6 +84,7 @@ async function claimSelectedRewards() {
       await claimError(game.name, gameSettings, response.message);
     }
   }
+  await sendMessage({ type: MessageType.HISTORY_UPDATE });
   return success > 0 && failed === 0;
 }
 
