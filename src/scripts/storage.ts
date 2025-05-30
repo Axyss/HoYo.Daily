@@ -3,9 +3,7 @@ import dayjs from "dayjs";
 type StoredData = Record<string, any>;
 type HistoryEntry = {
   game: string;
-  itemName: string;
-  itemAmount: number;
-  itemImage: string;
+  itemIndex: number;
   timestamp: number;
 };
 const locks: Record<string, Promise<void>> = {};
@@ -41,7 +39,9 @@ export async function setStorage(namespace: string, newData: StoredData): Promis
 
 export async function addHistoryEntry(entry: HistoryEntry): Promise<void> {
   const midnight = dayjs().startOf("day").valueOf();
-  const todayHistory = (await getStorage("History"))[midnight];
-  todayHistory[midnight] = entry;
-  await setStorage("History", { midnight: todayHistory });
+  const historyData = await getStorage("History");
+  const todayHistory: HistoryEntry[] = historyData[midnight] || [];
+  todayHistory.push(entry);
+  await setStorage("History", { [midnight]: todayHistory });
+  console.log(`[storage.ts]: Adding new entry to the history: ${historyData[midnight]}`);
 }

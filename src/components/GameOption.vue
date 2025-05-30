@@ -14,7 +14,6 @@ enum ClaimStates {
 const props = defineProps<{
   name: string;
   icon: string;
-  task: any;
 }>();
 
 const defaultSettings = { enabled: false, lastClaim: 0, lastError: null };
@@ -78,40 +77,40 @@ listenMessage(MessageType.CLAIM_ERROR, async (response) => {
   >
     <div class="flex items-center gap-3">
       <img
-        class="size-8 bg-base-100 rounded-md flex-shrink-0 shadow-primary shadow-sm"
+        class="bg-base-100 shadow-primary size-8 flex-shrink-0 rounded-md shadow-sm"
         :src="props.icon"
       />
       <div>
-        <p class="text-base-content font-medium text-sm">{{ props.name }}</p>
+        <p class="text-base-content text-sm font-medium">{{ props.name }}</p>
         <div
           v-if="claimingState === ClaimStates.NOT_CLAIMED"
-          class="flex items-center gap-1 text-xs text-error"
+          class="text-error flex items-center gap-1 text-xs"
         >
-          <span class="size-3.5 icon-[lucide--circle-x]" />
+          <span class="icon-[lucide--circle-x] size-3.5" />
           <span>Not claimed</span>
         </div>
         <div
           v-else-if="claimingState === ClaimStates.CLAIMING"
-          class="flex items-center gap-1 text-xs text-info animate-pulse"
+          class="text-info flex animate-pulse items-center gap-1 text-xs"
         >
-          <span class="size-3.5 icon-[lucide--iteration-ccw]" />
+          <span class="icon-[lucide--iteration-ccw] size-3.5" />
           <span>Claiming...</span>
         </div>
         <div
           v-else-if="claimingState === ClaimStates.CLAIMED"
-          class="flex items-center gap-1 text-xs text-success"
+          class="text-success flex items-center gap-1 text-xs"
         >
-          <span class="size-3.5 icon-[lucide--circle-check-big]" />
+          <span class="icon-[lucide--circle-check-big] size-3.5" />
           <span>Claimed today</span>
         </div>
         <div
           v-else-if="claimingState === ClaimStates.ERROR"
-          class="flex items-center gap-1 text-xs text-error"
+          class="text-error flex items-center gap-1 text-xs"
         >
-          <span class="size-3.5 icon-[lucide--circle-x]" />
+          <span class="icon-[lucide--circle-x] size-3.5" />
           <span
             v-if="settings.lastError"
-            class="truncate max-w-[30ch]"
+            class="max-w-[30ch] truncate"
             :title="settings.lastError"
             >{{ settings.lastError }}</span
           >

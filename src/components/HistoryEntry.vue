@@ -11,11 +11,12 @@ const props = defineProps<{
 </script>
 
 <template>
-  <h1 class="text-base-content/50 text-base font-medium">Timestamp</h1>
-  <div class="divider mt-1 mb-2" />
-  <div class="bg-base-200 flex gap-3 rounded-md p-2">
+  <li class="bg-base-200 flex gap-3 rounded-md p-2">
     <div class="flex flex-col items-center">
-      <img class="inline size-10 scale-100 rounded-md blur-xs" :src="props.itemImage" />
+      <img
+        class="inline size-10 scale-100 rounded-md blur-xs dark:scale-80"
+        :src="props.itemImage"
+      />
       <img class="z-20 -mt-10 inline size-10 rounded-md" :src="props.itemImage" />
     </div>
 
@@ -32,10 +33,10 @@ const props = defineProps<{
         +{{ props.itemAmount }}
       </span>
       <span class="text-base-content/50 pr-1 text-right">
-        {{ dayjs(props.timestamp).format("HH:mm") }}
+        {{ dayjs.unix(props.timestamp).local().format("HH:mm") }}
       </span>
     </div>
-  </div>
+  </li>
 </template>
 
 <style scoped></style>

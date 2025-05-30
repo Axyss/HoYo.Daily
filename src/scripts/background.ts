@@ -6,7 +6,7 @@ import {
 } from "./utils.ts";
 import dayjs from "dayjs";
 import { listenMessage, MessageType, sendMessage } from "./messaging.ts";
-import { getStorage, setStorage } from "./storage.ts";
+import { addHistoryEntry, getStorage, setStorage } from "./storage.ts";
 import { gameInstances } from "./claimable.ts";
 
 const DAILY_ALARM_NAME: string = "daily-claim-alarm";
@@ -71,6 +71,11 @@ async function claimSelectedRewards() {
     if (response.retcode >= 0 || response.retcode === -5003) {
       success++;
       await claimSuccess(game.name, gameSettings);
+      await addHistoryEntry({
+        game: game.name,
+        itemIndex: (await game.getClaimCount()) - 1,
+        timestamp: dayjs().unix(),
+      });
     } else if (response.retcode === -100) {
       failed++;
       await claimError(game.name, gameSettings, "Log in to Hoyolab first");

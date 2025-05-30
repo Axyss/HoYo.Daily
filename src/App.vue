@@ -2,17 +2,13 @@
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
 import Countdown from "./components/Countdown.vue";
-import {
-  claimGenshinRewards,
-  claimStarRailRewards,
-  claimZenlessRewards,
-} from "./scripts/claimable.ts";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
 import { onMounted } from "vue";
 import ThemeSelector from "./components/ThemeSelector.vue";
+import HistoryTab from "./components/HistoryTab.vue";
 
-onMounted(() => {
+onMounted(async () => {
   setTimeout(() => window.HSStaticMethods.autoInit(), 100);
 });
 
@@ -79,23 +75,16 @@ function openGithubIssuesTab(): void {
 
   <!-- Tabs -->
   <main class="w-full">
-    <!-- History Tab Content -->
-    <div id="history-tab" role="tabpanel" class="hidden p-4">
-      <div class="flex h-full flex-col items-center justify-center px-4 py-8">
-        <div
-          class="bg-primary/10 border-primary/30 flex max-w-xs flex-col items-center rounded-xl border p-6 text-center"
-        >
-          <span class="icon-[lucide--history] text-primary/60 mb-4 size-16" />
-          <h3 class="text-base-content mb-2 text-xl font-semibold">No History Yet</h3>
-          <p class="text-base-content/60 mb-4 text-sm">
-            Your claimed rewards will appear here once you start collecting them.
-          </p>
-          <div class="text-base-content/60 flex items-center gap-2 text-sm">
-            <span class="icon-[lucide--arrow-left]" />
-            <span>Switch to Games tab to get started</span>
-          </div>
-        </div>
-      </div>
+    <!-- HistoryTab Tab Content -->
+    <div id="history-tab" role="tabpanel" class="hidden h-[412px] overflow-y-scroll p-4">
+      <Suspense>
+        <template #default>
+          <HistoryTab />
+        </template>
+        <template #fallback>
+          <div class="loading loading-spinner loading-sm" />
+        </template>
+      </Suspense>
     </div>
 
     <!-- Games Tab Content -->
@@ -103,25 +92,13 @@ function openGithubIssuesTab(): void {
       <Suspense>
         <template #default>
           <div class="my-2">
-            <GameOption
-              name="Genshin Impact"
-              :icon="getImageUrl('genshin-icon', 'webp')"
-              :task="claimGenshinRewards"
-            />
+            <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" />
             <div class="divider px-4" />
 
-            <GameOption
-              name="Honkai Star Rail"
-              :icon="getImageUrl('hsr-icon', 'webp')"
-              :task="claimStarRailRewards"
-            />
+            <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'webp')" />
             <div class="divider px-4" />
 
-            <GameOption
-              name="Zenless Zone Zero"
-              :icon="getImageUrl('zzz-icon', 'webp')"
-              :task="claimZenlessRewards"
-            />
+            <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" />
           </div>
         </template>
         <template #fallback>
