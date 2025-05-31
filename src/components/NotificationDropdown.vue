@@ -58,7 +58,7 @@ const notificationOptions = [
       ></span>
     </button>
     <ul
-      class="dropdown-menu dropdown-open:opacity-100 bg-base-200/80 border-base-content/10 absolute bottom-full left-0 z-10 mb-3 hidden w-58 rounded-lg border p-1.5 backdrop-blur-sm"
+      class="dropdown-menu dropdown-open:opacity-100 bg-base-200/80 border-base-content/10 absolute bottom-full left-0 z-20 mb-3 hidden w-58 rounded-lg border p-1.5 backdrop-blur-sm"
       role="menu"
     >
       <template v-for="(option, index) in notificationOptions" :key="option.state">
