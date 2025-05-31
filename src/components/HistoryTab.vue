@@ -39,9 +39,8 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
     <li
       v-for="dayTimestamp in Object.keys(claimHistory).sort((a, b) => Number(b) - Number(a))"
       :key="dayTimestamp"
-      class="mb-6"
     >
-      <h2 class="text-base-content/50 mb-2 text-base font-medium">
+      <h2 class="text-base-content/50 text-base font-medium">
         {{ dayjs(Number(dayTimestamp)).format("MMMM D") }}
       </h2>
       <div class="divider mt-1 mb-2" />
@@ -50,7 +49,7 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
           (a: HistoryDataEntry, b: HistoryDataEntry) => b.timestamp - a.timestamp,
         )"
         :key="index"
-        class="mb-4"
+        class="mb-3"
       >
         <HistoryEntry
           :game="entry.game"

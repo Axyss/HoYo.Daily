@@ -32,7 +32,7 @@ function openGithubIssuesTab(): void {
         <h1 class="text-base-content text-xl font-bold">HoyoDaily</h1>
       </div>
       <span
-        class="bg-primary/20 text-primary border-primary/70 ml-auto rounded-full border px-2 py-0.5 text-xs font-medium"
+        class="bg-primary/10 dark:bg-primary/20 text-primary border-primary/70 ml-auto rounded-full border px-2 py-0.5 text-xs font-medium"
       >
         <span class="icon-[lucide--box] size-3.5 align-bottom" />
         {{ extensionVersion }}
@@ -76,7 +76,7 @@ function openGithubIssuesTab(): void {
   <!-- Tabs -->
   <main class="w-full">
     <!-- HistoryTab Tab Content -->
-    <div id="history-tab" role="tabpanel" class="hidden h-[412px] overflow-y-scroll p-4">
+    <div id="history-tab" role="tabpanel" class="hidden h-[412px] overflow-y-scroll p-4 pr-3">
       <Suspense>
         <template #default>
           <HistoryTab />
