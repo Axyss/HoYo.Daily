@@ -66,7 +66,7 @@ async function claimSelectedRewards() {
 
     console.log(`[background.ts]: Attempting to claim rewards for ${game.name}`);
     const response = await game.claimRewards();
-    console.log(response);
+    console.log(`[background.ts]: Claim response for ${game.name}:`, response);
 
     if (response.retcode >= 0 || response.retcode === -5003) {
       success++;

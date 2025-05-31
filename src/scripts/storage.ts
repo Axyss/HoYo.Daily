@@ -39,9 +39,16 @@ export async function setStorage(namespace: string, newData: StoredData): Promis
 
 export async function addHistoryEntry(entry: HistoryDataEntry): Promise<void> {
   const midnight = dayjs().startOf("day").valueOf();
-  const historyData = await getStorage("History");
-  const todayHistory: HistoryDataEntry[] = historyData[midnight] || [];
+  const history = await getStorage("History");
+  const todayHistory: HistoryDataEntry[] = history[midnight] || [];
+
+  console.log(`[storage.ts]: Adding new entry to the history: ${history[midnight]}`);
   todayHistory.push(entry);
-  await setStorage("History", { [midnight]: todayHistory });
-  console.log(`[storage.ts]: Adding new entry to the history: ${historyData[midnight]}`);
+  if (Object.keys(history).length > 31) {
+    const trimmedHistory = Object.entries(history).sort().reverse().splice(0, 31);
+    await chrome.storage.local.set({ History: Object.fromEntries(trimmedHistory) }); // Can't use setStorage here
+    console.log(`[storage.ts]: Removing oldest entries from history`);
+  } else {
+    await setStorage("History", { [midnight]: todayHistory });
+  }
 }
