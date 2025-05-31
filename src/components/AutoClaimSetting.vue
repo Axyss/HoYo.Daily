@@ -11,7 +11,7 @@ const autoClaimEnabled = ref(settings["autoClaimEnabled"]);
 watch(autoClaimEnabled, async (newVal, _) => {
   await setStorage("Settings", { autoClaimEnabled: newVal });
   // Triggers a claim when enabling auto claim
-  await sendMessage({ type: MessageType.UI_CLAIM });
+  await sendMessage({ type: MessageType.UI_CLAIM, target: "all" });
 });
 
 if (!settings?.autoClaimEnabled) {

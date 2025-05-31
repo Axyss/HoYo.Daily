@@ -39,7 +39,7 @@ watch(settings, async (newSettings, _) => {
   await setStorage(props.name, newSettings);
   // Triggers a claim when enabling auto claim
   if (settings.enabled) {
-    await sendMessage({ type: MessageType.UI_CLAIM });
+    await sendMessage({ type: MessageType.UI_CLAIM, target: props.name });
   }
 });
 

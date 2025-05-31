@@ -43,7 +43,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
       console.log(`[background.ts]: Auto-claim is disabled, skipping automatic claim process`);
       return;
     }
-    await claimSelectedRewards();
+    await claimSelectedGames();
   } catch (error) {
     console.error("[background.ts]: Unexpected error", error);
   } finally {
@@ -54,15 +54,21 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 });
 
 // Claiming logic
-async function claimSelectedRewards() {
+async function claimSelectedGames(onlyIncludeGames: string[] = []) {
   let success = 0,
     failed = 0;
-  await sendMessage({ type: MessageType.CLAIMING, target: "all" });
+
+  // Won't work well if onlyIncludeGames.length > 1 (Not a problem for now)
+  await sendMessage({
+    type: MessageType.CLAIMING,
+    target: onlyIncludeGames.length === 0 ? "all" : onlyIncludeGames.join(""),
+  });
 
   for (const game of gameInstances) {
     const gameSettings = await getStorage(game.name);
     if (!gameSettings?.enabled) continue;
     if (!happenedMoreThanADayAgo(gameSettings.lastClaim)) continue;
+    if (onlyIncludeGames.length > 0 && !onlyIncludeGames.includes(game.name)) continue;
 
     console.log(`[background.ts]: Attempting to claim rewards for ${game.name}`);
     const response = await game.claimRewards();
@@ -132,16 +138,20 @@ async function claimError(gameTitle: string, gameSettings: any, errorMessage: st
 }
 
 // Message listeners
-listenMessage(MessageType.UI_CLAIM, async () => {
+listenMessage(MessageType.UI_CLAIM, async (response) => {
   if ((await getStorage("Settings")).autoClaimEnabled) {
     console.log("[background.ts]: Claiming due UI interaction");
-    await claimSelectedRewards(); // confetti inconsistency (?)
+    if (response.target === "all") {
+      await claimSelectedGames(); // confetti inconsistency (?)
+    } else {
+      await claimSelectedGames([response.target]);
+    }
   }
 });
 
 listenMessage(MessageType.MANUAL_CLAIM, async () => {
   console.log("[background.ts]: Claiming manually");
-  if (await claimSelectedRewards()) {
+  if (await claimSelectedGames()) {
     // No errors occurred
     await sendMessage({ type: MessageType.MANUAL_CLAIM_SUCCESS });
   } else {
