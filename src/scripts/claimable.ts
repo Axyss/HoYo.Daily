@@ -51,6 +51,9 @@ const gameClasses = [
       const response = await fetch("https://sg-public-api.hoyolab.com/event/luna/zzz/os/sign", {
         method: "POST",
         body: JSON.stringify({ act_id: "e202406031448091", lang: "en-us" }),
+        headers: {
+          "X-Rpc-Signgame": "zzz",
+        },
       });
       return await response.json();
     }
@@ -58,6 +61,11 @@ const gameClasses = [
     async getClaimCount(): Promise<number> {
       const response = await fetch(
         "https://sg-public-api.hoyolab.com/event/luna/zzz/os/info?lang=en-us&act_id=e202406031448091",
+        {
+          headers: {
+            "X-Rpc-Signgame": "zzz",
+          },
+        },
       );
       return (await response.json()).data?.total_sign_day || 0;
     }
