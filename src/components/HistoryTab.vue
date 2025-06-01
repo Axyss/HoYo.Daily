@@ -5,6 +5,8 @@ import { getStorage, type HistoryDataEntry } from "../scripts/storage.ts";
 import HistoryEntry from "./HistoryEntry.vue";
 import claimableItems from "../assets/claimable-items.json" with { type: "json" };
 import { listenMessage, MessageType } from "../scripts/messaging.ts";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+dayjs.extend(advancedFormat);
 
 type GameClaimableItems = Record<string, { icon: string; name: string; cnt: number }[]>;
 
@@ -40,8 +42,8 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
       v-for="dayTimestamp in Object.keys(claimHistory).sort((a, b) => Number(b) - Number(a))"
       :key="dayTimestamp"
     >
-      <h2 class="text-base-content/50 text-base font-medium">
-        {{ dayjs(Number(dayTimestamp)).format("MMMM D") }}
+      <h2 class="text-base-content/60 dark:text-base-content/50 text-base font-medium">
+        {{ dayjs(Number(dayTimestamp)).format("MMMM Do") }}
       </h2>
       <div class="divider mt-1 mb-2" />
       <div

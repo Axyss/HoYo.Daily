@@ -76,7 +76,11 @@ function openGithubIssuesTab(): void {
   <!-- Tabs -->
   <main class="w-full">
     <!-- HistoryTab Tab Content -->
-    <div id="history-tab" role="tabpanel" class="hidden h-[412px] overflow-y-scroll p-4 pr-3">
+    <div
+      id="history-tab"
+      role="tabpanel"
+      class="hidden h-[410px] overflow-y-scroll p-4 pr-3 dark:h-[412px]"
+    >
       <Suspense>
         <template #default>
           <HistoryTab />
@@ -134,7 +138,9 @@ function openGithubIssuesTab(): void {
 
   <div class="divider" />
 
-  <footer class="text-base-content/50 flex items-center justify-between px-4 py-2 text-xs">
+  <footer
+    class="text-base-content/60 dark:text-base-content/50 flex items-center justify-between px-4 py-2 text-xs"
+  >
     <Suspense>
       <template #default>
         <NotificationDropdown />

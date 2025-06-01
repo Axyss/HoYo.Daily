@@ -23,7 +23,7 @@ if (!settings?.autoClaimEnabled) {
 
 <template>
   <div
-    class="bg-primary/20 border-primary/70 flex items-center justify-between rounded-lg border p-3"
+    class="bg-primary/10 border-primary/70 flex items-center justify-between rounded-lg border p-3"
   >
     <div class="flex flex-col">
       <div class="flex items-center gap-2">
@@ -35,7 +35,9 @@ if (!settings?.autoClaimEnabled) {
           </TooltipPopover>
         </div>
       </div>
-      <span class="text-base-content/50 text-xs"> Claim rewards automatically when available </span>
+      <span class="text-base-content/60 dark:text-base-content/50 text-xs">
+        Claim rewards automatically when available
+      </span>
     </div>
     <Switch v-model="autoClaimEnabled" />
   </div>

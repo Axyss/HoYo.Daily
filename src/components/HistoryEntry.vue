@@ -11,7 +11,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <li class="bg-primary/5 border-primary/50 flex gap-3 rounded-md border-1 p-2">
+  <li class="bg-base-200/60 border-primary/50 flex gap-3 rounded-md border-1 p-2">
     <div class="flex flex-col items-center">
       <img
         class="inline size-10 scale-100 rounded-md blur-xs dark:scale-100"
@@ -27,7 +27,7 @@ const props = defineProps<{
       >
         {{ props.itemName }}
       </p>
-      <span class="text-base-content/50">
+      <span class="text-base-content/60 dark:text-base-content/50">
         {{ props.game }}
       </span>
     </div>
@@ -35,7 +35,7 @@ const props = defineProps<{
       <span class="bg-primary/20 text-primary m-auto rounded-sm px-1 py-0 text-sm font-medium">
         +{{ props.itemAmount }}
       </span>
-      <span class="text-base-content/50 text-right text-xs">
+      <span class="text-base-content/60 dark:text-base-content/50 text-right text-xs">
         {{ dayjs.unix(props.timestamp).local().format("HH:mm") }}
       </span>
     </div>
