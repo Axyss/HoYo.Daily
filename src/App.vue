@@ -17,6 +17,10 @@ function getImageUrl(name: string, ext: string): string {
   return new URL(`./assets/${name}.${ext}`, import.meta.url).href;
 }
 
+function openGithubReleasesTab(): void {
+  chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./releases" });
+}
+
 function openGithubIssuesTab(): void {
   chrome.tabs.create({ url: "https://github.com/Axyss/HoyoDaily./issues" });
 }
@@ -31,12 +35,13 @@ function openGithubIssuesTab(): void {
       <div class="flex items-center gap-2">
         <h1 class="text-base-content text-xl font-bold">HoyoDaily</h1>
       </div>
-      <span
-        class="bg-primary/10 dark:bg-primary/20 text-primary border-primary/70 ml-auto rounded-full border px-2 py-0.5 text-xs font-medium"
+      <div
+        @click="openGithubReleasesTab()"
+        class="bg-primary/10 dark:bg-primary/20 text-primary border-primary/70 ml-auto cursor-pointer rounded-full border px-2 py-0.5 text-xs font-medium duration-200 hover:shadow-[0_0_10px_rgba(0,0,0,0.15)] hover:shadow-[#7033ff]"
       >
         <span class="icon-[lucide--box] size-3.5 align-bottom" />
         {{ extensionVersion }}
-      </span>
+      </div>
     </div>
     <Suspense>
       <template #default>
