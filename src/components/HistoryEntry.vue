@@ -11,7 +11,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <li class="bg-base-200/60 border-primary/50 flex gap-3 rounded-md border-1 p-2">
+  <li class="bg-base-200 flex gap-3 rounded-md p-2">
     <div class="flex flex-col items-center">
       <img
         class="inline size-10 scale-100 rounded-md blur-xs dark:scale-100"
