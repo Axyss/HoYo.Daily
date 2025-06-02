@@ -1,6 +1,6 @@
 {
   "name": "HoYoDaily",
-  "description": "Automatic Daily Check-in for HoYoverse Games",
+  "description": "Automatic Daily Check-in for HoYoverse Games.",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {
@@ -16,6 +16,6 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["alarms", "cookies", "storage", "notifications"],
+  "permissions": ["alarms", "storage", "notifications"],
   "host_permissions": ["https://hoyolab.com/*", "https://*.hoyolab.com/*"]
 }
