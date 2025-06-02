@@ -1,6 +1,6 @@
 {
-  "name": "HoyoDaily",
-  "description": "Placeholder",
+  "name": "HoYoDaily",
+  "description": "Automatic Daily Check-in for HoYoverse Games",
   "version": "1.0.0",
   "manifest_version": 3,
   "icons": {

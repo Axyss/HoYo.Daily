@@ -106,7 +106,7 @@ async function claimSuccess(gameTitle: string, gameSettings: any) {
     chrome.notifications.create({
       type: "basic",
       iconUrl: "icon128.png",
-      title: "HoyoDaily - Daily Rewards",
+      title: "HoYoDaily - Daily Rewards",
       message: `✅ Successfully claimed rewards for ${gameTitle}!`,
       requireInteraction: false,
     });
@@ -130,7 +130,7 @@ async function claimError(gameTitle: string, gameSettings: any, errorMessage: st
     chrome.notifications.create({
       type: "basic",
       iconUrl: "icon128.png",
-      title: "HoyoDaily - Daily Rewards",
+      title: "HoYoDaily - Daily Rewards",
       message: `⚠️ Oops! We encountered an error while claiming rewards for ${gameTitle}.\n\nReason: ${errorMessage}.`,
       requireInteraction: false,
     });

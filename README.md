@@ -1,14 +1,14 @@
 <p align="center">
-  <img src="./public/icon128.png" alt="HoyoDaily Logo" width="128"/>
+  <img src="./public/icon128.png" alt="HoYoDaily Logo" width="128"/>
 </p>
 
-<h1 align="center">HoyoDaily</h1>
+<h1 align="center">HoYoDaily</h1>
 <h3 align="center">Automatic Daily Check-in for HoYoverse Games</h3>
 
 
 ## 📋 Overview
 
-HoyoDaily is a browser extension that automatically claims your daily check-in rewards for multiple HoYoverse games through HoYoLab. Never miss your daily rewards again!
+HoYoDaily is a browser extension that automatically claims your daily check-in rewards for multiple HoYoverse games through HoYoLab. Never miss your daily rewards again!
 
 ## 🌐 Supported Browsers
 
@@ -50,7 +50,7 @@ HoyoDaily is a browser extension that automatically claims your daily check-in r
 ## 🚀 Usage
 
 1. Log into your HoYoLab account in your browser
-2. Click on the HoyoDaily extension icon in your browser toolbar
+2. Click on the HoYoDaily extension icon in your browser toolbar
 3. Enable auto-claim for the games you want to check in daily
 4. The extension will automatically claim your daily rewards when they become available
 
@@ -67,8 +67,8 @@ HoyoDaily is a browser extension that automatically claims your daily check-in r
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/Axyss/HoyoDaily.git
-   cd HoyoDaily
+   git clone https://github.com/Axyss/HoYoDaily.git
+   cd HoYoDaily
    ```
 
 2. Install dependencies
@@ -88,4 +88,5 @@ HoyoDaily is a browser extension that automatically claims your daily check-in r
 
 ## 📄 License
 
-This project is licensed under the [MIT license](LICENSE). 
+This project is licensed under the [MIT license](LICENSE).
+
