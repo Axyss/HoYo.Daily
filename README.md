@@ -8,7 +8,7 @@
 
 ## 📋 Overview
 
-HoYoDaily is a browser extension that automatically claims your daily check-in rewards for multiple HoYoverse games through HoYoLab. Never miss your daily rewards again!
+HoYoDaily is a browser extension that automatically claims your daily check-in rewards for multiple HoYoverse games through HoYoLab. Just set it up and forget about it! 🚀
 
 ## 🌐 Supported Browsers
 
