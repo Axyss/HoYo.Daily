@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vue-tsc -b && npm run build:chrome && npm run build:firefox",
+    "build:chrome": "cross-env BROWSER=chrome vite build",
+    "build:firefox": "cross-env BROWSER=firefox vite build",
     "preview": "vite preview",
     "watch": "vite build --watch",
     "prettify": "npx prettier --write \"./**/*.{js,jsx,mjs,cjs,ts,tsx,json,vue}\""
@@ -24,8 +26,10 @@
     "@iconify/tailwind4": "^1.0.6",
     "@types/canvas-confetti": "^1.9.0",
     "@types/chrome": "^0.0.313",
+    "@types/node": "^20.10.0",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.27.0",
     "eslint-plugin-vue": "^10.1.0",
     "globals": "^16.1.0",
