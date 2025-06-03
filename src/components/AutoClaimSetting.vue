@@ -30,7 +30,7 @@ if (!settings?.autoClaimEnabled) {
         <span class="text-sm font-semibold">Auto Claim</span>
         <div :class="`tooltip tooltip-toggle hover:text-primary [--placement:right]`">
           <span class="icon-[lucide--info] mt-1.5 size-4 duration-200" />
-          <TooltipPopover class="mx-2" placement="right">
+          <TooltipPopover class="mx-2 text-xs" placement="right">
             This feature requires the browser to be <strong>open</strong>.
           </TooltipPopover>
         </div>
