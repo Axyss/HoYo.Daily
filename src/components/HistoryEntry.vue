@@ -22,17 +22,17 @@ const props = defineProps<{
 
     <div class="inline-flex flex-col">
       <p
-        class="text-base-content max-w-[25ch] truncate text-sm font-medium"
+        class="text-base-content max-w-[25ch] truncate text-sm font-semibold"
         :title="props.itemName"
       >
         {{ props.itemName }}
       </p>
-      <span class="text-base-content/60 dark:text-base-content/50">
+      <span class="text-base-content/60 dark:text-base-content/50 text-xs">
         {{ props.game }}
       </span>
     </div>
     <div class="ml-auto inline-flex flex-col">
-      <span class="bg-primary/20 text-primary m-auto rounded-sm px-1 py-0 text-sm font-medium">
+      <span class="bg-primary/20 text-primary m-auto rounded-sm px-1 py-0 text-sm font-semibold">
         +{{ props.itemAmount }}
       </span>
       <span class="text-base-content/60 dark:text-base-content/50 text-right text-xs">

@@ -34,7 +34,7 @@ listenMessage(MessageType.MANUAL_CLAIM_SUCCESS, async () => {
 <template>
   <div class="p-4">
     <button
-      class="btn btn-primary flex justify-center py-6 text-lg rounded-lg w-full font-medium"
+      class="btn btn-primary flex w-full justify-center rounded-lg py-6 text-lg font-semibold"
       @click="rewardsClaimed = true"
     >
       <span

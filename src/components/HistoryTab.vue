@@ -42,7 +42,7 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
       v-for="dayTimestamp in Object.keys(claimHistory).sort((a, b) => Number(b) - Number(a))"
       :key="dayTimestamp"
     >
-      <h2 class="text-base-content/60 dark:text-base-content/50 text-base font-medium">
+      <h2 class="text-base-content/60 dark:text-base-content/50 text-base font-semibold">
         {{ dayjs(Number(dayTimestamp)).format("MMMM Do") }}
       </h2>
       <div class="divider mt-1 mb-2" />

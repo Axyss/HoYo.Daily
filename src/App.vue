@@ -37,7 +37,7 @@ function openGithubIssuesTab(): void {
       </div>
       <div
         @click="openGithubReleasesTab()"
-        class="bg-primary/10 dark:bg-primary/20 text-primary border-primary/70 ml-auto cursor-pointer rounded-full border px-2 py-0.5 text-xs font-medium duration-200 hover:shadow-[0_0_10px_rgba(0,0,0,0.15)] hover:shadow-[#7033ff]"
+        class="bg-primary/10 dark:bg-primary/20 text-primary border-primary/70 ml-auto cursor-pointer rounded-full border px-2 py-0.5 text-xs font-semibold duration-200 hover:shadow-[0_0_10px_rgba(0,0,0,0.15)] hover:shadow-[#7033ff]"
       >
         <span class="icon-[lucide--box] size-3.5 align-bottom" />
         {{ extensionVersion }}
@@ -63,7 +63,7 @@ function openGithubIssuesTab(): void {
       role="tab"
     >
       <span class="icon-[lucide--gamepad-2] size-5"></span>
-      <span>Games</span>
+      <span class="font-semibold">Games</span>
     </button>
     <button
       type="button"
@@ -72,7 +72,7 @@ function openGithubIssuesTab(): void {
       role="tab"
     >
       <span class="icon-[lucide--history] size-5"></span>
-      <span>History</span>
+      <span class="font-semibold">History</span>
     </button>
   </nav>
 

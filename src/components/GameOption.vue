@@ -81,7 +81,7 @@ listenMessage(MessageType.CLAIM_ERROR, async (response) => {
         :src="props.icon"
       />
       <div>
-        <p class="text-base-content text-sm font-medium">{{ props.name }}</p>
+        <p class="text-base-content text-sm font-semibold">{{ props.name }}</p>
         <div
           v-if="claimingState === ClaimStates.NOT_CLAIMED"
           class="text-error flex items-center gap-1 text-xs"
