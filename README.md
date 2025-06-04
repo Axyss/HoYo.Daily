@@ -7,7 +7,7 @@ HoYoDaily is a browser extension that automatically claims your daily check-in r
 <br>
 _Just set it up and forget about it! 🚀_
 
-Currently supporting:
+### 🎮 Currently supporting:
 - Genshin Impact
 - Honaki Star Rail
 - Zenless Zone Zero
