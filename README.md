@@ -12,21 +12,26 @@ Currently supporting:
 - Honaki Star Rail
 - Zenless Zone Zero
 
+## 🌐 Supported Browsers
+&nbsp;
+<img src="docs/chrome.svg" width=40 alt="Chrome Logo" />
+&nbsp;
+<img src="docs/firefox.svg" width=40 alt="Firefox Logo" />
+&nbsp;
+<img src="docs/edge.svg" width=40 alt="Edge Logo" />
+&nbsp;
+<img src="docs/opera-gx.svg" width=40 alt="Opera Logo" />
+&nbsp;
+<img src="docs/brave.svg" width=40 alt="Brave Logo" />
+&nbsp;
+
+_And probably other Chromium-based browsers, but I haven't tested_
 
 ## 📷 Screenshots
 <p float="left">
   <img src="./docs/hoyodaily-full-1.png" width=700 />
   <img src="./docs/hoyodaily-full-2.png" width=700 />
 </p>
-
-## 🌐 Supported Browsers
-- Chrome
-- Firefox
-- Opera
-- Brave
-- Edge
-
-_And probably other Chromium-based browsers, but I haven't tested_
 
 ## 📥 Installation
 Download the extension from one of the following stores:
