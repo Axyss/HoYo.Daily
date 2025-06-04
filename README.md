@@ -12,10 +12,11 @@ Currently supporting:
 - Honaki Star Rail
 - Zenless Zone Zero
 
+
 ## 📷 Screenshots
 <p float="left">
-  <img src="./docs/hoyodaily-full-1.png" width=800 />
-  <img src="./docs/hoyodaily-full-2.png" width=800 />
+  <img src="./docs/hoyodaily-full-1.png" width=700 />
+  <img src="./docs/hoyodaily-full-2.png" width=700 />
 </p>
 
 ## 🌐 Supported Browsers
