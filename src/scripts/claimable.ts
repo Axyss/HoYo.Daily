@@ -70,6 +70,25 @@ const gameClasses = [
       return (await response.json()).data?.total_sign_day || 0;
     }
   },
+
+  class HonkaiImpact3rd implements ClaimableGame {
+    name: string = "Honkai Impact 3rd";
+
+    async claimRewards(): Promise<ClaimResponse> {
+      const response = await fetch("https://sg-public-api.hoyolab.com/event/mani/sign", {
+        method: "POST",
+        body: JSON.stringify({ act_id: "e202110291205111", lang: "en-us" }),
+      });
+      return await response.json();
+    }
+
+    async getClaimCount(): Promise<number> {
+      const response = await fetch(
+        "https://sg-public-api.hoyolab.com/event/mani/info?lang=en-us&act_id=e202110291205111",
+      );
+      return (await response.json()).data?.total_sign_day || 0;
+    }
+  },
 ];
 
 export const gameInstances = gameClasses.map((GameClass) => new GameClass());
