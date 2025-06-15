@@ -17,6 +17,8 @@
 @plugin "flyonui" {
   themes: light --default;
 }
-
+@plugin 'tailwind-scrollbar' {
+  nocompatible: true;
+}
 @source "./node_modules/flyonui/dist/index.js";
 @custom-variant dark (&:where([data-theme=black], [data-theme=black] *));
