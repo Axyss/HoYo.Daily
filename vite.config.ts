@@ -3,10 +3,8 @@ import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
 import fs from "fs";
-import { exec } from "child_process";
-import { promisify } from "util";
+import archiver from "archiver";
 
-const execAsync = promisify(exec);
 const browser = process.env.BROWSER || "chrome";
 
 // Helper function to copy browser-specific files
@@ -39,8 +37,27 @@ function copyBrowserFiles() {
           fs.unlinkSync(zipFilePath);
         }
 
-        await execAsync(`tar -acf dist/firefox.zip -C dist/firefox .`, {
-          cwd: resolve(__dirname),
+        const output = fs.createWriteStream(resolve(__dirname, "dist/firefox.zip"));
+        const archive = archiver("zip", {
+          zlib: { level: 9 },
+        });
+
+        await new Promise((resolve, reject) => {
+          output.on("close", () => {
+            console.log(`Firefox extension zipped: ${archive.pointer()} total bytes`);
+            resolve(true);
+          });
+          archive.on("error", (err) => {
+            reject(err);
+          });
+
+          archive.pipe(output);
+          const sourcePath = __dirname + "/dist/firefox";
+          archive.glob("**/*", {
+            cwd: sourcePath,
+            dot: true,
+          });
+          archive.finalize();
         });
       }
     },
