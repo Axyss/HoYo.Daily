@@ -3,14 +3,17 @@ import vue from "@vitejs/plugin-vue";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "path";
 import fs from "fs";
+import { exec } from "child_process";
+import { promisify } from "util";
 
+const execAsync = promisify(exec);
 const browser = process.env.BROWSER || "chrome";
 
 // Helper function to copy browser-specific files
 function copyBrowserFiles() {
   return {
     name: "copy-browser-files",
-    closeBundle() {
+    closeBundle: async function () {
       // Determines which manifest to use
       const manifestSource =
         browser === "firefox" ? "manifest.firefox.json" : "manifest.chrome.json";
@@ -27,7 +30,19 @@ function copyBrowserFiles() {
       ["icon16.png", "icon32.png", "icon48.png", "icon128.png"].forEach((icon) => {
         fs.copyFileSync(resolve(__dirname, `public/${icon}`), resolve(outDir, icon));
       });
+
       console.log(`Built ${browser} extension in dist/${browser}/`);
+
+      if (browser === "firefox") {
+        const zipFilePath = resolve(__dirname, `dist/firefox-extension.zip`);
+        if (fs.existsSync(zipFilePath)) {
+          fs.unlinkSync(zipFilePath);
+        }
+
+        await execAsync(`tar -acf dist/firefox.zip -C dist/firefox .`, {
+          cwd: resolve(__dirname),
+        });
+      }
     },
   };
 }
