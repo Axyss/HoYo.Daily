@@ -100,14 +100,14 @@ function openGithubIssuesTab(): void {
     <div id="main-tab" role="tabpanel" class="mt-0 p-0">
       <Suspense>
         <template #default>
-          <div class="my-2">
+          <div class="scrollbar scrollbar-thumb-primary scrollbar-w-1 max-h-48.5 overflow-y-scroll">
             <GameOption name="Genshin Impact" :icon="getImageUrl('genshin-icon', 'webp')" />
             <div class="divider px-4" />
-
             <GameOption name="Honkai Star Rail" :icon="getImageUrl('hsr-icon', 'webp')" />
             <div class="divider px-4" />
-
             <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" />
+            <div class="divider px-4" />
+            <GameOption name="Honkai Impact 3rd" :icon="getImageUrl('hi3rd-icon', 'webp')" />
           </div>
         </template>
         <template #fallback>

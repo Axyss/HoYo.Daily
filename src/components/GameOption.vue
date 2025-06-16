@@ -72,7 +72,7 @@ listenMessage(MessageType.CLAIM_ERROR, async (response) => {
 
 <template>
   <div
-    class="flex items-center justify-between px-4 py-3"
+    class="flex items-center justify-between px-4 py-3.5"
     :class="{ 'grayscale-100': !settings.enabled }"
   >
     <div class="flex items-center gap-3">

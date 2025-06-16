@@ -9,8 +9,9 @@ _Just set it up and forget about it! 🚀_
 
 ### 🎮 Currently supporting:
 - Genshin Impact
-- Honaki Star Rail
+- Honkai Star Rail
 - Zenless Zone Zero
+- Honkai Impact 3rd
 
 ## 🌐 Supported Browsers
 &nbsp;
