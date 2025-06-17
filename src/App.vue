@@ -84,7 +84,7 @@ function openGithubIssuesTab(): void {
     <div
       id="history-tab"
       role="tabpanel"
-      class="hidden h-[410px] overflow-y-scroll p-4 pr-3 dark:h-[412px]"
+      class="scrollbar scrollbar-thumb-primary scrollbar-w-1 hidden h-[410px] overflow-y-scroll p-4 pr-3 dark:h-[412px]"
     >
       <Suspense>
         <template #default>
