@@ -5,6 +5,21 @@ import confetti from "canvas-confetti";
 
 const rewardsClaimed = ref(false);
 
+let myCanvas = document.createElement("canvas");
+myCanvas.style.position = "fixed";
+myCanvas.style.top = "0";
+myCanvas.style.left = "0";
+myCanvas.style.width = "100vw";
+myCanvas.style.height = "100vh";
+myCanvas.style.pointerEvents = "none";
+myCanvas.style.zIndex = "9999";
+document.body.appendChild(myCanvas);
+
+let workerlessConfetti = confetti.create(myCanvas, {
+  resize: true,
+  useWorker: false, // CSF rules do not allow worker usage on Firefox
+});
+
 watch(rewardsClaimed, () => {
   if (rewardsClaimed.value) {
     setTimeout(
@@ -22,7 +37,7 @@ listenMessage(MessageType.MANUAL_CLAIM_ERROR, async () => {
 
 listenMessage(MessageType.MANUAL_CLAIM_SUCCESS, async () => {
   rewardsClaimed.value = false;
-  confetti({
+  workerlessConfetti({
     particleCount: 100,
     spread: 70,
     startVelocity: 40,
