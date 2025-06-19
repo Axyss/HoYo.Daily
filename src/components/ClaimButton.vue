@@ -1,9 +1,59 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import { listenMessage, MessageType, sendMessage } from "../scripts/messaging.ts";
-import confetti from "canvas-confetti";
+import { isFirefox } from "../scripts/utils.ts";
+import confettiModule from "canvas-confetti";
 
 const rewardsClaimed = ref(false);
+
+// Partial Fix for Firefox confetti issue
+let confetti = confettiModule;
+let canvas: HTMLCanvasElement | null = null;
+
+onMounted(() => {
+  if (isFirefox()) {
+    canvas = document.createElement("canvas");
+    canvas.style.position = "absolute";
+    canvas.style.pointerEvents = "none";
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh";
+    canvas.style.zIndex = "999999";
+
+    confetti = confettiModule.create(canvas, {
+      resize: true,
+      useWorker: false,
+    });
+
+    document.body.appendChild(canvas);
+  }
+});
+
+// Create confetti config
+const confettiConfig = computed(() => {
+  const baseConfig = {
+    particleCount: 100,
+    spread: 70,
+    startVelocity: 40,
+    origin: { y: 0.9 },
+  };
+
+  // Adjust settings for Firefox
+  if (isFirefox()) {
+    return {
+      ...baseConfig,
+      scalar: 0.7,
+      ticks: 300,
+      gravity: 0.8,
+      decay: 0.94,
+    };
+  }
+
+  return baseConfig;
+});
+
+function triggerConfetti() {
+  confetti(confettiConfig.value);
+}
 
 watch(rewardsClaimed, () => {
   if (rewardsClaimed.value) {
