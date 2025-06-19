@@ -2,10 +2,6 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 
-export function isFirefox(): boolean {
-  return navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
-}
-
 // Timing functions
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -30,7 +26,6 @@ export function happenedMoreThanADayAgo(epoch: number): boolean {
   return dayjs().unix() - epoch >= 86400;
 }
 
-// Notifications
 export enum NotificationState {
   DISABLED = "disabled",
   MINIMAL = "minimal",
