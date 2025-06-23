@@ -27,6 +27,19 @@ chrome.runtime.onStartup.addListener(async () => {
   }, 3000);
 });
 
+// Firefox-specific handler for missed alarms
+if (navigator.userAgent.includes("Firefox")) {
+  console.log("[background.ts]: Firefox detected, falling back to Idle API");
+  chrome.idle.setDetectionInterval(300);
+
+  chrome.idle.onStateChanged.addListener(async (state) => {
+    if (state === "active") {
+      console.log("[background.ts]: User is active, scheduling instant claim alarm");
+      await scheduleAlarm(INSTANT_ALARM_NAME, { when: dayjs().unix() });
+    }
+  });
+}
+
 // Alarm handling
 async function scheduleAlarm(alarmName: string, alarmInfo: object) {
   const existingAlarm = await chrome.alarms.get(alarmName);
