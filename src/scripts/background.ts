@@ -30,7 +30,7 @@ chrome.runtime.onStartup.addListener(async () => {
 // Firefox-specific handler for missed alarms
 if (navigator.userAgent.includes("Firefox")) {
   console.log("[background.ts]: Firefox detected, falling back to Idle API");
-  chrome.idle.setDetectionInterval(300);
+  chrome.idle.setDetectionInterval(120);
 
   chrome.idle.onStateChanged.addListener(async (state) => {
     if (state === "active") {
