@@ -7,12 +7,48 @@ import archiver from "archiver";
 
 const browser = process.env.BROWSER || "chrome";
 
+async function createZip(browserName: string) {
+  const packageJson = JSON.parse(fs.readFileSync(resolve(__dirname, "package.json"), "utf-8"));
+  const version = packageJson.version;
+
+  const zipFileName = `HoYoDaily-${version}-${browserName}.zip`;
+  const zipFilePath = resolve(__dirname, `dist/${zipFileName}`);
+
+  if (fs.existsSync(zipFilePath)) {
+    fs.unlinkSync(zipFilePath);
+  }
+
+  const output = fs.createWriteStream(zipFilePath);
+  const archive = archiver("zip", {
+    zlib: { level: 9 },
+  });
+
+  await new Promise((resolve, reject) => {
+    output.on("close", () => {
+      console.log(
+        `${browserName.charAt(0).toUpperCase() + browserName.slice(1)} extension zipped as ${zipFileName}: ${archive.pointer()} total bytes`,
+      );
+      resolve(true);
+    });
+    archive.on("error", (err) => {
+      reject(err);
+    });
+
+    archive.pipe(output);
+    const sourcePath = __dirname + `/dist/${browserName}`;
+    archive.glob("**/*", {
+      cwd: sourcePath,
+      dot: true,
+    });
+    archive.finalize();
+  });
+}
+
 // Helper function to copy browser-specific files
 function copyBrowserFiles() {
   return {
     name: "copy-browser-files",
     closeBundle: async function () {
-      // Determines which manifest to use
       const manifestSource =
         browser === "firefox" ? "manifest.firefox.json" : "manifest.chrome.json";
 
@@ -32,33 +68,9 @@ function copyBrowserFiles() {
       console.log(`Built ${browser} extension in dist/${browser}/`);
 
       if (browser === "firefox") {
-        const zipFilePath = resolve(__dirname, `dist/firefox-extension.zip`);
-        if (fs.existsSync(zipFilePath)) {
-          fs.unlinkSync(zipFilePath);
-        }
-
-        const output = fs.createWriteStream(resolve(__dirname, "dist/firefox.zip"));
-        const archive = archiver("zip", {
-          zlib: { level: 9 },
-        });
-
-        await new Promise((resolve, reject) => {
-          output.on("close", () => {
-            console.log(`Firefox extension zipped: ${archive.pointer()} total bytes`);
-            resolve(true);
-          });
-          archive.on("error", (err) => {
-            reject(err);
-          });
-
-          archive.pipe(output);
-          const sourcePath = __dirname + "/dist/firefox";
-          archive.glob("**/*", {
-            cwd: sourcePath,
-            dot: true,
-          });
-          archive.finalize();
-        });
+        await createZip("firefox");
+      } else if (browser === "chrome") {
+        await createZip("chrome");
       }
     },
   };
