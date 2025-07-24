@@ -18,11 +18,11 @@ function getImageUrl(name: string, ext: string): string {
 }
 
 function openGithubReleasesTab(): void {
-  chrome.tabs.create({ url: "https://github.com/Axyss/HoYoDaily./releases" });
+  chrome.tabs.create({ url: "https://github.com/Axyss/HoYo.Daily/releases" });
 }
 
 function openGithubIssuesTab(): void {
-  chrome.tabs.create({ url: "https://github.com/Axyss/HoYoDaily./issues" });
+  chrome.tabs.create({ url: "https://github.com/Axyss/HoYo.Daily/issues" });
 }
 </script>
 

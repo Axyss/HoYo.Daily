@@ -56,7 +56,7 @@ Download the extension from one of the following stores:
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/Axyss/HoYoDaily.git
+   git clone https://github.com/Axyss/HoYo.Daily.git
    cd HoYoDaily
    ```
 
