@@ -26,7 +26,7 @@ _Just set it up and forget about it! 🚀_
 <img src="docs/brave.svg" width=40 alt="Brave Logo" />
 &nbsp;
 
-_And probably other Chromium-based browsers, but I haven't tested_
+_And probably other Chromium-based browsers, but I haven't tested those_
 
 ## 📷 Screenshots
 <p float="left">
