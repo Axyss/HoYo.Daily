@@ -89,6 +89,25 @@ const gameClasses = [
       return (await response.json()).data?.total_sign_day || 0;
     }
   },
+
+  class TearsOfThemis implements ClaimableGame {
+    name: string = "Tears of Themis";
+
+    async claimRewards(): Promise<ClaimResponse> {
+      const response = await fetch("https://sg-public-api.hoyolab.com/event/luna/nxx/os/sign", {
+        method: "POST",
+        body: JSON.stringify({ act_id: "e202202281857121", lang: "en-us" }),
+      });
+      return await response.json();
+    }
+
+    async getClaimCount(): Promise<number> {
+      const response = await fetch(
+        "https://sg-public-api.hoyolab.com/event/luna/nxx/os/info?lang=en-us&act_id=e202202281857121",
+      );
+      return (await response.json()).data?.total_sign_day || 0;
+    }
+  },
 ];
 
 export const gameInstances = gameClasses.map((GameClass) => new GameClass());

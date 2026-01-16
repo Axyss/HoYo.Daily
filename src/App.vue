@@ -108,6 +108,8 @@ function openGithubIssuesTab(): void {
             <GameOption name="Zenless Zone Zero" :icon="getImageUrl('zzz-icon', 'webp')" />
             <div class="divider px-4" />
             <GameOption name="Honkai Impact 3rd" :icon="getImageUrl('hi3rd-icon', 'webp')" />
+            <div class="divider px-4" />
+            <GameOption name="Tears of Themis" :icon="getImageUrl('tot-icon', 'webp')" />
           </div>
         </template>
         <template #fallback>
