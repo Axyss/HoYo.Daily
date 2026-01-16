@@ -12,6 +12,7 @@ _Just set it up and forget about it! 🚀_
 - Honkai Star Rail
 - Zenless Zone Zero
 - Honkai Impact 3rd
+- Tears of Themis
 
 ## 🌐 Supported Browsers
 &nbsp;
