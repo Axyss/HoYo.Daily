@@ -2,19 +2,19 @@
   <img src="./public/icon128.png" alt="HoYoDaily Logo" width="128"/>
 </p>
 
-## 📋 Overview
+## Overview
 HoYoDaily is a browser extension that automatically claims your daily check-in rewards for HoYoverse games.
 <br>
 _Just set it up and forget about it! 🚀_
 
-### 🎮 Currently supporting:
+### Currently supporting:
 - Genshin Impact
 - Honkai Star Rail
 - Zenless Zone Zero
 - Honkai Impact 3rd
 - Tears of Themis
 
-## 🌐 Supported Browsers
+## Supported Browsers
 &nbsp;
 <img src="docs/chrome.svg" width=40 alt="Chrome Logo" />
 &nbsp;
@@ -29,13 +29,13 @@ _Just set it up and forget about it! 🚀_
 
 _And probably other Chromium-based browsers, but I haven't tested those_
 
-## 📷 Screenshots
+## Screenshots
 <p float="left">
   <img src="./docs/hoyodaily-full-1.png" width=700 />
   <img src="./docs/hoyodaily-full-2.png" width=700 />
 </p>
 
-## 📥 Installation
+## Installation
 Download the extension from one of the following stores:
 <p float="left">
   <a href="https://chromewebstore.google.com/detail/hoyodaily/ahdcannooodfmkoplicldhfccebmbbem" target="_blank">
@@ -47,7 +47,7 @@ Download the extension from one of the following stores:
   </a>
 </p>
 
-## 💻 Development
+## Development
 
 ### Prerequisites
 - Node.js v22 or higher
@@ -77,7 +77,7 @@ Download the extension from one of the following stores:
    npm run watch
    ```
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT license](LICENSE).
 
