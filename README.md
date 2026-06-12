@@ -26,6 +26,8 @@ _Just set it up and forget about it! 🚀_
 &nbsp;
 <img src="docs/brave.svg" width=40 alt="Brave Logo" />
 &nbsp;
+<img src="docs/zen.svg" width=40 alt="Zen Logo" />
+&nbsp;
 
 _And probably other Chromium-based browsers, but I haven't tested those_
 
