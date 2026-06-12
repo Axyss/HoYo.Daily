@@ -54,6 +54,7 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
         class="mb-3"
       >
         <HistoryEntry
+          v-if="typedClaimableItems[entry.game][entry.itemIndex] != undefined"
           :game="entry.game"
           :itemAmount="typedClaimableItems[entry.game][entry.itemIndex].cnt"
           :itemImage="typedClaimableItems[entry.game][entry.itemIndex].icon"
