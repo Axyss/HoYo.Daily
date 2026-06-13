@@ -1,4 +1,22 @@
-type ClaimResponse = { data: object; retcode: number; message: string };
+type ClaimResponse = { retcode: number; message: string; data?: object };
+type ClaimCountResponse = { retcode: number; message: string; data?: { sign_cnt?: number; total_sign_day?: number }; };
+
+async function safeFetch(input: RequestInfo | URL, init?: RequestInit,): Promise<ClaimCountResponse | null> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const response = await fetch(input, init);
+    const data = (await response.json()) as ClaimCountResponse;
+
+    if (data.retcode === 0) {
+      return data;
+    }
+    if (attempt > 0) {
+      console.warn(`[claimable.ts]: Retrying fetch to '${input}' ${attempt}/2 (${data.retcode})`);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+  }
+  return null;
+}
+
 export interface ClaimableGame {
   name: string;
   claimRewards(): Promise<object>;
@@ -18,10 +36,10 @@ const gameClasses = [
     }
 
     async getClaimCount(): Promise<number> {
-      const response = await fetch(
+      const data = await safeFetch(
         "https://sg-hk4e-api.hoyolab.com/event/sol/resign_info?act_id=e202102251931481&lang=en-us",
       );
-      return (await response.json()).data?.sign_cnt || 0;
+      return data?.data?.sign_cnt ?? 0;
     }
   },
 
@@ -37,10 +55,10 @@ const gameClasses = [
     }
 
     async getClaimCount(): Promise<number> {
-      const response = await fetch(
+      const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info?lang=en-us&act_id=e202303301540311",
       );
-      return (await response.json()).data?.total_sign_day || 0;
+      return data?.data?.total_sign_day ?? 0;
     }
   },
 
@@ -59,7 +77,7 @@ const gameClasses = [
     }
 
     async getClaimCount(): Promise<number> {
-      const response = await fetch(
+      const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/luna/zzz/os/info?lang=en-us&act_id=e202406031448091",
         {
           headers: {
@@ -67,7 +85,7 @@ const gameClasses = [
           },
         },
       );
-      return (await response.json()).data?.total_sign_day || 0;
+      return data?.data?.total_sign_day ?? 0;
     }
   },
 
@@ -83,10 +101,10 @@ const gameClasses = [
     }
 
     async getClaimCount(): Promise<number> {
-      const response = await fetch(
+      const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/mani/info?lang=en-us&act_id=e202110291205111",
       );
-      return (await response.json()).data?.total_sign_day || 0;
+      return data?.data?.total_sign_day ?? 0;
     }
   },
 
@@ -102,10 +120,10 @@ const gameClasses = [
     }
 
     async getClaimCount(): Promise<number> {
-      const response = await fetch(
+      const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/luna/nxx/os/info?lang=en-us&act_id=e202202281857121",
       );
-      return (await response.json()).data?.total_sign_day || 0;
+      return data?.data?.total_sign_day ?? 0;
     }
   },
 ];
