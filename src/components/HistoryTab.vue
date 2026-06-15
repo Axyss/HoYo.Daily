@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import dayjs from "dayjs";
 import { getStorage, type HistoryDataEntry } from "../scripts/storage.ts";
 import HistoryEntry from "./HistoryEntry.vue";
@@ -12,6 +12,16 @@ type GameClaimableItems = Record<string, { icon: string; name: string; cnt: numb
 
 const claimHistory = ref<any>(await getStorage("History"));
 const typedClaimableItems = claimableItems as GameClaimableItems;
+const visibleClaimHistoryKeys = computed(() =>
+  // Some days may contain invalid entries that are kept for logging purposes.
+  Object.keys(claimHistory.value)
+    .filter((day) =>
+      claimHistory.value[day].some(
+        (entry: HistoryDataEntry) => typedClaimableItems[entry.game]?.[entry.itemIndex],
+      ),
+    )
+    .sort((a, b) => Number(b) - Number(a)),
+);
 
 listenMessage(MessageType.HISTORY_UPDATE, async () => {
   console.log("[HistoryTab.vue]: Updating claim history");
@@ -38,10 +48,7 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
 
   <!-- HistoryTab List -->
   <ol v-else class="list-none p-0">
-    <li
-      v-for="dayTimestamp in Object.keys(claimHistory).sort((a, b) => Number(b) - Number(a))"
-      :key="dayTimestamp"
-    >
+    <li v-for="dayTimestamp in visibleClaimHistoryKeys" :key="dayTimestamp">
       <h2 class="text-base-content/60 dark:text-base-content/50 text-base font-semibold">
         {{ dayjs(Number(dayTimestamp)).format("MMMM Do") }}
       </h2>
