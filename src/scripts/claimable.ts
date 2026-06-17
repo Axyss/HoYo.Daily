@@ -39,7 +39,7 @@ const gameClasses = [
       const data = await safeFetch(
         "https://sg-hk4e-api.hoyolab.com/event/sol/resign_info?act_id=e202102251931481&lang=en-us",
       );
-      return data?.data?.sign_cnt ?? 0;
+      return data?.data?.sign_cnt ?? -1;
     }
   },
 
@@ -58,7 +58,7 @@ const gameClasses = [
       const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/luna/hkrpg/os/info?lang=en-us&act_id=e202303301540311",
       );
-      return data?.data?.total_sign_day ?? 0;
+      return data?.data?.total_sign_day ?? -1;
     }
   },
 
@@ -85,7 +85,7 @@ const gameClasses = [
           },
         },
       );
-      return data?.data?.total_sign_day ?? 0;
+      return data?.data?.total_sign_day ?? -1;
     }
   },
 
@@ -104,7 +104,7 @@ const gameClasses = [
       const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/mani/info?lang=en-us&act_id=e202110291205111",
       );
-      return data?.data?.total_sign_day ?? 0;
+      return data?.data?.total_sign_day ?? -1;
     }
   },
 
@@ -123,7 +123,7 @@ const gameClasses = [
       const data = await safeFetch(
         "https://sg-public-api.hoyolab.com/event/luna/nxx/os/info?lang=en-us&act_id=e202202281857121",
       );
-      return data?.data?.total_sign_day ?? 0;
+      return data?.data?.total_sign_day ?? -1;
     }
   },
 ];
