@@ -55,7 +55,7 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
       <div class="divider mt-1 mb-2" />
       <div
         v-for="(entry, index) in claimHistory[dayTimestamp].sort(
-          (a: HistoryGameDataEntry, b: HistoryGameDataEntry) => b.timestamp - a.timestamp,
+          (a: HistoryGameDataEntry, b: HistoryGameDataEntry) => a.timestamp - b.timestamp,
         )"
         :key="index"
         class="mb-3"
