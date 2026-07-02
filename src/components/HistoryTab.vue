@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed, ref } from "vue";
 import dayjs from "dayjs";
-import { getStorage, type HistoryDataEntry } from "../scripts/storage.ts";
+import { getStorage, type HistoryGameDataEntry } from "../scripts/storage.ts";
 import HistoryEntry from "./HistoryEntry.vue";
 import claimableItems from "../assets/claimable-items.json" with { type: "json" };
 import { listenMessage, MessageType } from "../scripts/messaging.ts";
@@ -17,7 +17,7 @@ const visibleClaimHistoryKeys = computed(() =>
   Object.keys(claimHistory.value)
     .filter((day) =>
       claimHistory.value[day].some(
-        (entry: HistoryDataEntry) => typedClaimableItems[entry.game]?.[entry.itemIndex],
+        (entry: HistoryGameDataEntry) => typedClaimableItems[entry.game]?.[entry.itemIndex],
       ),
     )
     .sort((a, b) => Number(b) - Number(a)),
@@ -55,7 +55,7 @@ listenMessage(MessageType.HISTORY_UPDATE, async () => {
       <div class="divider mt-1 mb-2" />
       <div
         v-for="(entry, index) in claimHistory[dayTimestamp].sort(
-          (a: HistoryDataEntry, b: HistoryDataEntry) => b.timestamp - a.timestamp,
+          (a: HistoryGameDataEntry, b: HistoryGameDataEntry) => b.timestamp - a.timestamp,
         )"
         :key="index"
         class="mb-3"

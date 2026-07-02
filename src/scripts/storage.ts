@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 type StoredData = Record<string, any>;
-export type HistoryDataEntry = {
+export type HistoryGameDataEntry = {
   game: string;
   itemIndex: number;
   timestamp: number;
@@ -37,18 +37,14 @@ export async function setStorage(namespace: string, newData: StoredData): Promis
   await locks[namespace]; // Wait for the operation to complete
 }
 
-export async function addHistoryEntry(entry: HistoryDataEntry): Promise<void> {
+export async function addHistoryEntry(entry: HistoryGameDataEntry): Promise<void> {
   const midnight = dayjs().startOf("day").valueOf();
   const history = await getStorage("History");
-  const todayHistory: HistoryDataEntry[] = history[midnight] || [];
+  const todayHistoryEntry: HistoryGameDataEntry[] = history[midnight] || [];
 
   console.log(`[storage.ts]: Adding new entry to the history: ${history[midnight]}`);
-  todayHistory.push(entry);
-  if (Object.keys(history).length > 31) {
-    const trimmedHistory = Object.entries(history).sort().reverse().splice(0, 31);
-    await chrome.storage.local.set({ History: Object.fromEntries(trimmedHistory) }); // Can't use setStorage here
-    console.log(`[storage.ts]: Removing oldest entries from history`);
-  } else {
-    await setStorage("History", { [midnight]: todayHistory });
-  }
+  todayHistoryEntry.push(entry);
+  history[midnight] = todayHistoryEntry;
+  const trimmedHistory = Object.entries(history).sort().reverse().slice(0, 31);
+  await chrome.storage.local.set({ History: Object.fromEntries(trimmedHistory) }); // Can't use setStorage here
 }
