@@ -4,6 +4,7 @@ import TooltipPopover from "./TooltipPopover.vue";
 import { ref, watch } from "vue";
 import { MessageType, sendMessage } from "../scripts/messaging.ts";
 import { getStorage, setStorage } from "../scripts/storage.ts";
+import Countdown from "./Countdown.vue";
 
 const settings = await getStorage("Settings");
 const autoClaimEnabled = ref(settings["autoClaimEnabled"]);
@@ -22,6 +23,13 @@ if (!settings?.autoClaimEnabled) {
 </script>
 
 <template>
+  <div class="mb-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="icon-[lucide--clock] size-4" />
+      <span class="text-sm">Next claim in:</span>
+      <Countdown :isAutoClaimDisabled="!autoClaimEnabled" class="font-mono text-sm font-medium" />
+    </div>
+  </div>
   <div
     class="bg-primary/10 border-primary/70 flex items-center justify-between rounded-lg border p-3"
   >

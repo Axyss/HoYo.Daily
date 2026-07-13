@@ -1,10 +1,18 @@
 <script setup lang="ts">
+defineOptions({ name: "CountdownTimer" });
+
 import { computed, onMounted, ref } from "vue";
 import { getSecondsUntilNextMidnightUTC8 } from "../scripts/utils.ts";
+
+const props = defineProps<{
+  isAutoClaimDisabled?: boolean;
+}>();
 
 const secondsLeft = ref(getSecondsUntilNextMidnightUTC8());
 
 const countdown = computed(() => {
+  if (props.isAutoClaimDisabled) return "--:--:--";
+
   const h = Math.floor(secondsLeft.value / 3600)
     .toString()
     .padStart(2, "0");

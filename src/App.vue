@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import GameOption from "./components/GameOption.vue";
 import ClaimButton from "./components/ClaimButton.vue";
-import Countdown from "./components/Countdown.vue";
 import AutoClaimSetting from "./components/AutoClaimSetting.vue";
 import NotificationDropdown from "./components/NotificationDropdown.vue";
 import { onMounted } from "vue";
@@ -121,13 +120,6 @@ function openGithubIssuesTab(): void {
 
       <!-- Auto Claim Section -->
       <div class="bg-base-200/60 px-4 py-3">
-        <div class="mb-4 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="icon-[lucide--clock] size-4" />
-            <span class="text-sm">Next claim in:</span>
-            <Countdown class="font-mono text-sm font-medium" />
-          </div>
-        </div>
         <Suspense>
           <template #default>
             <AutoClaimSetting />
